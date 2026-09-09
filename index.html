@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>LeadOS Arbeitsstand</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#16212F; --muted:#55637A; --paper:#F4F7FB; --surface:#FFFFFF;
+  --accent:#2E5C8A; --accent-ink:#14314F; --accent-soft:#DCE6F2;
+  --good:#3F7A5C; --good-soft:#DEEEE4;
+  --progress:#B8823A; --progress-soft:#F3E6D2;
+  --pending:#8892A0; --pending-soft:#E7EAEE;
+  --line:#D7DEE8; --shadow: 0 1px 2px rgba(22,33,47,.06), 0 8px 24px -12px rgba(22,33,47,.12);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#E8EEF6; --muted:#9FAEC2; --paper:#0E1620; --surface:#16202C;
+    --accent:#6FA0D8; --accent-ink:#DCEBFB; --accent-soft:#1E2E42;
+    --good:#6FBE93; --good-soft:#1C2E24;
+    --progress:#E0AC5F; --progress-soft:#332918;
+    --pending:#8FA0B5; --pending-soft:#1D2733;
+    --line:#26313F; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E8EEF6; --muted:#9FAEC2; --paper:#0E1620; --surface:#16202C;
+  --accent:#6FA0D8; --accent-ink:#DCEBFB; --accent-soft:#1E2E42;
+  --good:#6FBE93; --good-soft:#1C2E24;
+  --progress:#E0AC5F; --progress-soft:#332918;
+  --pending:#8FA0B5; --pending-soft:#1D2733;
+  --line:#26313F; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+#app{max-width:880px;margin:0 auto;padding:48px 24px 96px;}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif; font-weight:600; text-wrap:balance; margin:0;}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--accent); font-weight:500;
+}
+a{color:var(--accent);}
+
+/* header */
+header.hero{margin-bottom:44px;}
+header.hero h1{font-size:clamp(2.1rem,5vw,2.9rem); color:var(--ink); margin-top:8px;}
+header.hero .sub{color:var(--muted); font-size:1.05rem; max-width:56ch; margin-top:10px;}
+.hero-cta{
+  margin-top:22px; padding:20px 24px; border-radius:14px;
+  background:var(--accent-soft); border:1.5px solid var(--accent);
+  display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px;
+}
+.hero-cta .cta-label{font-family:"IBM Plex Mono",monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-ink); opacity:.75;}
+.hero-cta .cta-url{font-weight:600; color:var(--accent-ink); font-size:1.04rem; margin-top:3px; word-break:break-word;}
+.hero-cta .cta-note{font-size:.86rem; color:var(--accent-ink); opacity:.85; margin-top:5px;}
+.hero-cta .cta-actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-left:auto;}
+.hero-cta a.cta-btn{
+  display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:var(--surface);
+  padding:13px 24px; border-radius:10px; font-weight:600; font-size:.98rem; text-decoration:none; white-space:nowrap;
+}
+.hero-cta a.cta-btn:hover{filter:brightness(1.06);}
+.hero-cta button.cta-copy{
+  display:inline-flex; align-items:center; gap:7px; background:transparent; color:var(--accent-ink);
+  border:1.5px solid var(--accent); padding:11.5px 18px; border-radius:10px; font:inherit; font-weight:600;
+  font-size:.92rem; white-space:nowrap; cursor:pointer;
+}
+.hero-cta button.cta-copy:hover{background:var(--surface);}
+.hero-cta .cta-fallback{
+  flex-basis:100%; margin-top:2px; font-size:.86rem; color:var(--accent-ink); opacity:.85;
+}
+.hero-cta .cta-fallback input{
+  width:100%; margin-top:6px; font:inherit; font-size:.9rem; padding:9px 11px; border-radius:8px;
+  border:1px solid var(--accent); background:var(--surface); color:var(--ink);
+}
+@media (max-width:560px){.hero-cta .cta-actions{margin-left:0;}}
+.meta-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:20px;}
+.pill{
+  display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:99px;
+  font-size:13px; font-weight:500; border:1px solid transparent;
+}
+.pill.phase{background:var(--accent-soft); color:var(--accent-ink); border-color:var(--accent-soft);}
+.pill.link{background:transparent; color:var(--accent); border-color:var(--accent); text-decoration:none; cursor:pointer;}
+.pill.link:hover{background:var(--accent-soft);}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+.applink{display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-size:.94rem; font-weight:500; text-decoration:none; margin:-6px 0 16px;}
+.applink:hover{text-decoration:underline;}
+.stamp{color:var(--muted); font-size:13px; font-family:"IBM Plex Mono",monospace;}
+
+/* section shell */
+section{margin-top:52px;}
+section > h2{font-size:1.5rem; margin-bottom:6px;}
+section > .lede{color:var(--muted); font-size:.98rem; max-width:62ch; margin-bottom:22px;}
+
+/* milestone rail */
+.rail-scroll{overflow-x:auto; margin:0 -24px; padding:4px 24px 14px;}
+.rail{display:flex; gap:0; min-width:min-content;}
+.node{
+  position:relative; flex:0 0 168px; padding-top:28px;
+}
+.node:not(:last-child)::after{
+  content:""; position:absolute; top:9px; left:calc(50% + 11px); width:calc(100% - 22px);
+  height:2px; background:var(--line);
+}
+.node.done:not(:last-child)::after{background:var(--good);}
+.node .marker{
+  position:absolute; top:0; left:calc(50% - 9px); width:18px; height:18px; border-radius:50%;
+  border:2.5px solid var(--pending); background:var(--surface); z-index:1;
+}
+.node.done .marker{border-color:var(--good); background:var(--good);}
+.node.active .marker{border-color:var(--progress); background:var(--progress-soft);}
+.node .num{
+  position:absolute; top:0; left:calc(50% - 9px); width:18px; height:18px; z-index:2;
+  font-size:10px; line-height:18px; text-align:center; color:var(--surface); font-family:"IBM Plex Mono",monospace; font-weight:500;
+}
+.node.active .num, .node.pending .num{color:transparent;}
+.node .label{font-size:13.5px; font-weight:600; text-align:center; margin-top:10px; padding:0 4px;}
+.node .desc{font-size:12px; color:var(--muted); text-align:center; margin-top:4px; padding:0 6px; line-height:1.4;}
+.node .when{font-size:11px; color:var(--muted); text-align:center; margin-top:4px; font-family:"IBM Plex Mono",monospace;}
+.node.done .label{color:var(--ink);}
+.node.pending .label{color:var(--muted);}
+
+/* question cards */
+.qcard{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:22px 24px; box-shadow:var(--shadow); margin-bottom:16px;
+}
+.qcard h3{font-size:1.08rem; margin-bottom:6px;}
+.qcard .ctx{color:var(--muted); font-size:.94rem; margin-bottom:16px; max-width:64ch;}
+.field{margin-bottom:14px;}
+.field label{display:block; font-size:12.5px; font-weight:600; letter-spacing:.02em; margin-bottom:6px; color:var(--muted);}
+.field input, .field textarea{
+  width:100%; font:inherit; font-size:.96rem; padding:10px 12px; border-radius:8px;
+  border:1px solid var(--line); background:var(--paper); color:var(--ink);
+}
+.field textarea{min-height:64px; resize:vertical;}
+.field input:focus, .field textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media (max-width:520px){.row2{grid-template-columns:1fr;}}
+button.submit{
+  background:var(--accent); color:var(--surface); border:none; border-radius:9px;
+  padding:11px 20px; font:inherit; font-size:.95rem; font-weight:600; cursor:pointer;
+}
+button.submit:hover{filter:brightness(1.06);}
+button.submit:disabled{opacity:.55; cursor:not-allowed;}
+.qnote{font-size:12.5px; color:var(--muted); margin-top:10px;}
+.qcard.answered{border-left:4px solid var(--good);}
+.answered-head{display:flex; align-items:center; gap:8px; color:var(--good); font-weight:600; font-size:.9rem; margin-bottom:8px;}
+.answer-grid{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:.94rem;}
+.answer-grid dt{color:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:12px; text-transform:uppercase; letter-spacing:.04em; padding-top:2px;}
+.answer-grid dd{margin:0;}
+.reopen{background:none; border:none; color:var(--accent); font-size:12.5px; cursor:pointer; padding:0; margin-top:12px; text-decoration:underline;}
+.section-foot{color:var(--muted); font-size:12.5px; margin-top:4px;}
+.status-msg{font-size:13px; padding:10px 12px; border-radius:8px; margin-top:12px;}
+.status-msg.err{background:var(--progress-soft); color:var(--progress);}
+.status-msg.info{background:var(--pending-soft); color:var(--muted);}
+
+/* timeline */
+.log{list-style:none; margin:0; padding:0; border-left:2px solid var(--line); margin-left:6px;}
+.log li{position:relative; padding:2px 0 22px 22px;}
+.log li::before{content:""; position:absolute; left:-6px; top:6px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--paper);}
+.log .d{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent); font-weight:500; letter-spacing:.02em;}
+.log .t{margin-top:3px; font-size:.95rem;}
+.log li.new .t{font-weight:500;}
+
+/* next steps */
+.callout{
+  background:var(--accent-soft); color:var(--accent-ink); border-radius:14px;
+  padding:20px 24px; font-size:.97rem;
+}
+.callout strong{font-weight:600;}
+
+/* reports archive */
+.report-group{margin-bottom:28px;}
+.report-group h3.sub{font-family:"IBM Plex Mono",monospace; font-size:12px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:500; margin-bottom:12px;}
+.memo{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:16px 20px; margin-bottom:12px; box-shadow:var(--shadow);
+}
+.memo .memo-d{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--accent); text-transform:uppercase; letter-spacing:.04em;}
+.memo h4{font-size:.98rem; margin:4px 0 8px; font-family:"IBM Plex Sans",sans-serif; font-weight:600;}
+.memo p{margin:0; font-size:.93rem; color:var(--ink);}
+details.proto{
+  border:1px solid var(--line); border-radius:12px; margin-bottom:10px; overflow:hidden; background:var(--surface);
+}
+details.proto summary{
+  list-style:none; cursor:pointer; padding:14px 20px; display:flex; align-items:baseline; gap:14px;
+  font-weight:600; font-size:.93rem;
+}
+details.proto summary::-webkit-details-marker{display:none;}
+details.proto summary::before{content:"+"; color:var(--accent); font-family:"IBM Plex Mono",monospace; width:14px; flex:0 0 auto;}
+details.proto[open] summary::before{content:"–";}
+details.proto summary .proto-d{color:var(--muted); font-weight:400; font-family:"IBM Plex Mono",monospace; font-size:11.5px; text-transform:uppercase;}
+details.proto .proto-body{padding:0 20px 16px 48px; font-size:.92rem; color:var(--muted);}
+.doc-card{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 20px; box-shadow:var(--shadow);
+}
+.doc-card .doc-info h4{margin:0 0 3px; font-size:.96rem; font-weight:600;}
+.doc-card .doc-info p{margin:0; font-size:.85rem; color:var(--muted);}
+.doc-note{color:var(--muted); font-size:.85rem; font-style:italic; white-space:nowrap;}
+
+.dec-pill{margin-left:auto; font-size:11px; font-weight:600; padding:3px 10px; border-radius:99px; white-space:nowrap; font-family:"IBM Plex Sans",sans-serif;}
+.dec-pill.good{background:var(--good-soft); color:var(--good);}
+.dec-pill.pending{background:var(--pending-soft); color:var(--pending);}
+.dec-pill.progress{background:var(--progress-soft); color:var(--progress);}
+
+/* plan overview + dev log (pure info, no interaction) */
+.info-note{color:var(--muted); font-size:.82rem; font-style:italic; margin:-4px 0 14px;}
+.plan-list{list-style:none; margin:0; padding:0;}
+.plan-list li{display:flex; align-items:center; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); font-size:.92rem;}
+.plan-list li:last-child{border-bottom:none;}
+.plan-list .plan-label{flex:1;}
+.devlog{list-style:none; margin:0; padding:0;}
+.devlog li{display:flex; gap:16px; padding:8px 0; border-bottom:1px solid var(--line); font-size:.87rem;}
+.devlog li:last-child{border-bottom:none;}
+.devlog .dd{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); white-space:nowrap; padding-top:2px; flex:0 0 auto; min-width:78px;}
+.devlog .tt{color:var(--ink);}
+.devlog-total{margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:.85rem; color:var(--muted); font-style:italic;}
+
+/* dynamic report browser (leados-reports) */
+#reportsbrowser-section .filter-bar{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+#reportsbrowser-section .filter-btn{
+  padding:5px 13px; border-radius:99px; border:1px solid var(--line);
+  background:var(--accent-soft); color:var(--accent-ink); font-size:12.5px; font-weight:500; cursor:pointer; font-family:inherit;
+}
+#reportsbrowser-section .filter-btn.active{background:var(--accent); color:var(--surface); border-color:var(--accent);}
+#reportsbrowser-section .rb-list{display:flex; flex-direction:column; gap:8px;}
+#reportsbrowser-section .rb-card{
+  display:flex; align-items:center; gap:12px; text-align:left; width:100%; font:inherit;
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:13px 16px; cursor:pointer; box-shadow:var(--shadow);
+}
+#reportsbrowser-section .rb-card:hover{background:var(--accent-soft);}
+#reportsbrowser-section .rb-typ{font-size:11px; font-weight:600; color:var(--accent-ink); background:var(--accent-soft); padding:3px 10px; border-radius:99px; white-space:nowrap; font-family:"IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.03em;}
+#reportsbrowser-section .rb-datum{color:var(--muted); font-size:12px; font-family:"IBM Plex Mono",monospace; white-space:nowrap;}
+#reportsbrowser-section .rb-titel{color:var(--ink); font-weight:600; font-size:.95rem;}
+#reportsbrowser-section .rb-error{color:var(--progress); font-size:13px;}
+#reportsbrowser-detail{margin-top:18px; padding:20px 22px; border-radius:14px; background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow);}
+#reportsbrowser-detail h3{font-size:1.15rem; margin-bottom:4px;}
+#reportsbrowser-detail h4{font-size:.98rem; margin:18px 0 8px; font-family:"IBM Plex Sans",sans-serif; font-weight:600;}
+#reportsbrowser-detail table{width:100%; border-collapse:collapse; margin:8px 0 4px; font-size:.88rem;}
+#reportsbrowser-detail th{background:var(--accent); color:var(--surface); text-align:left; padding:7px 10px; font-weight:600; font-size:.8rem;}
+#reportsbrowser-detail td{padding:7px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+#reportsbrowser-detail .rb-qa{background:var(--accent-soft); border-radius:8px; padding:10px 14px; margin-bottom:8px; font-size:.9rem;}
+#reportsbrowser-detail .rb-qa b{color:var(--accent-ink);}
+#reportsbrowser-detail .rb-meta{color:var(--muted); font-size:.85rem; margin-bottom:6px;}
+#reportsbrowser-detail ul{margin:6px 0; padding-left:20px; font-size:.9rem;}
+
+/* footer */
+footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px; display:flex; flex-wrap:wrap; gap:8px 18px; justify-content:space-between;}
+</style>
+</head>
+<body>
+<div id="app"><header class="hero"><div class="eyebrow">Pilotprojekt · Hanseatisches Institut</div><h1>LeadOS</h1><div class="sub">Digitales Führungswerkzeug für die Aufgabenübergabe zwischen Inhaber und Mitarbeiter.</div><div class="hero-cta"><div class="cta-text"><div class="cta-label">Prototyp zum Testen</div><div class="cta-url">leados-design-foundation.lovable.app</div></div><div class="cta-actions"><a class="cta-btn" href="https://leados-design-foundation.lovable.app" target="_blank" rel="noopener">↗ Prototyp öffnen</a><button type="button" class="cta-copy" data-copyurl="https://leados-design-foundation.lovable.app">Link kopieren</button></div><div class="cta-fallback">Öffnet der Button nicht direkt (z. B. in der Claude-App)? Link kopieren und im Browser einfügen.<input type="text" readonly value="https://leados-design-foundation.lovable.app" onclick="this.select()"></div></div><div class="meta-row"><span class="pill phase"><span class="dot"></span>Aktuell: Usability-Test durchgeführt, Nacharbeit läuft</span><span class="stamp">Stand: 09.09.2026, 08:40 Uhr</span></div></header><section id="rail-section"><h2>Wo wir stehen</h2><div class="rail-scroll"><div class="rail"><div class="node done"><div class="marker"></div><div class="num">1</div><div class="label">Grundlagen</div><div class="desc">Ziel, Zielgruppe und Rollen festgelegt</div><div class="when">21.08.</div></div><div class="node done"><div class="marker"></div><div class="num">2</div><div class="label">Design &amp; Ablauf</div><div class="desc">Aussehen und die fünf Arbeitsschritte festgelegt</div><div class="when">22.08.</div></div><div class="node done"><div class="marker"></div><div class="num">3</div><div class="label">Klickbarer Ablauf</div><div class="desc">Alle fünf Schritte durchgängig nutzbar</div><div class="when">25.08.</div></div><div class="node done"><div class="marker"></div><div class="num">4</div><div class="label">Fachliche Prüfung</div><div class="desc">Dieter hat die Inhalte geprüft und freigegeben</div><div class="when">25.08.</div></div><div class="node done"><div class="marker"></div><div class="num">5</div><div class="label">Technische Absicherung</div><div class="desc">Arbeitsumgebung eingerichtet und abgesichert</div><div class="when">27.08.</div></div><div class="node done"><div class="marker"></div><div class="num">6</div><div class="label">Usability-Test</div><div class="desc">Mit Jan durchgeführt, 5 Befunde protokolliert</div><div class="when">08.09.</div></div><div class="node active"><div class="marker"></div><div class="num">7</div><div class="label">Nacharbeit</div><div class="desc">SystemCheck Teil 2, 3-Felder-Struktur, Rollenkennzeichnung</div><div class="when">läuft</div></div><div class="node pending"><div class="marker"></div><div class="num">8</div><div class="label">Pilotentscheidung</div><div class="desc">Automatische Freigabe nach Umsetzung der Nacharbeit</div><div class="when">danach</div></div></div></div></section><section id="questions-section"><h2>Was jetzt gebraucht wird</h2><div class="lede">Trag deine Antwort direkt hier ein — sie ist sofort für die weitere Planung sichtbar. Falls „Antwort senden" hier nicht geht (reiner Lesezugriff), schick die Antwort stattdessen per Nachricht zurück — sie wird dann hier nachgetragen.</div><div class="qcard answered" data-qid="m1006-logistik"><div class="answered-head">✓ Beantwortet am 08.09.2026, 09:00 Uhr</div><h3>Usability-Test: Teammitglied &amp; Termin</h3><dl class="answer-grid"><dt>Teammitglied</dt><dd>Jan</dd><dt>Termin</dt><dd>08.09.2026 (im laufenden Gespräch vereinbart)</dd></dl><button type="button" class="reopen" data-reopen="m1006-logistik">Antwort ändern</button></div><div class="qcard answered" data-qid="m1006-testergebnis"><div class="answered-head">✓ Eingetragen am 08.09.2026, 09:40 Uhr</div><h3>Testergebnis dokumentieren</h3><dl class="answer-grid"><dt>Testdatum</dt><dd>08.09.2026</dd><dt>Rückfragen</dt><dd>nicht als Einzelzahl erfasst – stattdessen 5 strukturierte Befunde protokolliert (siehe Beobachtungen)</dd><dt>Einschätzung</dt><dd>Erfolgreich mit Einschränkungen</dd><dt>Beobachtungen</dt><dd>Jan (Testperson): (1) Schritt 2 SystemCheck – zweiter Teil fehlt: negative Auswirkungen bei Zielerreichung, Gegenmaßnahmen, Umsetzungssituation je Maßnahme. (2) Schritt 3 – 3 separate Felder nötig für das MA-Verständnis von Aufgabe, Verantwortung, Kompetenzen. (3) Schritt 3/übergreifend – Kacheln müssen die ausfüllende Rolle (MA/FK) kennzeichnen. (4) Muss-Check-Logik bestätigt: Nichterfüllung → Abbruch, zurück zum Start. (5) Erläuterungstext dazu final festgelegt: „Wird dieser Muss-Check nicht bestätigt, kann nicht fortgefahren werden – der Ablauf beginnt von vorn.“</dd></dl><button type="button" class="reopen" data-reopen="m1006-testergebnis">Eintrag ändern</button></div><div class="qcard answered" data-qid="d006-abbruchkriterium"><div class="answered-head">✓ Beantwortet am 08.09.2026, 10:05 Uhr</div><h3>Abbruchkriterium für den Piloten (D-006)</h3><dl class="answer-grid"><dt>Antwort</dt><dd>Scheitern liegt vor, wenn (a) niemand das Tool anwendet, (b) es keinen Nutzen bringt, oder (c) das inhaltliche Ziel des Z-AVKK-Ablaufs nicht erreicht wird. Schwellenwert: 8 Wochen ohne Nutzung/Nutzen. Gilt für den gesamten Fünf-Schritte-Ablauf. Entscheidung wird gemeinsam von Dieter und Bernd getroffen.</dd></dl><button type="button" class="reopen" data-reopen="d006-abbruchkriterium">Antwort ändern</button></div><div class="qcard answered" data-qid="glossar-systemcheck"><div class="answered-head">✓ Beantwortet am 08.09.2026, 10:15 Uhr</div><h3>Glossar-Formulierung „SystemCheck“ bestätigen</h3><dl class="answer-grid"><dt>Antwort</dt><dd>Passt so für die vier bestehenden Leitfragen. Wird zusätzlich um ein Beispiel ergänzt (liefert Dieter nach). Hinweis: Die Definition deckt bisher nur die vier ursprünglichen Leitfragen ab – der im Usability-Test gefundene zweite Teil (negative Auswirkungen, Gegenmaßnahmen, Umsetzungssituation) macht eine Erweiterung wahrscheinlich, sobald er umgesetzt ist.</dd></dl><button type="button" class="reopen" data-reopen="glossar-systemcheck">Antwort ändern</button></div><div class="section-foot">Weitere Fragen erscheinen hier, sobald es welche gibt.</div></section><section id="next-section"><h2>Nächste Schritte</h2><div class="callout"><strong>Nach dem Testdurchlauf:</strong> gemeinsame Auswertung mit Dieter, danach die Pilotentscheidung — fortsetzen, anpassen oder stoppen.</div></section><section id="openitems-section"><h2>Offene Punkte ohne Dieter</h2><div class="lede">Was noch zu erledigen ist, bevor Dieters Rückmeldung kommt – laufend aktuell gehalten.</div><ul class="plan-list"><li><span class="plan-label">Testbefunde 1–3 aus dem Usability-Test spezifizieren und umsetzen (SystemCheck Teil 2, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung).</span><span class="dec-pill progress">Offen</span></li><li><span class="plan-label">Muss-Check-Erläuterungstext (final formuliert) im Prototyp umsetzen.</span><span class="dec-pill progress">Offen</span></li><li><span class="plan-label">Beispiel für das Glossar „SystemCheck“ von Dieter einholen.</span><span class="dec-pill progress">Offen</span></li><li><span class="plan-label">SSH-Signierschlüssel-Passphrase war beim erneuten Einsatz nicht mehr auffindbar – klären, ob dauerhaft verloren; ggf. neuen Signierschlüssel erzeugen.</span><span class="dec-pill progress">Offen</span></li><li><span class="plan-label">Require-status-checks für TDF/ADR nachtragen, sobald ein erster CI-Lauf am aktuellen Standort vorliegt.</span><span class="dec-pill progress">Offen</span></li></ul></section><section id="log-section"><h2>Verlauf</h2><ul class="log"><li class=""><div class="d">21.08.2026</div><div class="t">Ziele, Zielgruppe und Rollen im Gespräch mit Dieter festgelegt.</div></li><li class=""><div class="d">22.08.2026</div><div class="t">Design und die fünf Arbeitsschritte als klickbaren Entwurf umgesetzt.</div></li><li class=""><div class="d">25.08.2026</div><div class="t">Alle fünf Schritte fertiggestellt; Dieter hat die fachlichen Inhalte geprüft; Leitfaden für den Usability-Test erstellt.</div></li><li class=""><div class="d">26.08.2026</div><div class="t">Arbeitsumgebung abgesichert; die KI arbeitet jetzt direkter am Code mit, um schneller voranzukommen.</div></li><li class=""><div class="d">27.08.2026</div><div class="t">Letzte technische Prüfung abgeschlossen; Anfrage an Dieter zu Teammitglied und Termin für den Usability-Test verschickt.</div></li><li class=""><div class="d">27.08.2026</div><div class="t">Link zu dieser Übersichtsseite an Dieter verschickt.</div></li><li class=""><div class="d">27.08.2026</div><div class="t">Direkter Link zum klickbaren Prototyp ergänzt und geprüft (öffentlich ohne Login erreichbar).</div></li><li class=""><div class="d">27.08.2026</div><div class="t">Governance-Synchronisation (EXT-001) mit den externen Standard-Repos abgeschlossen; Tagesbericht veröffentlicht.</div></li><li class=""><div class="d">27.08.2026</div><div class="t">Prototyp-Link aktualisiert (sysingdashboard.lovable.app, Anmeldung erforderlich) und gut sichtbar oben platziert; Eingabefeld zum Dokumentieren des Testergebnisses ergänzt.</div></li><li class=""><div class="d">27.08.2026</div><div class="t">„Link kopieren“-Schaltfläche und Klartext-Link als Ausweichlösung ergänzt, nachdem der Öffnen-Button in der Claude-App nicht auslöste.</div></li><li class=""><div class="d">27.08.2026</div><div class="t">Prototyp-Link korrigiert: richtige, seit Wochen genutzte Adresse ist leados-design-foundation.lovable.app (öffentlich, keine Anmeldung nötig) – der zwischenzeitlich eingetragene sysingdashboard.lovable.app-Link war ein Versehen.</div></li><li class=""><div class="d">27.08.2026</div><div class="t">Zeitstempel bei „Stand:” um die Uhrzeit ergänzt, damit bei mehreren Aktualisierungen am selben Tag der genaue Versionsstand erkennbar ist.</div></li><li class=""><div class="d">28.08.2026</div><div class="t">Dieter hat das PDF-Ausweichformular erhalten und testet den Ablauf mit seinem Team in der kommenden Woche.</div></li><li class=""><div class="d">28.08.2026</div><div class="t">M1-004d fertiggestellt und übergeben: Lovable-Auftrag (Muss-Check-Gates Schritt 1–3) sowie Codex-Auftrag (automatisierte Tests) – Codex hat bereits geantwortet, der Lovable-Auftrag ist jetzt offen.</div></li><li class=""><div class="d">29.08.2026</div><div class="t">Lovable bestätigt: Muss-Check-Gates in Schritt 1–3 gesetzt und verifiziert, vollständiger Demodurchlauf funktioniert, Zugänglichkeit (role/aria-checked) sowie Labels erhalten.</div></li><li class=""><div class="d">29.08.2026</div><div class="t">Codex hat einen Pull Request mit der automatisierten Testsuite erstellt; ein grüner Testlauf steht noch aus, technische Ursache identifiziert und Weg dahin geklärt.</div></li><li class=""><div class="d">29.08.2026</div><div class="t">M1-004d vollständig abgeschlossen: Muss-Check-Gates umgesetzt (Lovable) und automatisiert getestet (Codex), CI grün.</div></li><li class=""><div class="d">29.08.2026</div><div class="t">Neue Organisation bmarnau-standards angelegt (GitHub Team); TDF und ADF dorthin verschoben und mit Branch-Protection auf main abgesichert (Pull-Request-Pflicht, signierte Commits).</div></li><li class=""><div class="d">29.08.2026</div><div class="t">M1-008 geprüft: war bereits vollständig erledigt (seit 26.08.) – Claude GitHub App organisationsweit in LeadOS-Org installiert, Workflow in leados-design-foundation korrekt konfiguriert, 8 Läufe dokumentiert, mind. 2 erfolgreiche @claude-Antworten bestätigt. Damit ist der letzte Punkt der aktuellen „ohne Dieter“-Liste abgeschlossen.</div></li><li class=""><div class="d">29.08.2026</div><div class="t">Tag abgeschlossen: Tagesbericht veröffentlicht, alle heute ohne Dieter bearbeitbaren Punkte abgearbeitet. Weiter geht es mit Dieters Usability-Test in der Woche ab 31.08.</div></li><li class=""><div class="d">31.08.2026</div><div class="t">Mit Bernds Freigabe: Claude GitHub App organisationsweit (alle Repositories) in bmarnau-standards installiert – Workflow-Datei und Secret waren bereits aus EXT-001 vorhanden und hatten den Organisationsumzug unbeschädigt überstanden.</div></li><li class=""><div class="d">31.08.2026</div><div class="t">Funktionstest per @claude-Kommentar auf Issue #9 (TDF) erfolgreich: Lesezugriff und korrekter Default-Branch bestätigt, keine ungewollten Änderungen – Punkt vollständig abgeschlossen.</div></li><li class=""><div class="d">31.08.2026</div><div class="t">Schritt-für-Schritt-Anleitung zur lokalen SSH-Commit-Signierung an Bernd übergeben (Schlüsselerzeugung, Git-Konfiguration, Hinterlegung bei GitHub als Signing Key, Verifizierung); Ausführung steht noch aus.</div></li><li class=""><div class="d">31.08.2026</div><div class="t">Beim Nachfragen nach weiteren Punkten ohne Dieter gefunden: Pull Request #6 in leados-design-foundation war trotz grüner Checks nie gemergt, obwohl M1-004d bereits als abgeschlossen dokumentiert war. Mit Bernds Freigabe gemergt (main jetzt bei e8500b8), Branch gelöscht, erledigtes Issue #2 (M1-001) geschlossen. TDF/ADF gegengeprüft: keine offenen Pull Requests.</div></li><li class=""><div class="d">08.09.2026</div><div class="t">Usability-Test (M1-006) mit Jan durchgeführt: 5 Befunde protokolliert (SystemCheck-Erweiterung, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung, Muss-Check-Logik und -Text final).</div></li><li class=""><div class="d">08.09.2026</div><div class="t">D-006 (Abbruchkriterium Pilot), Glossar „SystemCheck“ und M1-007 (Ablauf der Pilotentscheidung) mit Dieter vollständig geklärt.</div></li><li class=""><div class="d">08.09.2026</div><div class="t">Berichts-Infrastruktur aufgebaut: eigenes öffentliches Repository leados-reports für strukturierte Berichte (JSON, versioniert), abrufbar über eine laufend aktualisierte Berichtsauswahl auf dieser Seite.</div></li><li class="new"><div class="d">09.09.2026</div><div class="t">Diese Seite von der bisherigen claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite umgestellt – unabhängig von einzelnen Chat-Sitzungen erreichbar und pflegbar.</div></li></ul></section><section id="reportsbrowser-section"><h2>Aktuelle Berichte</h2><div class="lede">Protokolle und Tagesberichte ab September 2026 werden hier laufend nachgeladen – neue Berichte erscheinen automatisch, ohne dass diese Seite selbst geändert werden muss.</div><div class="filter-bar" id="rb-filters"></div><div class="rb-list" id="rb-list">Lade Berichte …</div><div id="reportsbrowser-detail"></div></section><section id="reports-section"><h2>Alle Berichte &amp; Dokumente</h2><div class="lede">Das komplette Archiv – Memos, Tagesprotokolle und Unterlagen, jederzeit abrufbar.</div><div class="report-group"><h3 class="sub">Memos an Dieter</h3><div class="memo"><div class="memo-d">26.08.2026</div><h4>Code-Verwaltung &amp; KI-Unterstützung</h4><p>Wir haben die Code-Verwaltung in eine eigene, gemeinsame Arbeitsumgebung verschoben – schützt besser vor Datenverlust und passt zu unserer Zusammenarbeit. Zusätzlich lassen wir die KI jetzt direkter am Code mitarbeiten, um technische Aufgaben schneller zu erledigen. Beides ändert nichts am App-Stand oder am Zeitplan für den Usability-Test. Ob du Zugriff auf die neue Arbeitsumgebung bekommst, besprechen wir im nächsten Meeting.</p></div><div class="memo"><div class="memo-d">27.08.2026</div><h4>Bedarf für den Usability-Test</h4><p>Der Ablauf und Beobachtungsbogen liegen fertig vor. Gebraucht wird von dir noch ein Teammitglied für die Mitarbeiter-Rolle, ca. 20–30 Minuten für einen gemeinsamen Durchlauf mit dem Demodatensatz – wann das bei euch am besten passt, entscheidest du. Sobald ihr Zeit gefunden habt, schicken wir den Zugriffslink.</p></div></div><div class="report-group"><h3 class="sub">Entscheidungen</h3><details class="proto"><summary><span class="proto-d">21.08.2026</span><span>Zielgruppe des Piloten</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Der Pilot konzentriert sich auf die Beziehung Inhaber–Mitarbeiter. Die Erweiterung um die Führungskraft-Ebene ist bewusst für eine spätere Phase vorgesehen.</div></details><details class="proto"><summary><span class="proto-d">21.08.2026</span><span>Kernproblem des Piloten</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Der Führungskreislauf bricht typischerweise an vier Stellen: Ziele werden ohne SystemCheck festgelegt, Aufgaben werden ohne Rückprüfung übergeben, Verantwortung wird nicht als Gefühl geprüft, und Kompetenzen/Ressourcen werden nicht kontrolliert.</div></details><details class="proto"><summary><span class="proto-d">21.08.2026</span><span>Der getestete Ablauf</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Fünf Schritte, gemeinsam am Bildschirm von Inhaber und Mitarbeiter durchlaufen – kein Alleingang. Vertiefte Themen (Verantwortungs- und Kompetenzprüfung) folgen erst in späteren Sprints.</div></details><details class="proto"><summary><span class="proto-d">21.08.2026</span><span>Rollen im Projekt</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Dieter trägt die fachliche Verantwortung. Bernd trägt Produkt- und Umsetzungsverantwortung. Claude unterstützt bei Architektur und technischer Struktur – mit Dieters Vetorecht, sobald es fachliche Auswirkungen hat.</div></details><details class="proto"><summary><span class="proto-d">21.08.2026</span><span>Testpersonen und Testdaten</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Dieter testet mit seinem eigenen Team und moderiert selbst. Es wird ausschließlich mit erfundenen, klar gekennzeichneten Testdaten gearbeitet – volle Transparenz, kein verstecktes Bewerten einzelner Personen.</div></details><details class="proto"><summary><span class="proto-d">08.09.2026</span><span>Wann gilt der Test als erfolgreich? / Abbruchkriterium Pilot</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Testerfolg: Der Ablauf wird ohne zusätzliche mündliche Erklärung verstanden (von Dieter am 25.08. bestätigt). Ergänzend am 08.09. geklärt: Der Pilotbetrieb (nach Start) gilt als gescheitert, wenn niemand das Tool anwendet, es keinen Nutzen bringt, oder das inhaltliche Ziel nicht erreicht wird – Schwellenwert 8 Wochen, gilt für den gesamten Ablauf, Entscheidung gemeinsam durch Dieter und Bernd. Löst die zuvor rein auf Rückfragen-Anzahl gestützte, noch offene Formulierung ab.</div></details><details class="proto"><summary><span class="proto-d">22.08.2026</span><span>Technische Arbeitsumgebung</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Die technische Arbeitsumgebung für die Code-Verwaltung wurde eingerichtet und mehrfach angepasst, zuletzt am 26.08. in eine gemeinsame, besser abgesicherte Umgebung verschoben (siehe Memo).</div></details><details class="proto"><summary><span class="proto-d">–</span><span>Technische Basis nach dem Prototyp</span><span class="dec-pill pending">Vertagt</span></summary><div class="proto-body">Diese Entscheidung wird bewusst erst nach dem Usability-Test getroffen, wenn klar ist, wie es mit dem Piloten weitergeht.</div></details><details class="proto"><summary><span class="proto-d">25.08.2026</span><span>Umfang von Schritt 2 (SystemCheck)</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">Schritt 2 bekommt die echte SystemCheck-Struktur (Vorteile der Gegenwart, Maßnahmen, Umsetzung, Aktionsplan-Übersicht) – aber in einfacher, statischer Form ohne KI-generierte Vorschläge, PDF-Export oder dauerhafte Speicherung. Die volle Version bleibt bewusst spätere Zukunftsvision.</div></details><details class="proto"><summary><span class="proto-d">29.08.2026</span><span>Organisationsstruktur für TDF/ADF</span><span class="dec-pill good">Angenommen</span></summary><div class="proto-body">TDF und ADF liegen jetzt in einer eigenen, projektneutralen Organisation (bmarnau-standards, GitHub Team) statt in LeadOS-Org – damit bleiben die projektübergreifenden Engineering-Standards organisatorisch von LeadOS getrennt, auch wenn das eine zusätzliche Team-Lizenz kostet.</div></details></div><div class="report-group"><h3 class="sub">Tagesprotokoll</h3><details class="proto"><summary><span class="proto-d">20.–21.08.2026</span><span>Grundlagen &amp; Sprint-00-Gespräch</span></summary><div class="proto-body">Projektunterlagen gesichtet, offene Fragen vorbereitet. Am 21.08. gemeinsames Gespräch mit Dieter: Zielgruppe, Kernproblem, die fünf Arbeitsschritte, Pilotumfang, Rollen und Testrahmen besprochen und freigegeben.</div></details><details class="proto"><summary><span class="proto-d">22.08.2026</span><span>Design &amp; erste Umsetzung</span></summary><div class="proto-body">Optik festgelegt (Navy/Blau), alle fünf Arbeitsschritte als klickbarer Entwurf umgesetzt, Arbeitsumgebung für die Code-Verwaltung eingerichtet.</div></details><details class="proto"><summary><span class="proto-d">25.08.2026</span><span>Ablauf fertiggestellt &amp; fachlich geprüft</span></summary><div class="proto-body">Schritt 2 (SystemCheck) fachlich ausgebaut – damit ist der komplette Ablauf inhaltlich fertig. Dieter hat die Inhalte im Gespräch geprüft und freigegeben. Leitfaden für den Usability-Test (Beobachtungsbogen, Interviewfragen) erstellt.</div></details><details class="proto"><summary><span class="proto-d">26.08.2026</span><span>Technische Absicherung</span></summary><div class="proto-body">Arbeitsumgebung in eine eigene, gemeinsame Umgebung verschoben und gegen versehentliches Löschen abgesichert; die KI arbeitet seither direkter am Code mit. Zusätzlich eine 4-seitige Management-Übersicht (Topologie, Plan bis MVP) erstellt, siehe Dokumente unten.</div></details><details class="proto"><summary><span class="proto-d">27.08.2026</span><span>Letzte Prüfung &amp; Testvorbereitung</span></summary><div class="proto-body">Letzte technische Prüfung abgeschlossen, Erfolgskriterien und Beobachtungsbogen bestätigt. Neue Regel eingeführt: Termine mit Dieter werden nicht mehr mit Kalendertagen vorgeschlagen, sondern nur der Bedarf genannt – den Zeitpunkt bestimmt Dieter. Diese zentrale Übersichtsseite eingerichtet, auf der ab jetzt alle Informationen und offenen Fragen gesammelt abrufbar sind.</div></details><details class="proto"><summary><span class="proto-d">28.08.2026</span><span>M1-004d an Codex und Lovable übergeben</span></summary><div class="proto-body">Dieter hat das PDF-Ausweichformular erhalten und testet den Ablauf in der kommenden Woche; bis dahin werden hier die Punkte bearbeitet, die ohne Dieter möglich sind. M1-004d wurde in zwei aufeinander abgestimmten Aufträgen fertiggestellt: ein Lovable-Auftrag stellt die Muss-Check-Gates in Schritt 1–3 selbst her bzw. prüft sie, ein Codex-Auftrag deckt sie mit einer automatisierten Playwright-Testsuite ab. Beide respektieren dieselbe Regel: keine neuen data-testid-Attribute, da die Tests bewusst auf Rollen, Labels und sichtbaren Text setzen. Codex hat bereits geantwortet; der Lovable-Auftrag ist jetzt offen.</div></details><details class="proto"><summary><span class="proto-d">29.08.2026</span><span>Lovable-Auftrag verifiziert: Muss-Check-Gates aktiv</span></summary><div class="proto-body">Lovable meldet alle drei Gates gesetzt und verifiziert: Schritt 1 sperrt „Weiter“ bis „Ziel und Aufgabe für Inhaber klar?“ bestätigt ist, Schritt 2 bis „SystemCheck durchgeführt?“, Schritt 3 bis alle drei Muss-Checks bestätigt sind (Test bestätigt: nach Check 1 und 2 weiterhin gesperrt, erst nach Check 3 frei). Solange ein Gate geschlossen ist, erscheint ein Hinweistext neben dem Button. Vollständiger Demodurchlauf funktioniert, Ziel/Aufgabe erscheinen weiterhin in Schritt 2/3, Labels („Ziel“, „Aufgabe“, „Antwort 1“, „Maßnahme 1“, „Rückmeldung“) und Zugänglichkeit (role=&quot;checkbox&quot;/aria-checked) sind erhalten. Schritte 4/5 sowie Texte und Gestaltung wurden nicht verändert. Der Codex-Auftrag (automatisierte Tests) ist damit die einzige noch offene Teilaufgabe von M1-004d.</div></details><details class="proto"><summary><span class="proto-d">29.08.2026</span><span>M1-004d abgeschlossen: Testautomatisierung gemergt, CI grün</span></summary><div class="proto-body">Codex&#39; Pull Request enthielt eigene Änderungen an denselben drei Gate-Dateien wie Lovables Umsetzung – ein Merge-Konflikt, der bewusst zugunsten von Lovables bereits verifizierter Version aufgelöst wurde. Ein zweiter, nachgereichter Pull Request stabilisierte die Tests gegen asynchrones Laden. Ergebnis: automatisierter Testlauf ist grün, deckt alle fünf Schritte, die Dateneingabe, die Zustandsübergabe zwischen den Schritten und die Muss-Check-Gates ab. Keine Lovable-Komponenten dauerhaft verändert. Damit ist M1-004d – die Testautomatisierung vor dem Usability-Test – vollständig abgeschlossen.</div></details><details class="proto"><summary><span class="proto-d">29.08.2026</span><span>Governance-Infrastruktur: Branch-Protection scharf geschaltet</span></summary><div class="proto-body">GitHub Free erzwingt Branch-Protection-Regeln auf privaten Repos nicht – das wurde bei der Einrichtung entdeckt. Als Lösung wurde eine neue, projektneutrale Organisation (bmarnau-standards, GitHub Team) angelegt und TDF sowie ADF dorthin verschoben, statt sie in die bestehende, LeadOS-spezifische Organisation zu legen. Auf main gilt in beiden Repos jetzt: Pull-Request-Pflicht (0 Pflicht-Approvals) und signierte Commits – beides einzeln geprüft und bestätigt. Require-status-checks bleibt vorerst aus, da an diesem Standort noch kein CI-Lauf vorliegt und GitHub sonst keinen Check zur Auswahl anbietet. Offen: lokale Commit-Signierung bei Bernd einrichten (Voraussetzung für den nächsten eigenen Push auf main), Status der Claude-GitHub-App in der neuen Organisation bmarnau-standards prüfen (separat von der unten bestätigten LeadOS-Org-Installation).</div></details><details class="proto"><summary><span class="proto-d">29.08.2026</span><span>M1-008 geprüft: bereits erledigt</span></summary><div class="proto-body">Letzter Punkt der „ohne Dieter“-Liste geprüft: Claude GitHub App war bereits seit 26.08.2026 organisationsweit in LeadOS-Org installiert (Zugriff auf alle Repos), der Workflow .github/workflows/claude.yml in leados-design-foundation korrekt konfiguriert (Trigger auf @claude-Kommentare, kein Auslösen durch eigene Bot-Antworten), das Secret ANTHROPIC_API_KEY hinterlegt. Aus der Lauf-Historie bestätigt: 8 Workflow-Läufe, davon mindestens 2 erfolgreiche, echte @claude-Antworten auf Issue #2. Es war keine weitere Handlung nötig – der Punkt war lediglich noch nicht als erledigt dokumentiert. Damit ist die aktuelle Liste der ohne Dieter bearbeitbaren Punkte für heute abgearbeitet.</div></details><details class="proto"><summary><span class="proto-d">31.08.2026</span><span>GitHub-App-Status bmarnau-standards geklärt: nur Organisations-Installation fehlte</span></summary><div class="proto-body">Auf Bernds Frage „was können wir heute ohne Dieter umsetzen“ wurden die drei verbliebenen offenen Punkte vom 29.08. angegangen. Zuerst wurde eine Schritt-für-Schritt-Anleitung zur lokalen SSH-Commit-Signierung an Bernd übergeben (Schlüsselerzeugung, Git-Konfiguration, Hinterlegung als Signing Key bei GitHub, Verifizierung per Test-Commit) – die Ausführung liegt bei Bernd selbst, da kein Terminalzugriff auf seinen Rechner besteht und privates Schlüsselmaterial ohnehin nicht extern erzeugt werden sollte. Mit Bernds ausdrücklicher Freigabe wurde anschließend die Claude GitHub App organisationsweit (alle Repositories) in bmarnau-standards installiert. Dabei stellte sich eine ursprüngliche Annahme als falsch heraus: Workflow-Datei (.github/workflows/claude.yml) und Repository-Secret (CLAUDE_CODE_OAUTH_TOKEN) existierten in TDF und ADF bereits seit EXT-001 (27.08.) und hatten den Organisationsumzug am 29.08. unbeschädigt überstanden – die einzige tatsächliche Lücke war die fehlende App-Installation auf Organisationsebene. Ein anschließender Funktionstest per @claude-Kommentar auf dem bestehenden Test-Issue #9 (TDF) bestätigte Lesezugriff und korrekte Funktion ohne ungewollte Änderungen. Damit ist dieser Punkt vollständig abgeschlossen; offen bleiben die SSH-Signierung (bei Bernd) und die davon abhängigen Require-status-checks.</div></details><details class="proto"><summary><span class="proto-d">31.08.2026</span><span>Nachfrage nach weiteren Punkten: verwaiste PR gefunden und geschlossen</span></summary><div class="proto-body">Auf Bernds Nachfrage „was koennen wir noch ohne Dieter tun“ wurde der Repository-Zustand aller drei Code-Repos (leados-design-foundation, TDF, ADF) systematisch gegengeprueft, nicht nur die bekannte offene Liste. Dabei kam eine Diskrepanz zum Vorschein: Pull Request #6 in leados-design-foundation („stabilize M1-004d five-step E2E flow“) hatte alle Checks gruen und keine Konflikte, war aber nie tatsaechlich gemergt worden, obwohl der Projektstatus vom 29.08. M1-004d bereits als vollstaendig abgeschlossen dokumentiert hatte. Mit Bernds ausdruecklicher Freigabe wurde der PR gemergt (main jetzt bei Commit e8500b8) und der Feature-Branch geloescht. Zusaetzlich wurde das laengst erledigte Issue #2 (M1-001, Governance-Dateien) geschlossen, das seit dem 26.08. offen geblieben war. TDF und ADF wurden ebenfalls gegengeprueft: beide 0 offene Pull Requests. Lehre daraus: ein als „abgeschlossen“ dokumentierter Meilenstein ersetzt keine Pruefung des tatsaechlichen Repository-Zustands (Merge-Status), da beides auseinanderlaufen kann.</div></details><details class="proto" open><summary><span class="proto-d">08.–09.09.2026</span><span>Usability-Test durchgeführt, offene Fragen geklärt, Berichts-Infrastruktur aufgebaut</span></summary><div class="proto-body">Jan hat den Fünf-Schritte-Ablauf getestet und fünf strukturierte Befunde geliefert (SystemCheck-Erweiterung um negative Auswirkungen/Gegenmaßnahmen/Umsetzungssituation, 3-Felder-Struktur für das MA-Verständnis in Schritt 3, Rollenkennzeichnung auf den Kacheln, sowie die Muss-Check-Abbruchlogik und ihr finaler Erläuterungstext). Anschließend wurden mit Dieter alle verbliebenen Fragen aus dem Fragenkatalog geklärt: D-006 (Abbruchkriterium für den Pilotbetrieb: keine Nutzung/kein Nutzen/Ziel verfehlt, Schwellenwert 8 Wochen, gesamter Ablauf, gemeinsame Entscheidung Dieter+Bernd), das Glossar „SystemCheck“ (Formulierung bestätigt, Beispiel von Dieter in Aussicht) und M1-007 (automatische Freigabe der Pilotentscheidung nach Umsetzung der drei Testbefunde). Parallel wurde eine dauerhafte Lösung für die wachsende Berichtsliste dieser Seite umgesetzt: ein eigenes, öffentliches Repository (leados-reports) speichert Berichte künftig als einzelne, versionierte JSON-Dateien; diese Seite lädt sie zur Laufzeit und zeigt sie filterbar an, statt jeden Bericht einzeln in den Seitencode einzutragen. Im Zuge dessen wurde diese Übersichtsseite selbst von der bisherigen claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite umgestellt, da in der bisherigen Ansicht keine Bearbeitungssitzung mehr erreichbar war.</div></details></div><div class="report-group"><h3 class="sub">Dokumente</h3><div class="doc-card" data-docid="mgmt-pdf"><div class="doc-info"><h4>Management-Übersicht LeadOS</h4><p>4 Seiten – Aufbau des Projekts, Plan bis zum fertigen Piloten (MVP)</p></div><span class="doc-note">wird separat per Nachricht verschickt</span></div><div class="doc-card" data-docid="tagesbericht-0827"><div class="doc-info"><h4>Tagesbericht 27.08.2026</h4><p>Governance-Synchronisation (EXT-001) abgeschlossen, drei bestehende Framework-Pull-Requests geprüft</p></div><a class="doc-note" href="https://claude.ai/code/artifact/b2149cfa-0714-47e4-a35a-344bee6f0d80" target="_blank" rel="noopener" style="text-decoration:underline;">↗ öffnen</a></div><div class="doc-card" data-docid="tagesbericht-0828"><div class="doc-info"><h4>Tagesbericht 28.08.2026</h4><p>M1-004d an Codex und Lovable übergeben, Dieters Testtermin für kommende Woche bestätigt</p></div><a class="doc-note" href="https://claude.ai/code/artifact/a983f8f5-94e2-4f53-a662-63432d92fee6" target="_blank" rel="noopener" style="text-decoration:underline;">↗ öffnen</a></div><div class="doc-card" data-docid="tagesbericht-0829"><div class="doc-info"><h4>Tagesbericht 29.08.2026</h4><p>M1-004d und M1-008 abgeschlossen, Branch-Protection auf TDF/ADF scharf geschaltet, Organisationsumzug bmarnau-standards</p></div><a class="doc-note" href="https://claude.ai/code/artifact/ca9d7ff9-5626-41ac-a0be-9c3283936125" target="_blank" rel="noopener" style="text-decoration:underline;">↗ öffnen</a></div></div><div class="report-group"><h3 class="sub">Plan im Überblick</h3><div class="info-note">Reine Info zur Orientierung – nicht interaktiv.</div><ul class="plan-list"><li><span class="plan-label">Grundlagen &amp; Projektstart</span><span class="dec-pill good">Erledigt</span></li><li><span class="plan-label">Design &amp; klickbarer Ablauf (alle fünf Schritte)</span><span class="dec-pill good">Erledigt</span></li><li><span class="plan-label">Fachliche Prüfung durch Dieter</span><span class="dec-pill good">Erledigt</span></li><li><span class="plan-label">Usability-Test-Vorbereitung (Leitfaden, Beobachtungsbogen)</span><span class="dec-pill good">Erledigt</span></li><li><span class="plan-label">Technische Arbeitsumgebung &amp; Absicherung</span><span class="dec-pill good">Erledigt</span></li><li><span class="plan-label">Diese Übersichtsseite (laufend gepflegt)</span><span class="dec-pill progress">Läuft</span></li><li><span class="plan-label">Testautomatisierung (M1-004d, Codex + Lovable)</span><span class="dec-pill good">Erledigt</span></li><li><span class="plan-label">Usability-Test mit Dieters Team</span><span class="dec-pill progress">Aktuell</span></li><li><span class="plan-label">Gemeinsame Auswertung</span><span class="dec-pill pending">Geplant</span></li><li><span class="plan-label">Pilotentscheidung (fortsetzen, anpassen oder stoppen)</span><span class="dec-pill pending">Geplant</span></li></ul></div><div class="report-group"><h3 class="sub">Entwicklungsverlauf</h3><div class="info-note">Reine Info zur Orientierung – nicht interaktiv.</div><ul class="devlog"><li><span class="dd">20.08.2026</span><span class="tt">Projektgrundlagen zusammengetragen, offene Fragen für das erste Gespräch mit Dieter vorbereitet.</span></li><li><span class="dd">21.08.2026</span><span class="tt">Gespräch mit Dieter: Ziele, Zielgruppe, Rollen und Testrahmen besprochen und freigegeben.</span></li><li><span class="dd">22.08.2026</span><span class="tt">Design festgelegt, alle fünf Arbeitsschritte als klickbaren Entwurf umgesetzt, Arbeitsumgebung eingerichtet.</span></li><li><span class="dd">25.08.2026</span><span class="tt">Ablauf fachlich vervollständigt, mit Dieter geprüft und freigegeben; Leitfaden für den Usability-Test erstellt.</span></li><li><span class="dd">26.08.2026</span><span class="tt">Arbeitsumgebung in eine gemeinsame, abgesicherte Umgebung verschoben.</span></li><li><span class="dd">26.08.2026</span><span class="tt">Management-Übersicht (4 Seiten) erstellt.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Letzte technische Prüfung abgeschlossen.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Neue Terminregel für Dieter eingeführt; Vorbereitungs-Memo entworfen.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Diese Übersichtsseite entworfen, gebaut und veröffentlicht.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Archiv mit Memos, Tagesprotokoll und Dokumenten ergänzt.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Zwei zusätzliche offene Fragen ergänzt (Abbruchkriterium, Glossar-Bestätigung).</span></li><li><span class="dd">27.08.2026</span><span class="tt">Freigabe für Dieter eingerichtet; Link verschickt.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Entscheidungsübersicht sowie dieser Plan- und Entwicklungsverlauf ergänzt.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Prototyp-Link ergänzt und Erreichbarkeit geprüft (öffentlich, fünf Schritte durchgängig verlinkt).</span></li><li><span class="dd">27.08.2026</span><span class="tt">Claude GitHub App auf beiden externen Standard-Repos (ADF, TDF) eingerichtet und getestet.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Zwei Governance-Funde behoben und gemergt: fehlende Repo-Struktur in TDF, verallgemeinerte KI-Rollenbezeichnung in ADF.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Drei bestehende TDF-Pull-Requests geprüft: zwei gemergt, eine bewusst als Entwurf geparkt.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Tagesbericht erstellt und veröffentlicht (siehe Dokumente oben).</span></li><li><span class="dd">27.08.2026</span><span class="tt">Prototyp-Link auf aktuelle Adresse (sysingdashboard.lovable.app) umgestellt, geprüft (öffentlich erreichbar, Anmeldung nötig) und als gut sichtbares Element direkt unter der Überschrift platziert.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Eingabefeld „Testergebnis dokumentieren” ergänzt (Datum, Anzahl Rückfragen gemäß D-006, Einschätzung, Beobachtungen) – Ergebnis wird direkt beim Absenden veröffentlicht und ist damit für alle abrufbar.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Fehler gefunden und behoben: In der Claude-App öffnete der Prototyp-Link-Button nicht (App fängt die Navigation ab, nur auf dem Handy betroffen – am PC funktioniert es). Ausweichlösung ergänzt: „Link kopieren“-Button plus sichtbares Textfeld mit dem Link zum manuellen Kopieren.</span></li><li><span class="dd">27.08.2026</span><span class="tt">Falschen Prototyp-Link korrigiert: zurück auf die korrekte, bereits seit Wochen verwendete und öffentlich ohne Anmeldung erreichbare Adresse leados-design-foundation.lovable.app.</span></li><li><span class="dd">28.08.2026</span><span class="tt">Dieter hat das zweiseitige PDF-Ausweichformular erhalten; Usability-Test findet in der kommenden Woche statt.</span></li><li><span class="dd">28.08.2026</span><span class="tt">M1-004d-Prompt (Codex, Testautomatisierung) um Randbedingung zum Schutz der Lovable-Direct-Push-Synchronisation ergänzt (keine data-testid-Attribute, keine Änderung an Lovable-verwalteten Komponenten).</span></li><li><span class="dd">28.08.2026</span><span class="tt">Sendefertiger Codex-Auftrag für M1-004d fertiggestellt und übergeben; ein zuvor verfrühter Statuseintrag hierzu wurde korrigiert.</span></li><li><span class="dd">28.08.2026</span><span class="tt">Ergänzender Lovable-Auftrag zu den Muss-Check-Gates (Schritt 1–3) fertiggestellt und im PR hinterlegt (LOVABLE_M1-004D_MUSS-CHECKS.md).</span></li><li><span class="dd">28.08.2026</span><span class="tt">Rückmeldung von Codex zu M1-004d eingegangen; der Lovable-Auftrag ist jetzt offen.</span></li><li><span class="dd">28.08.2026</span><span class="tt">Tagesbericht für den 28.08. erstellt und veröffentlicht (siehe Dokumente oben).</span></li><li><span class="dd">29.08.2026</span><span class="tt">Lovable-Rückmeldung zu den Muss-Check-Gates erhalten und geprüft: alle drei Gates (Schritt 1–3) gesetzt und verifiziert, Demodurchlauf, Labels und Zugänglichkeit bestätigt.</span></li><li><span class="dd">29.08.2026</span><span class="tt">Codex-Rückmeldung erhalten: Pull Request mit Testsuite (2 Tests) erstellt, lokaler Build erfolgreich. Grüner PR-Lauf steht noch aus – Ursache identifiziert (Trigger-Bootstrapping + vorbestehender roter main-Lauf), Lösungsweg festgelegt. Vor dem Merge wird geprüft, ob sich Codex&#39; und Lovables Änderungen an den Gate-Dateien überschneiden.</span></li><li><span class="dd">29.08.2026</span><span class="tt">Merge-Konflikt in den drei Gate-Dateien bestätigt (Codex hatte die Gate-Logik redundant selbst implementiert) und zugunsten von Lovables verifizierter Version aufgelöst; Pull Request gemergt.</span></li><li><span class="dd">29.08.2026</span><span class="tt">Zweiter Pull Request von Codex stabilisiert die Tests gegen asynchrone Client-Hydratisierung. CI (Linux, maßgeblich) grün in 1:22 min; lokal Build und Testsuite (2/2) ebenfalls grün. M1-004d damit vollständig abgeschlossen, noch vor Beginn des Usability-Tests.</span></li><li><span class="dd">29.08.2026</span><span class="tt">TDF-PR #1 als bereits erledigt erkannt (0 offene PRs); PRs #4–#8 geprüft und als Arbeiten anderer, TDF-mitnutzender Projekte eingeordnet – kein LeadOS-Handlungsbedarf.</span></li><li><span class="dd">29.08.2026</span><span class="tt">Recherchiert: GitHub Free erzwingt keine Branch-Protection auf privaten Repos; GitHub Team hebt diese Einschränkung auf (~$4/Nutzer/Monat).</span></li><li><span class="dd">29.08.2026</span><span class="tt">Neue, projektneutrale Organisation bmarnau-standards angelegt (GitHub Team), um TDF/ADF von der LeadOS-spezifischen Organisation zu trennen.</span></li><li><span class="dd">29.08.2026</span><span class="tt">TDF und ADF nach bmarnau-standards transferiert (beide weiterhin privat).</span></li><li><span class="dd">29.08.2026</span><span class="tt">Branch-Protection auf main in beiden Repos eingerichtet und einzeln verifiziert: Pull-Request-Pflicht (0 Approvals) und signierte Commits aktiv; Require-status-checks mangels vorhandener CI-Läufe zurückgestellt.</span></li><li><span class="dd">29.08.2026</span><span class="tt">M1-008 (Claude GitHub App für leados-design-foundation) geprüft: bereits seit 26.08. vollständig eingerichtet und funktional bestätigt (8 Workflow-Läufe, mind. 2 erfolgreiche @claude-Antworten) – keine weitere Handlung nötig.</span></li><li><span class="dd">29.08.2026</span><span class="tt">Tagesbericht 29.08.2026 erstellt und veröffentlicht (siehe Dokumente oben); Tag damit abgeschlossen.</span></li><li><span class="dd">31.08.2026</span><span class="tt">Vier offene „ohne Dieter“-Punkte aus dem 29.08. identifiziert und mit Bernd priorisiert.</span></li><li><span class="dd">31.08.2026</span><span class="tt">Schritt-für-Schritt-Anleitung zur lokalen SSH-Commit-Signierung (Schlüsselerzeugung, Git-Konfiguration, GitHub-Hinterlegung, Verifizierung) an Bernd übergeben.</span></li><li><span class="dd">31.08.2026</span><span class="tt">Mit Bernds Freigabe: Claude GitHub App organisationsweit in bmarnau-standards installiert (Scope: alle Repositories, analog LeadOS-Org).</span></li><li><span class="dd">31.08.2026</span><span class="tt">Fehlannahme korrigiert: Workflow-Datei und Secret (CLAUDE_CODE_OAUTH_TOKEN) waren in TDF und ADF bereits aus EXT-001 vorhanden und hatten den Organisationsumzug überstanden.</span></li><li><span class="dd">31.08.2026</span><span class="tt">Funktionstest per @claude-Kommentar auf Issue #9 (TDF) erfolgreich: Lesezugriff und korrekter Default-Branch bestätigt, keine ungewollten Änderungen.</span></li><li><span class="dd">31.08.2026</span><span class="tt">Auf Nachfrage nach weiteren Punkten: alle drei Code-Repos systematisch auf offene PRs/Issues geprüft (nicht nur die bekannte Liste).</span></li><li><span class="dd">31.08.2026</span><span class="tt">Verwaiste PR #6 in leados-design-foundation gefunden (grüne Checks, nie gemergt trotz als abgeschlossen dokumentiertem M1-004d); mit Freigabe gemergt (main bei e8500b8), Branch gelöscht.</span></li><li><span class="dd">31.08.2026</span><span class="tt">Erledigtes Issue #2 (M1-001) geschlossen; TDF und ADF gegengeprüft: beide 0 offene Pull Requests.</span></li><li><span class="dd">08.09.2026</span><span class="tt">Usability-Test mit Jan durchgeführt: 5 Befunde protokolliert (SystemCheck Teil 2, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung, Muss-Check-Abbruchlogik, finaler Erläuterungstext).</span></li><li><span class="dd">08.09.2026</span><span class="tt">D-006 (Abbruchkriterium Pilotbetrieb), Glossar „SystemCheck“ und M1-007 (Pilotentscheidungs-Ablauf) mit Dieter vollständig geklärt.</span></li><li><span class="dd">08.09.2026</span><span class="tt">Öffentliches Repository leados-reports angelegt: Berichte künftig als einzelne, versionierte JSON-Dateien statt als wachsender Seitentext; Datenmodell, Schema und zwei Beispielberichte erstellt und live verifiziert (HTTP 200 über raw.githubusercontent.com).</span></li><li><span class="dd">09.09.2026</span><span class="tt">Diese Übersichtsseite von der claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite (leados-org.github.io/leados-arbeitsstand) umgestellt und um die laufend aktualisierte Berichtsauswahl ergänzt.</span></li></ul><div class="devlog-total">Bisheriger Gesamtaufwand (grobe Schätzung, keine gemessene Zeiterfassung): rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.) seit Projektstart am 20.08.2026.</div></div></section><footer><span>Dieter: fachliche Leitung &amp; Test · Bernd: Umsetzung · Claude: Planungsunterstützung (KI)</span><span>Wird automatisch bei jedem Fortschritt ergänzt.</span></footer></div>
+<script>
+/* ---------- state ---------- */
+/*STATE_START*/
+const STATE = {
+  updated: "09.09.2026, 08:40 Uhr",
+  phaseLabel: "Aktuell: Usability-Test durchgeführt, Nacharbeit läuft",
+  appUrl: "https://leados-design-foundation.lovable.app",
+  appLoginRequired: false,
+  milestones: [
+    {label:"Grundlagen", desc:"Ziel, Zielgruppe und Rollen festgelegt", when:"21.08.", status:"done"},
+    {label:"Design & Ablauf", desc:"Aussehen und die fünf Arbeitsschritte festgelegt", when:"22.08.", status:"done"},
+    {label:"Klickbarer Ablauf", desc:"Alle fünf Schritte durchgängig nutzbar", when:"25.08.", status:"done"},
+    {label:"Fachliche Prüfung", desc:"Dieter hat die Inhalte geprüft und freigegeben", when:"25.08.", status:"done"},
+    {label:"Technische Absicherung", desc:"Arbeitsumgebung eingerichtet und abgesichert", when:"27.08.", status:"done"},
+    {label:"Usability-Test", desc:"Mit Jan durchgeführt, 5 Befunde protokolliert", when:"08.09.", status:"done"},
+    {label:"Nacharbeit", desc:"SystemCheck Teil 2, 3-Felder-Struktur, Rollenkennzeichnung", when:"läuft", status:"active"},
+    {label:"Pilotentscheidung", desc:"Automatische Freigabe nach Umsetzung der Nacharbeit", when:"danach", status:"pending"}
+  ],
+  questions: [
+    {
+      id: "m1006-logistik",
+      type: "logistik",
+      title: "Usability-Test: Teammitglied & Termin",
+      ctx: "Für den ersten Durchlauf wird ein Teammitglied aus deinem Team für die Mitarbeiter-Rolle gebraucht, etwa 20–30 Minuten. Wann und mit wem das passt, entscheidest du.",
+      appLink: true,
+      status: "answered",
+      answer: { teammember: "Jan", timing: "08.09.2026 (im laufenden Gespräch vereinbart)", note: "", answeredAt: "08.09.2026, 09:00 Uhr" }
+    },
+    {
+      id: "m1006-testergebnis",
+      type: "testergebnis",
+      title: "Testergebnis dokumentieren",
+      ctx: "Nach dem Testdurchlauf hier eintragen – sofort sichtbar für die gemeinsame Auswertung und die Pilotentscheidung (M1-007). Die Anzahl der Rückfragen ist das mit Dieter vereinbarte Erfolgskriterium (D-006).",
+      status: "answered",
+      answer: {
+        testdatum: "08.09.2026",
+        rueckfragen: "nicht als Einzelzahl erfasst – stattdessen 5 strukturierte Befunde protokolliert (siehe Beobachtungen)",
+        einschaetzung: "Erfolgreich mit Einschränkungen",
+        beobachtungen: "Jan (Testperson): (1) Schritt 2 SystemCheck – zweiter Teil fehlt: negative Auswirkungen bei Zielerreichung, Gegenmaßnahmen, Umsetzungssituation je Maßnahme. (2) Schritt 3 – 3 separate Felder nötig für das MA-Verständnis von Aufgabe, Verantwortung, Kompetenzen. (3) Schritt 3/übergreifend – Kacheln müssen die ausfüllende Rolle (MA/FK) kennzeichnen. (4) Muss-Check-Logik bestätigt: Nichterfüllung → Abbruch, zurück zum Start. (5) Erläuterungstext dazu final festgelegt: „Wird dieser Muss-Check nicht bestätigt, kann nicht fortgefahren werden – der Ablauf beginnt von vorn.“",
+        answeredAt: "08.09.2026, 09:40 Uhr"
+      }
+    },
+    {
+      id: "d006-abbruchkriterium",
+      type: "freitext",
+      title: "Abbruchkriterium für den Piloten (D-006)",
+      ctx: "Für die Fortsetzungsentscheidung nach dem Test fehlte noch eine Antwort: Ab wann gilt der Pilotbetrieb als gescheitert?",
+      placeholder: "Dein Kriterium – oder „bewusst offen lassen“",
+      status: "answered",
+      answer: { antwort: "Scheitern liegt vor, wenn (a) niemand das Tool anwendet, (b) es keinen Nutzen bringt, oder (c) das inhaltliche Ziel des Z-AVKK-Ablaufs nicht erreicht wird. Schwellenwert: 8 Wochen ohne Nutzung/Nutzen. Gilt für den gesamten Fünf-Schritte-Ablauf. Entscheidung wird gemeinsam von Dieter und Bernd getroffen.", answeredAt: "08.09.2026, 10:05 Uhr" }
+    },
+    {
+      id: "glossar-systemcheck",
+      type: "freitext",
+      title: "Glossar-Formulierung „SystemCheck“ bestätigen",
+      ctx: "Vorschlag für die Definition im Glossar: „Entscheidungsinstrument vor Zielfestlegung/Veränderung. Prüft anhand von vier Leitfragen: Gegenwartswert, Übergangsstrategie, Zielrisiken, Risikominderung.“ Passt das so, oder soll etwas geändert werden?",
+      placeholder: "z. B. „passt so“ oder ein Änderungsvorschlag",
+      status: "answered",
+      answer: { antwort: "Passt so für die vier bestehenden Leitfragen. Wird zusätzlich um ein Beispiel ergänzt (liefert Dieter nach). Hinweis: Die Definition deckt bisher nur die vier ursprünglichen Leitfragen ab – der im Usability-Test gefundene zweite Teil (negative Auswirkungen, Gegenmaßnahmen, Umsetzungssituation) macht eine Erweiterung wahrscheinlich, sobald er umgesetzt ist.", answeredAt: "08.09.2026, 10:15 Uhr" }
+    }
+  ],
+  log: [
+    {d:"21.08.2026", t:"Ziele, Zielgruppe und Rollen im Gespräch mit Dieter festgelegt."},
+    {d:"22.08.2026", t:"Design und die fünf Arbeitsschritte als klickbaren Entwurf umgesetzt."},
+    {d:"25.08.2026", t:"Alle fünf Schritte fertiggestellt; Dieter hat die fachlichen Inhalte geprüft; Leitfaden für den Usability-Test erstellt."},
+    {d:"26.08.2026", t:"Arbeitsumgebung abgesichert; die KI arbeitet jetzt direkter am Code mit, um schneller voranzukommen."},
+    {d:"27.08.2026", t:"Letzte technische Prüfung abgeschlossen; Anfrage an Dieter zu Teammitglied und Termin für den Usability-Test verschickt."},
+    {d:"27.08.2026", t:"Link zu dieser Übersichtsseite an Dieter verschickt."},
+    {d:"27.08.2026", t:"Direkter Link zum klickbaren Prototyp ergänzt und geprüft (öffentlich ohne Login erreichbar)."},
+    {d:"27.08.2026", t:"Governance-Synchronisation (EXT-001) mit den externen Standard-Repos abgeschlossen; Tagesbericht veröffentlicht."},
+    {d:"27.08.2026", t:"Prototyp-Link aktualisiert (sysingdashboard.lovable.app, Anmeldung erforderlich) und gut sichtbar oben platziert; Eingabefeld zum Dokumentieren des Testergebnisses ergänzt."},
+    {d:"27.08.2026", t:"„Link kopieren“-Schaltfläche und Klartext-Link als Ausweichlösung ergänzt, nachdem der Öffnen-Button in der Claude-App nicht auslöste."},
+    {d:"27.08.2026", t:"Prototyp-Link korrigiert: richtige, seit Wochen genutzte Adresse ist leados-design-foundation.lovable.app (öffentlich, keine Anmeldung nötig) – der zwischenzeitlich eingetragene sysingdashboard.lovable.app-Link war ein Versehen."},
+    {d:"27.08.2026", t:"Zeitstempel bei „Stand:” um die Uhrzeit ergänzt, damit bei mehreren Aktualisierungen am selben Tag der genaue Versionsstand erkennbar ist."},
+    {d:"28.08.2026", t:"Dieter hat das PDF-Ausweichformular erhalten und testet den Ablauf mit seinem Team in der kommenden Woche."},
+    {d:"28.08.2026", t:"M1-004d fertiggestellt und übergeben: Lovable-Auftrag (Muss-Check-Gates Schritt 1–3) sowie Codex-Auftrag (automatisierte Tests) – Codex hat bereits geantwortet, der Lovable-Auftrag ist jetzt offen."},
+    {d:"29.08.2026", t:"Lovable bestätigt: Muss-Check-Gates in Schritt 1–3 gesetzt und verifiziert, vollständiger Demodurchlauf funktioniert, Zugänglichkeit (role/aria-checked) sowie Labels erhalten."},
+    {d:"29.08.2026", t:"Codex hat einen Pull Request mit der automatisierten Testsuite erstellt; ein grüner Testlauf steht noch aus, technische Ursache identifiziert und Weg dahin geklärt."},
+    {d:"29.08.2026", t:"M1-004d vollständig abgeschlossen: Muss-Check-Gates umgesetzt (Lovable) und automatisiert getestet (Codex), CI grün."},
+    {d:"29.08.2026", t:"Neue Organisation bmarnau-standards angelegt (GitHub Team); TDF und ADF dorthin verschoben und mit Branch-Protection auf main abgesichert (Pull-Request-Pflicht, signierte Commits)."},
+    {d:"29.08.2026", t:"M1-008 geprüft: war bereits vollständig erledigt (seit 26.08.) – Claude GitHub App organisationsweit in LeadOS-Org installiert, Workflow in leados-design-foundation korrekt konfiguriert, 8 Läufe dokumentiert, mind. 2 erfolgreiche @claude-Antworten bestätigt. Damit ist der letzte Punkt der aktuellen „ohne Dieter“-Liste abgeschlossen."},
+    {d:"29.08.2026", t:"Tag abgeschlossen: Tagesbericht veröffentlicht, alle heute ohne Dieter bearbeitbaren Punkte abgearbeitet. Weiter geht es mit Dieters Usability-Test in der Woche ab 31.08."},
+    {d:"31.08.2026", t:"Mit Bernds Freigabe: Claude GitHub App organisationsweit (alle Repositories) in bmarnau-standards installiert – Workflow-Datei und Secret waren bereits aus EXT-001 vorhanden und hatten den Organisationsumzug unbeschädigt überstanden."},
+    {d:"31.08.2026", t:"Funktionstest per @claude-Kommentar auf Issue #9 (TDF) erfolgreich: Lesezugriff und korrekter Default-Branch bestätigt, keine ungewollten Änderungen – Punkt vollständig abgeschlossen."},
+    {d:"31.08.2026", t:"Schritt-für-Schritt-Anleitung zur lokalen SSH-Commit-Signierung an Bernd übergeben (Schlüsselerzeugung, Git-Konfiguration, Hinterlegung bei GitHub als Signing Key, Verifizierung); Ausführung steht noch aus."},
+    {d:"31.08.2026", t:"Beim Nachfragen nach weiteren Punkten ohne Dieter gefunden: Pull Request #6 in leados-design-foundation war trotz grüner Checks nie gemergt, obwohl M1-004d bereits als abgeschlossen dokumentiert war. Mit Bernds Freigabe gemergt (main jetzt bei e8500b8), Branch gelöscht, erledigtes Issue #2 (M1-001) geschlossen. TDF/ADF gegengeprüft: keine offenen Pull Requests."},
+    {d:"08.09.2026", t:"Usability-Test (M1-006) mit Jan durchgeführt: 5 Befunde protokolliert (SystemCheck-Erweiterung, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung, Muss-Check-Logik und -Text final)."},
+    {d:"08.09.2026", t:"D-006 (Abbruchkriterium Pilot), Glossar „SystemCheck“ und M1-007 (Ablauf der Pilotentscheidung) mit Dieter vollständig geklärt."},
+    {d:"08.09.2026", t:"Berichts-Infrastruktur aufgebaut: eigenes öffentliches Repository leados-reports für strukturierte Berichte (JSON, versioniert), abrufbar über eine laufend aktualisierte Berichtsauswahl auf dieser Seite."},
+    {d:"09.09.2026", t:"Diese Seite von der bisherigen claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite umgestellt – unabhängig von einzelnen Chat-Sitzungen erreichbar und pflegbar.", isNew: true}
+  ],
+  reports: {
+    memos: [
+      {d:"26.08.2026", title:"Code-Verwaltung & KI-Unterstützung", text:"Wir haben die Code-Verwaltung in eine eigene, gemeinsame Arbeitsumgebung verschoben – schützt besser vor Datenverlust und passt zu unserer Zusammenarbeit. Zusätzlich lassen wir die KI jetzt direkter am Code mitarbeiten, um technische Aufgaben schneller zu erledigen. Beides ändert nichts am App-Stand oder am Zeitplan für den Usability-Test. Ob du Zugriff auf die neue Arbeitsumgebung bekommst, besprechen wir im nächsten Meeting."},
+      {d:"27.08.2026", title:"Bedarf für den Usability-Test", text:"Der Ablauf und Beobachtungsbogen liegen fertig vor. Gebraucht wird von dir noch ein Teammitglied für die Mitarbeiter-Rolle, ca. 20–30 Minuten für einen gemeinsamen Durchlauf mit dem Demodatensatz – wann das bei euch am besten passt, entscheidest du. Sobald ihr Zeit gefunden habt, schicken wir den Zugriffslink."}
+    ],
+    decisions: [
+      {id:"d001", title:"Zielgruppe des Piloten", status:"Angenommen", d:"21.08.2026", text:"Der Pilot konzentriert sich auf die Beziehung Inhaber–Mitarbeiter. Die Erweiterung um die Führungskraft-Ebene ist bewusst für eine spätere Phase vorgesehen."},
+      {id:"d002", title:"Kernproblem des Piloten", status:"Angenommen", d:"21.08.2026", text:"Der Führungskreislauf bricht typischerweise an vier Stellen: Ziele werden ohne SystemCheck festgelegt, Aufgaben werden ohne Rückprüfung übergeben, Verantwortung wird nicht als Gefühl geprüft, und Kompetenzen/Ressourcen werden nicht kontrolliert."},
+      {id:"d003", title:"Der getestete Ablauf", status:"Angenommen", d:"21.08.2026", text:"Fünf Schritte, gemeinsam am Bildschirm von Inhaber und Mitarbeiter durchlaufen – kein Alleingang. Vertiefte Themen (Verantwortungs- und Kompetenzprüfung) folgen erst in späteren Sprints."},
+      {id:"d004", title:"Rollen im Projekt", status:"Angenommen", d:"21.08.2026", text:"Dieter trägt die fachliche Verantwortung. Bernd trägt Produkt- und Umsetzungsverantwortung. Claude unterstützt bei Architektur und technischer Struktur – mit Dieters Vetorecht, sobald es fachliche Auswirkungen hat."},
+      {id:"d005", title:"Testpersonen und Testdaten", status:"Angenommen", d:"21.08.2026", text:"Dieter testet mit seinem eigenen Team und moderiert selbst. Es wird ausschließlich mit erfundenen, klar gekennzeichneten Testdaten gearbeitet – volle Transparenz, kein verstecktes Bewerten einzelner Personen."},
+      {id:"d006", title:"Wann gilt der Test als erfolgreich? / Abbruchkriterium Pilot", status:"Angenommen", d:"08.09.2026", text:"Testerfolg: Der Ablauf wird ohne zusätzliche mündliche Erklärung verstanden (von Dieter am 25.08. bestätigt). Ergänzend am 08.09. geklärt: Der Pilotbetrieb (nach Start) gilt als gescheitert, wenn niemand das Tool anwendet, es keinen Nutzen bringt, oder das inhaltliche Ziel nicht erreicht wird – Schwellenwert 8 Wochen, gilt für den gesamten Ablauf, Entscheidung gemeinsam durch Dieter und Bernd. Löst die zuvor rein auf Rückfragen-Anzahl gestützte, noch offene Formulierung ab."},
+      {id:"d007", title:"Technische Arbeitsumgebung", status:"Angenommen", d:"22.08.2026", text:"Die technische Arbeitsumgebung für die Code-Verwaltung wurde eingerichtet und mehrfach angepasst, zuletzt am 26.08. in eine gemeinsame, besser abgesicherte Umgebung verschoben (siehe Memo)."},
+      {id:"d008", title:"Technische Basis nach dem Prototyp", status:"Vertagt", d:"–", text:"Diese Entscheidung wird bewusst erst nach dem Usability-Test getroffen, wenn klar ist, wie es mit dem Piloten weitergeht."},
+      {id:"d009", title:"Umfang von Schritt 2 (SystemCheck)", status:"Angenommen", d:"25.08.2026", text:"Schritt 2 bekommt die echte SystemCheck-Struktur (Vorteile der Gegenwart, Maßnahmen, Umsetzung, Aktionsplan-Übersicht) – aber in einfacher, statischer Form ohne KI-generierte Vorschläge, PDF-Export oder dauerhafte Speicherung. Die volle Version bleibt bewusst spätere Zukunftsvision."},
+      {id:"d010", title:"Organisationsstruktur für TDF/ADF", status:"Angenommen", d:"29.08.2026", text:"TDF und ADF liegen jetzt in einer eigenen, projektneutralen Organisation (bmarnau-standards, GitHub Team) statt in LeadOS-Org – damit bleiben die projektübergreifenden Engineering-Standards organisatorisch von LeadOS getrennt, auch wenn das eine zusätzliche Team-Lizenz kostet."}
+    ],
+    protocol: [
+      {d:"20.–21.08.2026", title:"Grundlagen & Sprint-00-Gespräch", text:"Projektunterlagen gesichtet, offene Fragen vorbereitet. Am 21.08. gemeinsames Gespräch mit Dieter: Zielgruppe, Kernproblem, die fünf Arbeitsschritte, Pilotumfang, Rollen und Testrahmen besprochen und freigegeben."},
+      {d:"22.08.2026", title:"Design & erste Umsetzung", text:"Optik festgelegt (Navy/Blau), alle fünf Arbeitsschritte als klickbarer Entwurf umgesetzt, Arbeitsumgebung für die Code-Verwaltung eingerichtet."},
+      {d:"25.08.2026", title:"Ablauf fertiggestellt & fachlich geprüft", text:"Schritt 2 (SystemCheck) fachlich ausgebaut – damit ist der komplette Ablauf inhaltlich fertig. Dieter hat die Inhalte im Gespräch geprüft und freigegeben. Leitfaden für den Usability-Test (Beobachtungsbogen, Interviewfragen) erstellt."},
+      {d:"26.08.2026", title:"Technische Absicherung", text:"Arbeitsumgebung in eine eigene, gemeinsame Umgebung verschoben und gegen versehentliches Löschen abgesichert; die KI arbeitet seither direkter am Code mit. Zusätzlich eine 4-seitige Management-Übersicht (Topologie, Plan bis MVP) erstellt, siehe Dokumente unten."},
+      {d:"27.08.2026", title:"Letzte Prüfung & Testvorbereitung", text:"Letzte technische Prüfung abgeschlossen, Erfolgskriterien und Beobachtungsbogen bestätigt. Neue Regel eingeführt: Termine mit Dieter werden nicht mehr mit Kalendertagen vorgeschlagen, sondern nur der Bedarf genannt – den Zeitpunkt bestimmt Dieter. Diese zentrale Übersichtsseite eingerichtet, auf der ab jetzt alle Informationen und offenen Fragen gesammelt abrufbar sind."},
+      {d:"28.08.2026", title:"M1-004d an Codex und Lovable übergeben", text:"Dieter hat das PDF-Ausweichformular erhalten und testet den Ablauf in der kommenden Woche; bis dahin werden hier die Punkte bearbeitet, die ohne Dieter möglich sind. M1-004d wurde in zwei aufeinander abgestimmten Aufträgen fertiggestellt: ein Lovable-Auftrag stellt die Muss-Check-Gates in Schritt 1–3 selbst her bzw. prüft sie, ein Codex-Auftrag deckt sie mit einer automatisierten Playwright-Testsuite ab. Beide respektieren dieselbe Regel: keine neuen data-testid-Attribute, da die Tests bewusst auf Rollen, Labels und sichtbaren Text setzen. Codex hat bereits geantwortet; der Lovable-Auftrag ist jetzt offen."},
+      {d:"29.08.2026", title:"Lovable-Auftrag verifiziert: Muss-Check-Gates aktiv", text:"Lovable meldet alle drei Gates gesetzt und verifiziert: Schritt 1 sperrt „Weiter“ bis „Ziel und Aufgabe für Inhaber klar?“ bestätigt ist, Schritt 2 bis „SystemCheck durchgeführt?“, Schritt 3 bis alle drei Muss-Checks bestätigt sind (Test bestätigt: nach Check 1 und 2 weiterhin gesperrt, erst nach Check 3 frei). Solange ein Gate geschlossen ist, erscheint ein Hinweistext neben dem Button. Vollständiger Demodurchlauf funktioniert, Ziel/Aufgabe erscheinen weiterhin in Schritt 2/3, Labels („Ziel“, „Aufgabe“, „Antwort 1“, „Maßnahme 1“, „Rückmeldung“) und Zugänglichkeit (role=\"checkbox\"/aria-checked) sind erhalten. Schritte 4/5 sowie Texte und Gestaltung wurden nicht verändert. Der Codex-Auftrag (automatisierte Tests) ist damit die einzige noch offene Teilaufgabe von M1-004d."},
+      {d:"29.08.2026", title:"M1-004d abgeschlossen: Testautomatisierung gemergt, CI grün", text:"Codex' Pull Request enthielt eigene Änderungen an denselben drei Gate-Dateien wie Lovables Umsetzung – ein Merge-Konflikt, der bewusst zugunsten von Lovables bereits verifizierter Version aufgelöst wurde. Ein zweiter, nachgereichter Pull Request stabilisierte die Tests gegen asynchrones Laden. Ergebnis: automatisierter Testlauf ist grün, deckt alle fünf Schritte, die Dateneingabe, die Zustandsübergabe zwischen den Schritten und die Muss-Check-Gates ab. Keine Lovable-Komponenten dauerhaft verändert. Damit ist M1-004d – die Testautomatisierung vor dem Usability-Test – vollständig abgeschlossen."},
+      {d:"29.08.2026", title:"Governance-Infrastruktur: Branch-Protection scharf geschaltet", text:"GitHub Free erzwingt Branch-Protection-Regeln auf privaten Repos nicht – das wurde bei der Einrichtung entdeckt. Als Lösung wurde eine neue, projektneutrale Organisation (bmarnau-standards, GitHub Team) angelegt und TDF sowie ADF dorthin verschoben, statt sie in die bestehende, LeadOS-spezifische Organisation zu legen. Auf main gilt in beiden Repos jetzt: Pull-Request-Pflicht (0 Pflicht-Approvals) und signierte Commits – beides einzeln geprüft und bestätigt. Require-status-checks bleibt vorerst aus, da an diesem Standort noch kein CI-Lauf vorliegt und GitHub sonst keinen Check zur Auswahl anbietet. Offen: lokale Commit-Signierung bei Bernd einrichten (Voraussetzung für den nächsten eigenen Push auf main), Status der Claude-GitHub-App in der neuen Organisation bmarnau-standards prüfen (separat von der unten bestätigten LeadOS-Org-Installation)."},
+      {d:"29.08.2026", title:"M1-008 geprüft: bereits erledigt", text:"Letzter Punkt der „ohne Dieter“-Liste geprüft: Claude GitHub App war bereits seit 26.08.2026 organisationsweit in LeadOS-Org installiert (Zugriff auf alle Repos), der Workflow .github/workflows/claude.yml in leados-design-foundation korrekt konfiguriert (Trigger auf @claude-Kommentare, kein Auslösen durch eigene Bot-Antworten), das Secret ANTHROPIC_API_KEY hinterlegt. Aus der Lauf-Historie bestätigt: 8 Workflow-Läufe, davon mindestens 2 erfolgreiche, echte @claude-Antworten auf Issue #2. Es war keine weitere Handlung nötig – der Punkt war lediglich noch nicht als erledigt dokumentiert. Damit ist die aktuelle Liste der ohne Dieter bearbeitbaren Punkte für heute abgearbeitet."},
+      {d:"31.08.2026", title:"GitHub-App-Status bmarnau-standards geklärt: nur Organisations-Installation fehlte", text:"Auf Bernds Frage „was können wir heute ohne Dieter umsetzen“ wurden die drei verbliebenen offenen Punkte vom 29.08. angegangen. Zuerst wurde eine Schritt-für-Schritt-Anleitung zur lokalen SSH-Commit-Signierung an Bernd übergeben (Schlüsselerzeugung, Git-Konfiguration, Hinterlegung als Signing Key bei GitHub, Verifizierung per Test-Commit) – die Ausführung liegt bei Bernd selbst, da kein Terminalzugriff auf seinen Rechner besteht und privates Schlüsselmaterial ohnehin nicht extern erzeugt werden sollte. Mit Bernds ausdrücklicher Freigabe wurde anschließend die Claude GitHub App organisationsweit (alle Repositories) in bmarnau-standards installiert. Dabei stellte sich eine ursprüngliche Annahme als falsch heraus: Workflow-Datei (.github/workflows/claude.yml) und Repository-Secret (CLAUDE_CODE_OAUTH_TOKEN) existierten in TDF und ADF bereits seit EXT-001 (27.08.) und hatten den Organisationsumzug am 29.08. unbeschädigt überstanden – die einzige tatsächliche Lücke war die fehlende App-Installation auf Organisationsebene. Ein anschließender Funktionstest per @claude-Kommentar auf dem bestehenden Test-Issue #9 (TDF) bestätigte Lesezugriff und korrekte Funktion ohne ungewollte Änderungen. Damit ist dieser Punkt vollständig abgeschlossen; offen bleiben die SSH-Signierung (bei Bernd) und die davon abhängigen Require-status-checks."},
+      {d:"31.08.2026", title:"Nachfrage nach weiteren Punkten: verwaiste PR gefunden und geschlossen", text:"Auf Bernds Nachfrage „was koennen wir noch ohne Dieter tun“ wurde der Repository-Zustand aller drei Code-Repos (leados-design-foundation, TDF, ADF) systematisch gegengeprueft, nicht nur die bekannte offene Liste. Dabei kam eine Diskrepanz zum Vorschein: Pull Request #6 in leados-design-foundation („stabilize M1-004d five-step E2E flow“) hatte alle Checks gruen und keine Konflikte, war aber nie tatsaechlich gemergt worden, obwohl der Projektstatus vom 29.08. M1-004d bereits als vollstaendig abgeschlossen dokumentiert hatte. Mit Bernds ausdruecklicher Freigabe wurde der PR gemergt (main jetzt bei Commit e8500b8) und der Feature-Branch geloescht. Zusaetzlich wurde das laengst erledigte Issue #2 (M1-001, Governance-Dateien) geschlossen, das seit dem 26.08. offen geblieben war. TDF und ADF wurden ebenfalls gegengeprueft: beide 0 offene Pull Requests. Lehre daraus: ein als „abgeschlossen“ dokumentierter Meilenstein ersetzt keine Pruefung des tatsaechlichen Repository-Zustands (Merge-Status), da beides auseinanderlaufen kann."},
+      {d:"08.–09.09.2026", title:"Usability-Test durchgeführt, offene Fragen geklärt, Berichts-Infrastruktur aufgebaut", text:"Jan hat den Fünf-Schritte-Ablauf getestet und fünf strukturierte Befunde geliefert (SystemCheck-Erweiterung um negative Auswirkungen/Gegenmaßnahmen/Umsetzungssituation, 3-Felder-Struktur für das MA-Verständnis in Schritt 3, Rollenkennzeichnung auf den Kacheln, sowie die Muss-Check-Abbruchlogik und ihr finaler Erläuterungstext). Anschließend wurden mit Dieter alle verbliebenen Fragen aus dem Fragenkatalog geklärt: D-006 (Abbruchkriterium für den Pilotbetrieb: keine Nutzung/kein Nutzen/Ziel verfehlt, Schwellenwert 8 Wochen, gesamter Ablauf, gemeinsame Entscheidung Dieter+Bernd), das Glossar „SystemCheck“ (Formulierung bestätigt, Beispiel von Dieter in Aussicht) und M1-007 (automatische Freigabe der Pilotentscheidung nach Umsetzung der drei Testbefunde). Parallel wurde eine dauerhafte Lösung für die wachsende Berichtsliste dieser Seite umgesetzt: ein eigenes, öffentliches Repository (leados-reports) speichert Berichte künftig als einzelne, versionierte JSON-Dateien; diese Seite lädt sie zur Laufzeit und zeigt sie filterbar an, statt jeden Bericht einzeln in den Seitencode einzutragen. Im Zuge dessen wurde diese Übersichtsseite selbst von der bisherigen claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite umgestellt, da in der bisherigen Ansicht keine Bearbeitungssitzung mehr erreichbar war."}
+    ],
+    openItems: [
+      "Testbefunde 1–3 aus dem Usability-Test spezifizieren und umsetzen (SystemCheck Teil 2, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung).",
+      "Muss-Check-Erläuterungstext (final formuliert) im Prototyp umsetzen.",
+      "Beispiel für das Glossar „SystemCheck“ von Dieter einholen.",
+      "SSH-Signierschlüssel-Passphrase war beim erneuten Einsatz nicht mehr auffindbar – klären, ob dauerhaft verloren; ggf. neuen Signierschlüssel erzeugen.",
+      "Require-status-checks für TDF/ADR nachtragen, sobald ein erster CI-Lauf am aktuellen Standort vorliegt."
+    ],
+    documents: [
+      {id:"mgmt-pdf", title:"Management-Übersicht LeadOS", desc:"4 Seiten – Aufbau des Projekts, Plan bis zum fertigen Piloten (MVP)", filename:"LeadOS_Managementunterlage_v1.0.pdf"},
+      {id:"tagesbericht-0827", title:"Tagesbericht 27.08.2026", desc:"Governance-Synchronisation (EXT-001) abgeschlossen, drei bestehende Framework-Pull-Requests geprüft", url:"https://claude.ai/code/artifact/b2149cfa-0714-47e4-a35a-344bee6f0d80"},
+      {id:"tagesbericht-0828", title:"Tagesbericht 28.08.2026", desc:"M1-004d an Codex und Lovable übergeben, Dieters Testtermin für kommende Woche bestätigt", url:"https://claude.ai/code/artifact/a983f8f5-94e2-4f53-a662-63432d92fee6"},
+      {id:"tagesbericht-0829", title:"Tagesbericht 29.08.2026", desc:"M1-004d und M1-008 abgeschlossen, Branch-Protection auf TDF/ADF scharf geschaltet, Organisationsumzug bmarnau-standards", url:"https://claude.ai/code/artifact/ca9d7ff9-5626-41ac-a0be-9c3283936125"}
+    ],
+    plan: [
+      {label:"Grundlagen & Projektstart", status:"done"},
+      {label:"Design & klickbarer Ablauf (alle fünf Schritte)", status:"done"},
+      {label:"Fachliche Prüfung durch Dieter", status:"done"},
+      {label:"Usability-Test-Vorbereitung (Leitfaden, Beobachtungsbogen)", status:"done"},
+      {label:"Technische Arbeitsumgebung & Absicherung", status:"done"},
+      {label:"Diese Übersichtsseite (laufend gepflegt)", status:"laufend"},
+      {label:"Testautomatisierung (M1-004d, Codex + Lovable)", status:"done"},
+      {label:"Usability-Test mit Dieters Team", status:"aktuell"},
+      {label:"Gemeinsame Auswertung", status:"geplant"},
+      {label:"Pilotentscheidung (fortsetzen, anpassen oder stoppen)", status:"geplant"}
+    ],
+    devlog: [
+      {d:"20.08.2026", t:"Projektgrundlagen zusammengetragen, offene Fragen für das erste Gespräch mit Dieter vorbereitet."},
+      {d:"21.08.2026", t:"Gespräch mit Dieter: Ziele, Zielgruppe, Rollen und Testrahmen besprochen und freigegeben."},
+      {d:"22.08.2026", t:"Design festgelegt, alle fünf Arbeitsschritte als klickbaren Entwurf umgesetzt, Arbeitsumgebung eingerichtet."},
+      {d:"25.08.2026", t:"Ablauf fachlich vervollständigt, mit Dieter geprüft und freigegeben; Leitfaden für den Usability-Test erstellt."},
+      {d:"26.08.2026", t:"Arbeitsumgebung in eine gemeinsame, abgesicherte Umgebung verschoben."},
+      {d:"26.08.2026", t:"Management-Übersicht (4 Seiten) erstellt."},
+      {d:"27.08.2026", t:"Letzte technische Prüfung abgeschlossen."},
+      {d:"27.08.2026", t:"Neue Terminregel für Dieter eingeführt; Vorbereitungs-Memo entworfen."},
+      {d:"27.08.2026", t:"Diese Übersichtsseite entworfen, gebaut und veröffentlicht."},
+      {d:"27.08.2026", t:"Archiv mit Memos, Tagesprotokoll und Dokumenten ergänzt."},
+      {d:"27.08.2026", t:"Zwei zusätzliche offene Fragen ergänzt (Abbruchkriterium, Glossar-Bestätigung)."},
+      {d:"27.08.2026", t:"Freigabe für Dieter eingerichtet; Link verschickt."},
+      {d:"27.08.2026", t:"Entscheidungsübersicht sowie dieser Plan- und Entwicklungsverlauf ergänzt."},
+      {d:"27.08.2026", t:"Prototyp-Link ergänzt und Erreichbarkeit geprüft (öffentlich, fünf Schritte durchgängig verlinkt)."},
+      {d:"27.08.2026", t:"Claude GitHub App auf beiden externen Standard-Repos (ADF, TDF) eingerichtet und getestet."},
+      {d:"27.08.2026", t:"Zwei Governance-Funde behoben und gemergt: fehlende Repo-Struktur in TDF, verallgemeinerte KI-Rollenbezeichnung in ADF."},
+      {d:"27.08.2026", t:"Drei bestehende TDF-Pull-Requests geprüft: zwei gemergt, eine bewusst als Entwurf geparkt."},
+      {d:"27.08.2026", t:"Tagesbericht erstellt und veröffentlicht (siehe Dokumente oben)."},
+      {d:"27.08.2026", t:"Prototyp-Link auf aktuelle Adresse (sysingdashboard.lovable.app) umgestellt, geprüft (öffentlich erreichbar, Anmeldung nötig) und als gut sichtbares Element direkt unter der Überschrift platziert."},
+      {d:"27.08.2026", t:"Eingabefeld „Testergebnis dokumentieren” ergänzt (Datum, Anzahl Rückfragen gemäß D-006, Einschätzung, Beobachtungen) – Ergebnis wird direkt beim Absenden veröffentlicht und ist damit für alle abrufbar."},
+      {d:"27.08.2026", t:"Fehler gefunden und behoben: In der Claude-App öffnete der Prototyp-Link-Button nicht (App fängt die Navigation ab, nur auf dem Handy betroffen – am PC funktioniert es). Ausweichlösung ergänzt: „Link kopieren“-Button plus sichtbares Textfeld mit dem Link zum manuellen Kopieren."},
+      {d:"27.08.2026", t:"Falschen Prototyp-Link korrigiert: zurück auf die korrekte, bereits seit Wochen verwendete und öffentlich ohne Anmeldung erreichbare Adresse leados-design-foundation.lovable.app."},
+      {d:"28.08.2026", t:"Dieter hat das zweiseitige PDF-Ausweichformular erhalten; Usability-Test findet in der kommenden Woche statt."},
+      {d:"28.08.2026", t:"M1-004d-Prompt (Codex, Testautomatisierung) um Randbedingung zum Schutz der Lovable-Direct-Push-Synchronisation ergänzt (keine data-testid-Attribute, keine Änderung an Lovable-verwalteten Komponenten)."},
+      {d:"28.08.2026", t:"Sendefertiger Codex-Auftrag für M1-004d fertiggestellt und übergeben; ein zuvor verfrühter Statuseintrag hierzu wurde korrigiert."},
+      {d:"28.08.2026", t:"Ergänzender Lovable-Auftrag zu den Muss-Check-Gates (Schritt 1–3) fertiggestellt und im PR hinterlegt (LOVABLE_M1-004D_MUSS-CHECKS.md)."},
+      {d:"28.08.2026", t:"Rückmeldung von Codex zu M1-004d eingegangen; der Lovable-Auftrag ist jetzt offen."},
+      {d:"28.08.2026", t:"Tagesbericht für den 28.08. erstellt und veröffentlicht (siehe Dokumente oben)."},
+      {d:"29.08.2026", t:"Lovable-Rückmeldung zu den Muss-Check-Gates erhalten und geprüft: alle drei Gates (Schritt 1–3) gesetzt und verifiziert, Demodurchlauf, Labels und Zugänglichkeit bestätigt."},
+      {d:"29.08.2026", t:"Codex-Rückmeldung erhalten: Pull Request mit Testsuite (2 Tests) erstellt, lokaler Build erfolgreich. Grüner PR-Lauf steht noch aus – Ursache identifiziert (Trigger-Bootstrapping + vorbestehender roter main-Lauf), Lösungsweg festgelegt. Vor dem Merge wird geprüft, ob sich Codex' und Lovables Änderungen an den Gate-Dateien überschneiden."},
+      {d:"29.08.2026", t:"Merge-Konflikt in den drei Gate-Dateien bestätigt (Codex hatte die Gate-Logik redundant selbst implementiert) und zugunsten von Lovables verifizierter Version aufgelöst; Pull Request gemergt."},
+      {d:"29.08.2026", t:"Zweiter Pull Request von Codex stabilisiert die Tests gegen asynchrone Client-Hydratisierung. CI (Linux, maßgeblich) grün in 1:22 min; lokal Build und Testsuite (2/2) ebenfalls grün. M1-004d damit vollständig abgeschlossen, noch vor Beginn des Usability-Tests."},
+      {d:"29.08.2026", t:"TDF-PR #1 als bereits erledigt erkannt (0 offene PRs); PRs #4–#8 geprüft und als Arbeiten anderer, TDF-mitnutzender Projekte eingeordnet – kein LeadOS-Handlungsbedarf."},
+      {d:"29.08.2026", t:"Recherchiert: GitHub Free erzwingt keine Branch-Protection auf privaten Repos; GitHub Team hebt diese Einschränkung auf (~$4/Nutzer/Monat)."},
+      {d:"29.08.2026", t:"Neue, projektneutrale Organisation bmarnau-standards angelegt (GitHub Team), um TDF/ADF von der LeadOS-spezifischen Organisation zu trennen."},
+      {d:"29.08.2026", t:"TDF und ADF nach bmarnau-standards transferiert (beide weiterhin privat)."},
+      {d:"29.08.2026", t:"Branch-Protection auf main in beiden Repos eingerichtet und einzeln verifiziert: Pull-Request-Pflicht (0 Approvals) und signierte Commits aktiv; Require-status-checks mangels vorhandener CI-Läufe zurückgestellt."},
+      {d:"29.08.2026", t:"M1-008 (Claude GitHub App für leados-design-foundation) geprüft: bereits seit 26.08. vollständig eingerichtet und funktional bestätigt (8 Workflow-Läufe, mind. 2 erfolgreiche @claude-Antworten) – keine weitere Handlung nötig."},
+      {d:"29.08.2026", t:"Tagesbericht 29.08.2026 erstellt und veröffentlicht (siehe Dokumente oben); Tag damit abgeschlossen."},
+      {d:"31.08.2026", t:"Vier offene „ohne Dieter“-Punkte aus dem 29.08. identifiziert und mit Bernd priorisiert."},
+      {d:"31.08.2026", t:"Schritt-für-Schritt-Anleitung zur lokalen SSH-Commit-Signierung (Schlüsselerzeugung, Git-Konfiguration, GitHub-Hinterlegung, Verifizierung) an Bernd übergeben."},
+      {d:"31.08.2026", t:"Mit Bernds Freigabe: Claude GitHub App organisationsweit in bmarnau-standards installiert (Scope: alle Repositories, analog LeadOS-Org)."},
+      {d:"31.08.2026", t:"Fehlannahme korrigiert: Workflow-Datei und Secret (CLAUDE_CODE_OAUTH_TOKEN) waren in TDF und ADF bereits aus EXT-001 vorhanden und hatten den Organisationsumzug überstanden."},
+      {d:"31.08.2026", t:"Funktionstest per @claude-Kommentar auf Issue #9 (TDF) erfolgreich: Lesezugriff und korrekter Default-Branch bestätigt, keine ungewollten Änderungen."},
+      {d:"31.08.2026", t:"Auf Nachfrage nach weiteren Punkten: alle drei Code-Repos systematisch auf offene PRs/Issues geprüft (nicht nur die bekannte Liste)."},
+      {d:"31.08.2026", t:"Verwaiste PR #6 in leados-design-foundation gefunden (grüne Checks, nie gemergt trotz als abgeschlossen dokumentiertem M1-004d); mit Freigabe gemergt (main bei e8500b8), Branch gelöscht."},
+      {d:"31.08.2026", t:"Erledigtes Issue #2 (M1-001) geschlossen; TDF und ADF gegengeprüft: beide 0 offene Pull Requests."},
+      {d:"08.09.2026", t:"Usability-Test mit Jan durchgeführt: 5 Befunde protokolliert (SystemCheck Teil 2, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung, Muss-Check-Abbruchlogik, finaler Erläuterungstext)."},
+      {d:"08.09.2026", t:"D-006 (Abbruchkriterium Pilotbetrieb), Glossar „SystemCheck“ und M1-007 (Pilotentscheidungs-Ablauf) mit Dieter vollständig geklärt."},
+      {d:"08.09.2026", t:"Öffentliches Repository leados-reports angelegt: Berichte künftig als einzelne, versionierte JSON-Dateien statt als wachsender Seitentext; Datenmodell, Schema und zwei Beispielberichte erstellt und live verifiziert (HTTP 200 über raw.githubusercontent.com)."},
+      {d:"09.09.2026", t:"Diese Übersichtsseite von der claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite (leados-org.github.io/leados-arbeitsstand) umgestellt und um die laufend aktualisierte Berichtsauswahl ergänzt."}
+    ],
+    aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
+  }
+};
+/*STATE_END*/
+
+
+/* ---------- rendering ---------- */
+function esc(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function renderMilestones(state){
+  return state.milestones.map((m,i) => {
+    const n = i+1;
+    return '<div class="node '+m.status+'">'
+      + '<div class="marker"></div><div class="num">'+n+'</div>'
+      + '<div class="label">'+esc(m.label)+'</div>'
+      + '<div class="desc">'+esc(m.desc)+'</div>'
+      + '<div class="when">'+esc(m.when)+'</div>'
+      + '</div>';
+  }).join("");
+}
+
+function renderQuestionAnswered(q){
+  const a = q.answer;
+  if (q.type === "freitext"){
+    return '<div class="qcard answered" data-qid="'+esc(q.id)+'">'
+      + '<div class="answered-head">✓ Beantwortet am '+esc(a.answeredAt)+'</div>'
+      + '<h3>'+esc(q.title)+'</h3>'
+      + '<dl class="answer-grid"><dt>Antwort</dt><dd>'+esc(a.antwort)+'</dd></dl>'
+      + '<button type="button" class="reopen" data-reopen="'+esc(q.id)+'">Antwort ändern</button>'
+      + '</div>';
+  }
+  if (q.type === "testergebnis"){
+    return '<div class="qcard answered" data-qid="'+esc(q.id)+'">'
+      + '<div class="answered-head">✓ Eingetragen am '+esc(a.answeredAt)+'</div>'
+      + '<h3>'+esc(q.title)+'</h3>'
+      + '<dl class="answer-grid">'
+      + '<dt>Testdatum</dt><dd>'+esc(a.testdatum)+'</dd>'
+      + '<dt>Rückfragen</dt><dd>'+esc(a.rueckfragen)+'</dd>'
+      + '<dt>Einschätzung</dt><dd>'+esc(a.einschaetzung)+'</dd>'
+      + '<dt>Beobachtungen</dt><dd>'+esc(a.beobachtungen)+'</dd>'
+      + '</dl>'
+      + '<button type="button" class="reopen" data-reopen="'+esc(q.id)+'">Eintrag ändern</button>'
+      + '</div>';
+  }
+  return '<div class="qcard answered" data-qid="'+esc(q.id)+'">'
+    + '<div class="answered-head">✓ Beantwortet am '+esc(a.answeredAt)+'</div>'
+    + '<h3>'+esc(q.title)+'</h3>'
+    + '<dl class="answer-grid">'
+    + '<dt>Teammitglied</dt><dd>'+esc(a.teammember)+'</dd>'
+    + '<dt>Termin</dt><dd>'+esc(a.timing)+'</dd>'
+    + (a.note ? '<dt>Anmerkung</dt><dd>'+esc(a.note)+'</dd>' : '')
+    + '</dl>'
+    + '<button type="button" class="reopen" data-reopen="'+esc(q.id)+'">Antwort ändern</button>'
+    + '</div>';
+}
+
+function renderAppLink(q, appUrl, loginRequired){
+  if (!q.appLink || !appUrl) return "";
+  return '<a class="applink" href="'+esc(appUrl)+'" target="_blank" rel="noopener">↗ Prototyp öffnen ('+esc(appUrl)+')</a>'
+    + (loginRequired ? '<div class="qnote" style="margin:-10px 0 16px;">Anmeldung erforderlich – Zugangsdaten bekommst du von Bernd.</div>' : '');
+}
+
+function renderQuestionForm(q, appUrl, loginRequired){
+  if (q.type === "freitext"){
+    return '<div class="qcard" data-qid="'+esc(q.id)+'">'
+      + '<h3>'+esc(q.title)+'</h3>'
+      + '<p class="ctx">'+esc(q.ctx)+'</p>'
+      + '<form data-qform="'+esc(q.id)+'">'
+      + '<div class="field"><label for="ft-'+esc(q.id)+'">Deine Antwort</label><textarea id="ft-'+esc(q.id)+'" name="antwort" placeholder="'+esc(q.placeholder||"")+'" required></textarea></div>'
+      + '<button type="submit" class="submit">Antwort senden</button>'
+      + '<div class="msg-slot"></div>'
+      + '</form>'
+      + '</div>';
+  }
+  if (q.type === "testergebnis"){
+    return '<div class="qcard" data-qid="'+esc(q.id)+'">'
+      + '<h3>'+esc(q.title)+'</h3>'
+      + '<p class="ctx">'+esc(q.ctx)+'</p>'
+      + '<form data-qform="'+esc(q.id)+'">'
+      + '<div class="row2">'
+      + '<div class="field"><label for="td-'+esc(q.id)+'">Datum des Tests</label><input id="td-'+esc(q.id)+'" name="testdatum" type="text" placeholder="z. B. 28.08.2026" required></div>'
+      + '<div class="field"><label for="tr-'+esc(q.id)+'">Anzahl Rückfragen (D-006)</label><input id="tr-'+esc(q.id)+'" name="rueckfragen" type="number" min="0" placeholder="z. B. 2" required></div>'
+      + '</div>'
+      + '<div class="field"><label for="te-'+esc(q.id)+'">Einschätzung</label>'
+      + '<select id="te-'+esc(q.id)+'" name="einschaetzung" required style="width:100%;font:inherit;font-size:.96rem;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);">'
+      + '<option value="">– bitte wählen –</option>'
+      + '<option value="Erfolgreich">Erfolgreich</option>'
+      + '<option value="Erfolgreich mit Einschränkungen">Erfolgreich mit Einschränkungen</option>'
+      + '<option value="Nicht bestanden">Nicht bestanden</option>'
+      + '</select></div>'
+      + '<div class="field"><label for="tb-'+esc(q.id)+'">Beobachtungen &amp; Rückmeldungen</label><textarea id="tb-'+esc(q.id)+'" name="beobachtungen" placeholder="Was ist aufgefallen? Wo gab es Rückfragen oder Stocken im Ablauf?" required></textarea></div>'
+      + '<button type="submit" class="submit">Testergebnis speichern</button>'
+      + '<div class="msg-slot"></div>'
+      + '</form>'
+      + '</div>';
+  }
+  return '<div class="qcard" data-qid="'+esc(q.id)+'">'
+    + '<h3>'+esc(q.title)+'</h3>'
+    + '<p class="ctx">'+esc(q.ctx)+'</p>'
+    + renderAppLink(q, appUrl, loginRequired)
+    + '<form data-qform="'+esc(q.id)+'">'
+    + '<div class="row2">'
+    + '<div class="field"><label for="tm-'+esc(q.id)+'">Teammitglied</label><input id="tm-'+esc(q.id)+'" name="teammember" type="text" placeholder="Name" required></div>'
+    + '<div class="field"><label for="tw-'+esc(q.id)+'">Wann passt es?</label><input id="tw-'+esc(q.id)+'" name="timing" type="text" placeholder="z. B. Donnerstag, 14 Uhr" required></div>'
+    + '</div>'
+    + '<div class="field"><label for="tn-'+esc(q.id)+'">Anmerkung (optional)</label><textarea id="tn-'+esc(q.id)+'" name="note" placeholder="Sonstiges, das wir wissen sollten"></textarea></div>'
+    + '<button type="submit" class="submit">Antwort senden</button>'
+    + '<div class="msg-slot"></div>'
+    + '</form>'
+    + '</div>';
+}
+
+function renderQuestion(q, appUrl, loginRequired){
+  if (q.status === "answered" && q.answer){
+    return renderQuestionAnswered(q);
+  }
+  return renderQuestionForm(q, appUrl, loginRequired);
+}
+
+function renderLog(state){
+  return state.log.map((e,i) => '<li class="'+(i===state.log.length-1 && e.isNew ? 'new' : '')+'"><div class="d">'+esc(e.d)+'</div><div class="t">'+esc(e.t)+'</div></li>').join("");
+}
+
+function renderMemos(state){
+  return state.reports.memos.map(m =>
+    '<div class="memo"><div class="memo-d">'+esc(m.d)+'</div><h4>'+esc(m.title)+'</h4><p>'+esc(m.text)+'</p></div>'
+  ).join("");
+}
+
+function renderDecisions(state){
+  const statusClass = s => s === "Angenommen" ? "good" : (s === "Vertagt" ? "pending" : "progress");
+  return state.reports.decisions.map(dec =>
+    '<details class="proto">'
+    + '<summary><span class="proto-d">'+esc(dec.d)+'</span><span>'+esc(dec.title)+'</span>'
+    + '<span class="dec-pill '+statusClass(dec.status)+'">'+esc(dec.status)+'</span></summary>'
+    + '<div class="proto-body">'+esc(dec.text)+'</div>'
+    + '</details>'
+  ).join("");
+}
+
+function renderProtocol(state){
+  return state.reports.protocol.map((p,i) =>
+    '<details class="proto"'+(i===state.reports.protocol.length-1 ? ' open' : '')+'>'
+    + '<summary><span class="proto-d">'+esc(p.d)+'</span><span>'+esc(p.title)+'</span></summary>'
+    + '<div class="proto-body">'+esc(p.text)+'</div>'
+    + '</details>'
+  ).join("");
+}
+
+function renderDocuments(state){
+  return state.reports.documents.map(d =>
+    '<div class="doc-card" data-docid="'+esc(d.id)+'">'
+    + '<div class="doc-info"><h4>'+esc(d.title)+'</h4><p>'+esc(d.desc)+'</p></div>'
+    + (d.url
+        ? '<a class="doc-note" href="'+esc(d.url)+'" target="_blank" rel="noopener" style="text-decoration:underline;">↗ öffnen</a>'
+        : '<span class="doc-note">wird separat per Nachricht verschickt</span>')
+    + '</div>'
+  ).join("");
+}
+
+function renderOpenItems(state){
+  const items = state.reports.openItems || [];
+  if (!items.length) return '<div class="callout"><strong>Alles erledigt.</strong> Aktuell keine offenen Punkte ohne Dieter.</div>';
+  return '<ul class="plan-list">' + items.map(t =>
+    '<li><span class="plan-label">'+esc(t)+'</span><span class="dec-pill progress">Offen</span></li>'
+  ).join("") + '</ul>';
+}
+
+function renderPlan(state){
+  const statusMap = {
+    done: {cls:"good", label:"Erledigt"},
+    laufend: {cls:"progress", label:"Läuft"},
+    aktuell: {cls:"progress", label:"Aktuell"},
+    geplant: {cls:"pending", label:"Geplant"}
+  };
+  return '<ul class="plan-list">' + state.reports.plan.map(p => {
+    const s = statusMap[p.status] || statusMap.geplant;
+    return '<li><span class="plan-label">'+esc(p.label)+'</span><span class="dec-pill '+s.cls+'">'+esc(s.label)+'</span></li>';
+  }).join("") + '</ul>';
+}
+
+function renderDevlog(state){
+  const items = state.reports.devlog.map(e =>
+    '<li><span class="dd">'+esc(e.d)+'</span><span class="tt">'+esc(e.t)+'</span></li>'
+  ).join("");
+  return '<ul class="devlog">' + items + '</ul>'
+    + '<div class="devlog-total">Bisheriger Gesamtaufwand (grobe Schätzung, keine gemessene Zeiterfassung): '+esc(state.reports.aufwandGesamt)+' seit Projektstart am 20.08.2026.</div>';
+}
+
+function renderReports(state){
+  return '<section id="reports-section"><h2>Alle Berichte &amp; Dokumente</h2>'
+    + '<div class="lede">Das komplette Archiv – Memos, Tagesprotokolle und Unterlagen, jederzeit abrufbar.</div>'
+    + '<div class="report-group"><h3 class="sub">Memos an Dieter</h3>' + renderMemos(state) + '</div>'
+    + '<div class="report-group"><h3 class="sub">Entscheidungen</h3>' + renderDecisions(state) + '</div>'
+    + '<div class="report-group"><h3 class="sub">Tagesprotokoll</h3>' + renderProtocol(state) + '</div>'
+    + '<div class="report-group"><h3 class="sub">Dokumente</h3>' + renderDocuments(state) + '</div>'
+    + '<div class="report-group"><h3 class="sub">Plan im Überblick</h3><div class="info-note">Reine Info zur Orientierung – nicht interaktiv.</div>' + renderPlan(state) + '</div>'
+    + '<div class="report-group"><h3 class="sub">Entwicklungsverlauf</h3><div class="info-note">Reine Info zur Orientierung – nicht interaktiv.</div>' + renderDevlog(state) + '</div>'
+    + '</section>';
+}
+
+function renderBody(state){
+  return ''
+    + '<header class="hero">'
+    + '<div class="eyebrow">Pilotprojekt · Hanseatisches Institut</div>'
+    + '<h1>LeadOS</h1>'
+    + '<div class="sub">Digitales Führungswerkzeug für die Aufgabenübergabe zwischen Inhaber und Mitarbeiter.</div>'
+    + (state.appUrl ? '<div class="hero-cta">'
+        + '<div class="cta-text"><div class="cta-label">Prototyp zum Testen</div>'
+        + '<div class="cta-url">'+esc(state.appUrl.replace(/^https?:\/\//,""))+'</div>'
+        + (state.appLoginRequired ? '<div class="cta-note">Anmeldung erforderlich – Zugangsdaten bekommst du von Bernd.</div>' : '')
+        + '</div>'
+        + '<div class="cta-actions">'
+        + '<a class="cta-btn" href="'+esc(state.appUrl)+'" target="_blank" rel="noopener">↗ Prototyp öffnen</a>'
+        + '<button type="button" class="cta-copy" data-copyurl="'+esc(state.appUrl)+'">Link kopieren</button>'
+        + '</div>'
+        + '<div class="cta-fallback">Öffnet der Button nicht direkt (z. B. in der Claude-App)? Link kopieren und im Browser einfügen.<input type="text" readonly value="'+esc(state.appUrl)+'" onclick="this.select()"></div>'
+        + '</div>' : '')
+    + '<div class="meta-row">'
+    + '<span class="pill phase"><span class="dot"></span>'+esc(state.phaseLabel)+'</span>'
+    + '<span class="stamp">Stand: '+esc(state.updated)+'</span>'
+    + '</div>'
+    + '</header>'
+
+    + '<section id="rail-section"><h2>Wo wir stehen</h2>'
+    + '<div class="rail-scroll"><div class="rail">'+renderMilestones(state)+'</div></div>'
+    + '</section>'
+
+    + '<section id="questions-section"><h2>Was jetzt gebraucht wird</h2>'
+    + '<div class="lede">Trag deine Antwort direkt hier ein — sie ist sofort für die weitere Planung sichtbar. Falls „Antwort senden" hier nicht geht (reiner Lesezugriff), schick die Antwort stattdessen per Nachricht zurück — sie wird dann hier nachgetragen.</div>'
+    + state.questions.map(q => renderQuestion(q, state.appUrl, state.appLoginRequired)).join("")
+    + '<div class="section-foot">Weitere Fragen erscheinen hier, sobald es welche gibt.</div>'
+    + '</section>'
+
+    + '<section id="next-section"><h2>Nächste Schritte</h2>'
+    + '<div class="callout"><strong>Nach dem Testdurchlauf:</strong> gemeinsame Auswertung mit Dieter, danach die Pilotentscheidung — fortsetzen, anpassen oder stoppen.</div>'
+    + '</section>'
+
+    + '<section id="openitems-section"><h2>Offene Punkte ohne Dieter</h2>'
+    + '<div class="lede">Was noch zu erledigen ist, bevor Dieters Rückmeldung kommt – laufend aktuell gehalten.</div>'
+    + renderOpenItems(state)
+    + '</section>'
+
+    + '<section id="log-section"><h2>Verlauf</h2>'
+    + '<ul class="log">'+renderLog(state)+'</ul>'
+    + '</section>'
+
+    + '<section id="reportsbrowser-section"><h2>Aktuelle Berichte</h2>'
+    + '<div class="lede">Protokolle und Tagesberichte ab September 2026 werden hier laufend nachgeladen – neue Berichte erscheinen automatisch, ohne dass diese Seite selbst geändert werden muss.</div>'
+    + '<div class="filter-bar" id="rb-filters"></div>'
+    + '<div class="rb-list" id="rb-list">Lade Berichte …</div>'
+    + '<div id="reportsbrowser-detail"></div>'
+    + '</section>'
+
+    + renderReports(state)
+
+    + '<footer>'
+    + '<span>Dieter: fachliche Leitung &amp; Test · Bernd: Umsetzung · Claude: Planungsunterstützung (KI)</span>'
+    + '<span>Wird automatisch bei jedem Fortschritt ergänzt.</span>'
+    + '</footer>';
+}
+
+/* ---------- boot / interaction ---------- */
+(function(){
+  const SELF_SCRIPT = document.currentScript ? document.currentScript.textContent : "";
+  const HEAD = ''
+    + '<meta charset="UTF-8">'
+    + '<title>LeadOS Arbeitsstand</title>'
+    + '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+    + '<link rel="preconnect" href="https://fonts.googleapis.com">'
+    + '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+    + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">'
+    + document.querySelector("style").outerHTML;
+
+  function fullDocument(state){
+    const stateBlock = '/*STATE_START*/\nconst STATE = ' + JSON.stringify(state) + ';\n/*STATE_END*/';
+    const scriptSource = SELF_SCRIPT.replace(/\/\*STATE_START\*\/[\s\S]*?\/\*STATE_END\*\//, stateBlock);
+    return '<!doctype html>\n<html lang="de">\n<head>\n' + HEAD + '\n</head>\n<body>\n'
+      + '<div id="app">' + renderBody(state) + '</div>\n'
+      + '<script>' + scriptSource.replace(/<\/script>/g, '<\\/script>') + '<' + '/script>\n'
+      + '</body>\n</html>';
+  }
+
+  function mount(state){
+    document.getElementById("app").innerHTML = renderBody(state);
+    wireForms(state);
+    wireCopyButton();
+    initReportsBrowser();
+  }
+
+  /* ---------- dynamic report browser (leados-reports) ---------- */
+  const REPORTS_BASE_URL = "https://raw.githubusercontent.com/LeadOS-Org/leados-reports/main/";
+  let rbAllReports = [];
+  let rbActiveFilter = "Alle";
+
+  async function rbLoadIndex(){
+    const res = await fetch(REPORTS_BASE_URL + "index.json");
+    if (!res.ok) throw new Error("Index nicht erreichbar (" + res.status + ")");
+    const data = await res.json();
+    return data.reports.sort((a,b) => b.datum.localeCompare(a.datum));
+  }
+
+  async function rbLoadReport(pfad){
+    const res = await fetch(REPORTS_BASE_URL + pfad);
+    if (!res.ok) throw new Error("Bericht nicht erreichbar (" + res.status + ")");
+    return res.json();
+  }
+
+  function rbRenderFilters(){
+    const bar = document.getElementById("rb-filters");
+    if (!bar) return;
+    const types = ["Alle", ...new Set(rbAllReports.map(r => r.typ))];
+    bar.innerHTML = types.map(t =>
+      '<button type="button" class="filter-btn'+(t===rbActiveFilter?' active':'')+'" data-rbfilter="'+esc(t)+'">'+esc(t)+'</button>'
+    ).join("");
+    bar.querySelectorAll("[data-rbfilter]").forEach(btn => {
+      btn.addEventListener("click", () => { rbActiveFilter = btn.getAttribute("data-rbfilter"); rbRenderFilters(); rbRenderList(); });
+    });
+  }
+
+  function rbRenderList(){
+    const container = document.getElementById("rb-list");
+    if (!container) return;
+    const visible = rbActiveFilter === "Alle" ? rbAllReports : rbAllReports.filter(r => r.typ === rbActiveFilter);
+    if (!visible.length){ container.innerHTML = "<p>Keine Berichte in dieser Kategorie.</p>"; return; }
+    container.innerHTML = visible.map(r =>
+      '<button type="button" class="rb-card" data-rbreport="'+esc(r.pfad)+'">'
+      + '<span class="rb-typ">'+esc(r.typ)+'</span>'
+      + '<span class="rb-datum">'+esc(r.datum)+'</span>'
+      + '<span class="rb-titel">'+esc(r.titel)+'</span>'
+      + '</button>'
+    ).join("");
+    container.querySelectorAll("[data-rbreport]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        rbLoadReport(btn.getAttribute("data-rbreport")).then(rbRenderDetail).catch(rbShowError);
+      });
+    });
+  }
+
+  function rbRenderDetail(report){
+    const el = document.getElementById("reportsbrowser-detail");
+    if (!el) return;
+    let html = '<h3>'+esc(report.titel)+'</h3><div class="rb-meta">'+esc(report.datum);
+    if (report.meta && report.meta.teilnehmer) html += ' · '+esc(report.meta.teilnehmer.join(", "));
+    html += '</div>';
+    (report.abschnitte||[]).forEach(a => {
+      html += '<h4>'+esc(a.titel)+'</h4>';
+      if (a.typ === "text"){
+        html += '<p>'+esc(a.inhalt)+'</p>';
+      } else if (a.typ === "tabelle"){
+        if (a.inhalt.einleitung) html += '<p>'+esc(a.inhalt.einleitung)+'</p>';
+        html += '<table><thead><tr>'+a.inhalt.spalten.map(s=>'<th>'+esc(s)+'</th>').join("")+'</tr></thead><tbody>';
+        a.inhalt.zeilen.forEach(z => { html += '<tr>'+z.map(c=>'<td>'+esc(c)+'</td>').join("")+'</tr>'; });
+        html += '</tbody></table>';
+      } else if (a.typ === "fragen_antworten"){
+        a.inhalt.forEach(qa => {
+          html += '<div class="rb-qa"><b>F'+esc(qa.nr)+':</b> '+esc(qa.frage)+'<br><b>Antwort:</b> '+esc(qa.antwort)+'</div>';
+        });
+      } else if (a.typ === "liste"){
+        html += '<ul>'+a.inhalt.map(i=>'<li>'+esc(i)+'</li>').join("")+'</ul>';
+      }
+    });
+    el.innerHTML = html;
+    el.scrollIntoView({behavior:"smooth", block:"nearest"});
+  }
+
+  function rbShowError(err){
+    const container = document.getElementById("rb-list");
+    if (container) container.innerHTML = '<p class="rb-error">Berichte konnten nicht geladen werden: '+esc(err.message)+'</p>';
+  }
+
+  function initReportsBrowser(){
+    if (!document.getElementById("rb-list")) return;
+    rbLoadIndex().then(reports => {
+      rbAllReports = reports;
+      rbRenderFilters();
+      rbRenderList();
+    }).catch(rbShowError);
+  }
+
+  function wireCopyButton(){
+    const btn = document.querySelector("[data-copyurl]");
+    if (!btn) return;
+    btn.addEventListener("click", async () => {
+      const url = btn.getAttribute("data-copyurl");
+      const original = btn.textContent;
+      const showResult = (label) => {
+        btn.textContent = label;
+        setTimeout(() => { btn.textContent = original; }, 2200);
+      };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          await navigator.clipboard.writeText(url);
+          showResult("✓ Kopiert");
+          return;
+        }
+        throw new Error("clipboard api unavailable");
+      } catch (err) {
+        const fallbackInput = document.querySelector(".cta-fallback input");
+        if (fallbackInput){
+          fallbackInput.select();
+          try {
+            document.execCommand("copy");
+            showResult("✓ Kopiert");
+          } catch (e2) {
+            showResult("Bitte oben markieren & kopieren");
+          }
+        } else {
+          showResult("Bitte oben markieren & kopieren");
+        }
+      }
+    });
+  }
+
+  let artifactApi = null;
+  let capabilityChecked = false;
+  if (window.claude && window.claude.use){
+    window.claude.use("artifact").then(a => { artifactApi = a; capabilityChecked = true; });
+  } else {
+    capabilityChecked = true;
+  }
+
+  function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+
+  function todayDE(){
+    const d = new Date();
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const hh = String(d.getHours()).padStart(2,"0");
+    const min = String(d.getMinutes()).padStart(2,"0");
+    return dd + "." + mm + "." + d.getFullYear() + ", " + hh + ":" + min + " Uhr";
+  }
+
+  function wireForms(state){
+    state.questions.forEach(q => {
+      const form = document.querySelector('[data-qform="'+q.id+'"]');
+      if (form){
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const fd = new FormData(form);
+          let summary, buildAnswer;
+          if (q.type === "freitext"){
+            const antwort = (fd.get("antwort")||"").toString().trim();
+            if (!antwort) return;
+            summary = antwort;
+            buildAnswer = (stamp) => ({ antwort, answeredAt: stamp });
+          } else if (q.type === "testergebnis"){
+            const testdatum = (fd.get("testdatum")||"").toString().trim();
+            const rueckfragen = (fd.get("rueckfragen")||"").toString().trim();
+            const einschaetzung = (fd.get("einschaetzung")||"").toString().trim();
+            const beobachtungen = (fd.get("beobachtungen")||"").toString().trim();
+            if (!testdatum || rueckfragen === "" || !einschaetzung || !beobachtungen) return;
+            summary = einschaetzung + " (" + rueckfragen + " Rückfragen, Test am " + testdatum + ")";
+            buildAnswer = (stamp) => ({ testdatum, rueckfragen, einschaetzung, beobachtungen, answeredAt: stamp });
+          } else {
+            const teammember = (fd.get("teammember")||"").toString().trim();
+            const timing = (fd.get("timing")||"").toString().trim();
+            const note = (fd.get("note")||"").toString().trim();
+            if (!teammember || !timing) return;
+            summary = "Teammitglied " + teammember + ", Termin " + timing + (note ? " — " + note : "");
+            buildAnswer = (stamp) => ({ teammember, timing, note, answeredAt: stamp });
+          }
+
+          const btn = form.querySelector("button.submit");
+          const btnLabel = btn.textContent;
+          btn.disabled = true; btn.textContent = "Wird gespeichert …";
+          const slot = form.querySelector(".msg-slot");
+
+          const newState = deepClone(state);
+          const nq = newState.questions.find(x => x.id === q.id);
+          const stamp = todayDE();
+          nq.status = "answered";
+          nq.answer = buildAnswer(stamp);
+          const summaryClean = summary.replace(/[.!?]+$/, "");
+          newState.log.push({ d: stamp, t: "Dieter hat zurückgemeldet (" + q.title + "): " + summaryClean + ".", isNew: true });
+          newState.updated = stamp;
+
+          if (!artifactApi){
+            slot.innerHTML = '<div class="status-msg info">Diese Ansicht kann hier nicht direkt speichern (nur Lesezugriff). Bitte diese Antwort per Nachricht zurückschicken, sie wird dann hier eingetragen: „'+summary+'“.</div>';
+            btn.disabled = false; btn.textContent = btnLabel;
+            return;
+          }
+          try {
+            await artifactApi.publish(fullDocument(newState));
+            /* successful publish reloads this view */
+          } catch (err) {
+            btn.disabled = false; btn.textContent = btnLabel;
+            if (err && (err.code === "not_writer" || err.code === "not_granted")){
+              slot.innerHTML = '<div class="status-msg info">Diese Ansicht hat nur Lesezugriff. Bitte diese Antwort per Nachricht zurückschicken, sie wird dann hier eingetragen: „'+summary+'“.</div>';
+              artifactApi = null;
+            } else if (err && err.code === "conflict"){
+              /* another write is landing; the view reloads on its own */
+            } else {
+              slot.innerHTML = '<div class="status-msg err">Speichern hat nicht geklappt. Bitte kurz erneut versuchen.</div>';
+            }
+          }
+        });
+      }
+      const reopenBtn = document.querySelector('[data-reopen="'+q.id+'"]');
+      if (reopenBtn){
+        reopenBtn.addEventListener("click", () => {
+          const newState = deepClone(state);
+          const nq = newState.questions.find(x => x.id === q.id);
+          nq.status = "open";
+          mount(newState);
+        });
+      }
+    });
+  }
+
+  mount(STATE);
+})();
+</script>
+</body>
+</html>
