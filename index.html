@@ -265,8 +265,8 @@ footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); colo
 /* ---------- state ---------- */
 /*STATE_START*/
 const STATE = {
-  updated: "09.09.2026, 08:40 Uhr",
-  phaseLabel: "Aktuell: Usability-Test durchgeführt, Nacharbeit läuft",
+  updated: "13.09.2026, 07:48 Uhr",
+  phaseLabel: "Aktuell: Nacharbeit abgeschlossen, Pilotentscheidung (M1-007) wartet auf Dieters Bestätigung",
   appUrl: "https://leados-design-foundation.lovable.app",
   appLoginRequired: false,
   milestones: [
@@ -276,8 +276,8 @@ const STATE = {
     {label:"Fachliche Prüfung", desc:"Dieter hat die Inhalte geprüft und freigegeben", when:"25.08.", status:"done"},
     {label:"Technische Absicherung", desc:"Arbeitsumgebung eingerichtet und abgesichert", when:"27.08.", status:"done"},
     {label:"Usability-Test", desc:"Mit Jan durchgeführt, 5 Befunde protokolliert", when:"08.09.", status:"done"},
-    {label:"Nacharbeit", desc:"SystemCheck Teil 2, 3-Felder-Struktur, Rollenkennzeichnung", when:"läuft", status:"active"},
-    {label:"Pilotentscheidung", desc:"Automatische Freigabe nach Umsetzung der Nacharbeit", when:"danach", status:"pending"}
+    {label:"Nacharbeit", desc:"SystemCheck Teil 2, 3-Felder-Struktur, Rollenkennzeichnung", when:"13.09.", status:"done"},
+    {label:"Pilotentscheidung", desc:"Wartet auf Dieters formelle Bestätigung (M1-007)", when:"aktuell", status:"active"}
   ],
   questions: [
     {
@@ -350,7 +350,11 @@ const STATE = {
     {d:"08.09.2026", t:"Usability-Test (M1-006) mit Jan durchgeführt: 5 Befunde protokolliert (SystemCheck-Erweiterung, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung, Muss-Check-Logik und -Text final)."},
     {d:"08.09.2026", t:"D-006 (Abbruchkriterium Pilot), Glossar „SystemCheck“ und M1-007 (Ablauf der Pilotentscheidung) mit Dieter vollständig geklärt."},
     {d:"08.09.2026", t:"Berichts-Infrastruktur aufgebaut: eigenes öffentliches Repository leados-reports für strukturierte Berichte (JSON, versioniert), abrufbar über eine laufend aktualisierte Berichtsauswahl auf dieser Seite."},
-    {d:"09.09.2026", t:"Diese Seite von der bisherigen claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite umgestellt – unabhängig von einzelnen Chat-Sitzungen erreichbar und pflegbar.", isNew: true}
+    {d:"09.09.2026", t:"Diese Seite von der bisherigen claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite umgestellt – unabhängig von einzelnen Chat-Sitzungen erreichbar und pflegbar."},
+    {d:"11.09.2026", t:"Abgleich der SystemCheck-Formulierung mit der aktuellen Institutswebsite ergab eine Abweichung von der bisherigen Projektfassung; Klärungsfragen an Dieter formuliert."},
+    {d:"13.09.2026", t:"Alle vier Usability-Test-Befunde umgesetzt und getestet (SystemCheck Teil 2, drei MA-Felder Schritt 3, Rollenkennzeichnung FK/MA, finaler Muss-Check-Text); vollständiger Durchlauf Schritt 1–5 fehlerfrei."},
+    {d:"13.09.2026", t:"SystemCheck-Feldlabels an die Website-Formulierung angepasst, ohne auf Dieters Bestätigung zu warten."},
+    {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests/Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main).", isNew: true}
   ],
   reports: {
     memos: [
@@ -385,11 +389,11 @@ const STATE = {
       {d:"08.–09.09.2026", title:"Usability-Test durchgeführt, offene Fragen geklärt, Berichts-Infrastruktur aufgebaut", text:"Jan hat den Fünf-Schritte-Ablauf getestet und fünf strukturierte Befunde geliefert (SystemCheck-Erweiterung um negative Auswirkungen/Gegenmaßnahmen/Umsetzungssituation, 3-Felder-Struktur für das MA-Verständnis in Schritt 3, Rollenkennzeichnung auf den Kacheln, sowie die Muss-Check-Abbruchlogik und ihr finaler Erläuterungstext). Anschließend wurden mit Dieter alle verbliebenen Fragen aus dem Fragenkatalog geklärt: D-006 (Abbruchkriterium für den Pilotbetrieb: keine Nutzung/kein Nutzen/Ziel verfehlt, Schwellenwert 8 Wochen, gesamter Ablauf, gemeinsame Entscheidung Dieter+Bernd), das Glossar „SystemCheck“ (Formulierung bestätigt, Beispiel von Dieter in Aussicht) und M1-007 (automatische Freigabe der Pilotentscheidung nach Umsetzung der drei Testbefunde). Parallel wurde eine dauerhafte Lösung für die wachsende Berichtsliste dieser Seite umgesetzt: ein eigenes, öffentliches Repository (leados-reports) speichert Berichte künftig als einzelne, versionierte JSON-Dateien; diese Seite lädt sie zur Laufzeit und zeigt sie filterbar an, statt jeden Bericht einzeln in den Seitencode einzutragen. Im Zuge dessen wurde diese Übersichtsseite selbst von der bisherigen claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite umgestellt, da in der bisherigen Ansicht keine Bearbeitungssitzung mehr erreichbar war."}
     ],
     openItems: [
-      "Testbefunde 1–3 aus dem Usability-Test spezifizieren und umsetzen (SystemCheck Teil 2, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung).",
-      "Muss-Check-Erläuterungstext (final formuliert) im Prototyp umsetzen.",
-      "Beispiel für das Glossar „SystemCheck“ von Dieter einholen.",
-      "SSH-Signierschlüssel-Passphrase war beim erneuten Einsatz nicht mehr auffindbar – klären, ob dauerhaft verloren; ggf. neuen Signierschlüssel erzeugen.",
-      "Require-status-checks für TDF/ADR nachtragen, sobald ein erster CI-Lauf am aktuellen Standort vorliegt."
+      "Dieters formelle Bestätigung zu M1-007 (Pilotfreigabe) steht aus.",
+      "Antwort auf die SystemCheck-Klärungsmail (Website- vs. Projektformulierung) steht aus.",
+      "Von Dieter zugesagtes SystemCheck-Glossar-Beispiel steht weiterhin aus.",
+      "Gesammelte Fragenliste für den nächsten gemeinsamen Termin (Rollentrennung Inhaber/Geschäftsführer, verknüpfte Artefakte SystemCheck-OekoCheck/PowerCode/Genea-Methode/Systemgesetzebene, Verhältnis HTML-Mockup zu Lovable-Prototyp, Abgleich Z-AVKK.md).",
+      "Require-status-checks für TDF/ADF jetzt möglich (CI-Läufe liegen seit 03.09.2026 vor), Konfiguration in der Branch-Protection aber noch nicht nachgetragen."
     ],
     documents: [
       {id:"mgmt-pdf", title:"Management-Übersicht LeadOS", desc:"4 Seiten – Aufbau des Projekts, Plan bis zum fertigen Piloten (MVP)", filename:"LeadOS_Managementunterlage_v1.0.pdf"},
@@ -405,9 +409,10 @@ const STATE = {
       {label:"Technische Arbeitsumgebung & Absicherung", status:"done"},
       {label:"Diese Übersichtsseite (laufend gepflegt)", status:"laufend"},
       {label:"Testautomatisierung (M1-004d, Codex + Lovable)", status:"done"},
-      {label:"Usability-Test mit Dieters Team", status:"aktuell"},
-      {label:"Gemeinsame Auswertung", status:"geplant"},
-      {label:"Pilotentscheidung (fortsetzen, anpassen oder stoppen)", status:"geplant"}
+      {label:"Usability-Test mit Dieters Team", status:"done"},
+      {label:"Gemeinsame Auswertung", status:"done"},
+      {label:"Nacharbeit aus Usability-Test-Befunden", status:"done"},
+      {label:"Pilotentscheidung (fortsetzen, anpassen oder stoppen)", status:"aktuell"}
     ],
     devlog: [
       {d:"20.08.2026", t:"Projektgrundlagen zusammengetragen, offene Fragen für das erste Gespräch mit Dieter vorbereitet."},
@@ -460,7 +465,11 @@ const STATE = {
       {d:"08.09.2026", t:"Usability-Test mit Jan durchgeführt: 5 Befunde protokolliert (SystemCheck Teil 2, 3-Felder-Struktur Schritt 3, Rollenkennzeichnung, Muss-Check-Abbruchlogik, finaler Erläuterungstext)."},
       {d:"08.09.2026", t:"D-006 (Abbruchkriterium Pilotbetrieb), Glossar „SystemCheck“ und M1-007 (Pilotentscheidungs-Ablauf) mit Dieter vollständig geklärt."},
       {d:"08.09.2026", t:"Öffentliches Repository leados-reports angelegt: Berichte künftig als einzelne, versionierte JSON-Dateien statt als wachsender Seitentext; Datenmodell, Schema und zwei Beispielberichte erstellt und live verifiziert (HTTP 200 über raw.githubusercontent.com)."},
-      {d:"09.09.2026", t:"Diese Übersichtsseite von der claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite (leados-org.github.io/leados-arbeitsstand) umgestellt und um die laufend aktualisierte Berichtsauswahl ergänzt."}
+      {d:"09.09.2026", t:"Diese Übersichtsseite von der claude.ai-Artifact-Ansicht auf eine eigenständige, statische GitHub-Pages-Seite (leados-org.github.io/leados-arbeitsstand) umgestellt und um die laufend aktualisierte Berichtsauswahl ergänzt."},
+      {d:"11.09.2026", t:"Abgleich der SystemCheck-Formulierung mit der aktuellen Institutswebsite ergab eine Abweichung von der bisherigen Projektfassung; Klärungsfragen dazu an Dieter formuliert."},
+      {d:"13.09.2026", t:"Alle vier Usability-Test-Befunde in Lovable umgesetzt und getestet (SystemCheck Teil 2, drei MA-Felder in Schritt 3, Rollenkennzeichnung FK/MA, finaler Muss-Check-Text); vollständiger Durchlauf Schritt 1–5 fehlerfrei.", isNew: true},
+      {d:"13.09.2026", t:"SystemCheck-Feldlabels an die Website-Formulierung angepasst, ohne auf Dieters Bestätigung zu warten (siehe Sprintentscheidung).", isNew: true},
+      {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests oder Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main).", isNew: true}
     ],
     aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
   }
