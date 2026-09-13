@@ -265,7 +265,7 @@ footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); colo
 /* ---------- state ---------- */
 /*STATE_START*/
 const STATE = {
-  updated: "13.09.2026, 07:48 Uhr",
+  updated: "13.09.2026, 07:57 Uhr",
   phaseLabel: "Aktuell: Nacharbeit abgeschlossen, Pilotentscheidung (M1-007) wartet auf Dieters Bestätigung",
   appUrl: "https://leados-design-foundation.lovable.app",
   appLoginRequired: false,
@@ -354,7 +354,8 @@ const STATE = {
     {d:"11.09.2026", t:"Abgleich der SystemCheck-Formulierung mit der aktuellen Institutswebsite ergab eine Abweichung von der bisherigen Projektfassung; Klärungsfragen an Dieter formuliert."},
     {d:"13.09.2026", t:"Alle vier Usability-Test-Befunde umgesetzt und getestet (SystemCheck Teil 2, drei MA-Felder Schritt 3, Rollenkennzeichnung FK/MA, finaler Muss-Check-Text); vollständiger Durchlauf Schritt 1–5 fehlerfrei."},
     {d:"13.09.2026", t:"SystemCheck-Feldlabels an die Website-Formulierung angepasst, ohne auf Dieters Bestätigung zu warten."},
-    {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests/Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main).", isNew: true}
+    {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests/Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main)."},
+    {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert.", isNew: true}
   ],
   reports: {
     memos: [
@@ -393,7 +394,13 @@ const STATE = {
       "Antwort auf die SystemCheck-Klärungsmail (Website- vs. Projektformulierung) steht aus.",
       "Von Dieter zugesagtes SystemCheck-Glossar-Beispiel steht weiterhin aus.",
       "Gesammelte Fragenliste für den nächsten gemeinsamen Termin (Rollentrennung Inhaber/Geschäftsführer, verknüpfte Artefakte SystemCheck-OekoCheck/PowerCode/Genea-Methode/Systemgesetzebene, Verhältnis HTML-Mockup zu Lovable-Prototyp, Abgleich Z-AVKK.md).",
-      "Require-status-checks für TDF/ADF jetzt möglich (CI-Läufe liegen seit 03.09.2026 vor), Konfiguration in der Branch-Protection aber noch nicht nachgetragen."
+      "Require-status-checks für TDF/ADF jetzt möglich (CI-Läufe liegen seit 03.09.2026 vor), Konfiguration in der Branch-Protection aber noch nicht nachgetragen.",
+      "RBAC-Konzept (Post-Pilot): Einschränkung der Selbstregistrierung (Domain-Beschränkung, manuelle Freigabe, Rollenbegrenzung?) — Frage an Dieter.",
+      "RBAC-Konzept (Post-Pilot): Konkrete DSGVO-Aufbewahrungsfrist, verantwortliche Stelle, Form/Zeitpunkt der Nutzer-Einwilligung — Frage an Dieter.",
+      "RBAC-Konzept (Post-Pilot): Offboarding-Prozess bei Austritt eines Mitarbeiters oder FK-Wechsel — Frage an Dieter.",
+      "RBAC-Konzept (Post-Pilot): Löschrechte für FK und/oder MA (bislang nur Admin entschieden) — Frage an Dieter.",
+      "RBAC-Konzept (Post-Pilot): Ob ein Audit-Log für die gemeinsam bearbeiteten Aufgaben-Daten (System B) eingeführt werden soll — Frage an Dieter.",
+      "RBAC-Konzept (Post-Pilot): Ob eine Führungskraft selbst Rollen ändern darf (z. B. MA → FK), zusätzlich zu Admin — Frage an Dieter."
     ],
     documents: [
       {id:"mgmt-pdf", title:"Management-Übersicht LeadOS", desc:"4 Seiten – Aufbau des Projekts, Plan bis zum fertigen Piloten (MVP)", filename:"LeadOS_Managementunterlage_v1.0.pdf"},
@@ -469,7 +476,8 @@ const STATE = {
       {d:"11.09.2026", t:"Abgleich der SystemCheck-Formulierung mit der aktuellen Institutswebsite ergab eine Abweichung von der bisherigen Projektfassung; Klärungsfragen dazu an Dieter formuliert."},
       {d:"13.09.2026", t:"Alle vier Usability-Test-Befunde in Lovable umgesetzt und getestet (SystemCheck Teil 2, drei MA-Felder in Schritt 3, Rollenkennzeichnung FK/MA, finaler Muss-Check-Text); vollständiger Durchlauf Schritt 1–5 fehlerfrei.", isNew: true},
       {d:"13.09.2026", t:"SystemCheck-Feldlabels an die Website-Formulierung angepasst, ohne auf Dieters Bestätigung zu warten (siehe Sprintentscheidung).", isNew: true},
-      {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests oder Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main).", isNew: true}
+      {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests oder Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main)."},
+      {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert.", isNew: true}
     ],
     aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
   }
