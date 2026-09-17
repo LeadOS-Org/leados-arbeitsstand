@@ -265,7 +265,7 @@ footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); colo
 /* ---------- state ---------- */
 /*STATE_START*/
 const STATE = {
-  updated: "13.09.2026, 10:03 Uhr",
+  updated: "17.09.2026, 14:55 Uhr",
   phaseLabel: "Aktuell: Nacharbeit abgeschlossen, Pilotentscheidung (M1-007) wartet auf Dieters Bestätigung",
   appUrl: "https://leados-design-foundation.lovable.app",
   appLoginRequired: false,
@@ -358,7 +358,8 @@ const STATE = {
     {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert."},
     {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt."},
     {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert."},
-    {d:"17.09.2026", t:"Vier Lovable-Feldergänzungen (L-2, L-3, L-4) und KI-Vorschlagsbutton (L-1) umgesetzt und getestet; alle vier Claude-Code-Aufträge (CC-1–CC-4) abgeschlossen. Abschlussprüfung durchgeführt: main kurzzeitig CI-rot (3 Prettier-Fehler), behoben, danach vollständig grün; L-1-Architektur empirisch verifiziert (API-Key serverseitig, vierfache Fallback-Absicherung, kein Autofill). Sechs verwaiste Branches gelöscht, BACKLOG.md M1-006-Eintrag korrigiert. Offen: L-7 (Inhalt), M1-007 (Pilotentscheidung), Rollenmodell-Frage (RBAC-relevant) – warten auf nächsten Dieter-Termin.", isNew: true}
+    {d:"17.09.2026", t:"Vier Lovable-Feldergänzungen (L-2, L-3, L-4) und KI-Vorschlagsbutton (L-1) umgesetzt und getestet; alle vier Claude-Code-Aufträge (CC-1–CC-4) abgeschlossen. Abschlussprüfung durchgeführt: main kurzzeitig CI-rot (3 Prettier-Fehler), behoben, danach vollständig grün; L-1-Architektur empirisch verifiziert (API-Key serverseitig, vierfache Fallback-Absicherung, kein Autofill). Sechs verwaiste Branches gelöscht, BACKLOG.md M1-006-Eintrag korrigiert. Offen: L-7 (Inhalt), M1-007 (Pilotentscheidung), Rollenmodell-Frage (RBAC-relevant) – warten auf nächsten Dieter-Termin."},
+    {d:"17.09.2026", t:"Planungssession: MVP-Ziel festgelegt (eine Firma, zwei Rollen – Unternehmer, Mitarbeiter), Servicebereich (7 Punkte: Begrüßung, Kontopflege, Stammdatenpflege, Backup, Servicestatus, PDF-Export, Hilfe/Handbuch) als Teil des MVP bestätigt, Sprint-Abnahmeprinzip mit Dieter-Testgates nach jedem Sprint eingeführt, Sprintlänge 2 Wochen. Vollständiger Backlog inkl. Sprint-Sequenz in docs/2026-09-17_Backlog_Sprintplan_MVP.md (leados-design-foundation).", isNew: true}
   ],
   reports: {
     memos: [
@@ -406,7 +407,8 @@ const STATE = {
       "RBAC-Konzept (Post-Pilot): Ob ein Audit-Log für die gemeinsam bearbeiteten Aufgaben-Daten (System B) eingeführt werden soll — Frage an Dieter.",
       "RBAC-Konzept (Post-Pilot): Ob eine Führungskraft selbst Rollen ändern darf (z. B. MA → FK), zusätzlich zu Admin — Frage an Dieter.",
       "Rollenmodell-Frage (Unternehmer/Führungskraft/Inhaber, relevant für RBAC-Konzept) für nächsten Dieter-Termin vorgemerkt.",
-      "Umsetzungsplan (Post-Pilot): Reihenfolge-Bestätigung, insbesondere ob Sprint 2 (Datenmodell) und Sprint 3 (RLS-Zugriffsschutz) im selben Deploy-Fenster laufen müssen — Frage an Dieter."
+      "Umsetzungsplan (Post-Pilot): Reihenfolge-Bestätigung, insbesondere ob Sprint 2 (Datenmodell) und Sprint 3 (RLS-Zugriffsschutz) im selben Deploy-Fenster laufen müssen — Frage an Dieter.",
+      "Nächster Dieter-Termin ist Blocker für Sprint 2: Anmeldemethode (Auth-Provider-Wahl), Rollenmodell-Entscheidung (2 vs. 4 Rollen), M1-007-Bestätigung, L-7-Inhalt."
     ],
     documents: [
       {id:"mgmt-pdf", title:"Management-Übersicht LeadOS", desc:"4 Seiten – Aufbau des Projekts, Plan bis zum fertigen Piloten (MVP)", filename:"LeadOS_Managementunterlage_v1.0.pdf"},
@@ -425,7 +427,11 @@ const STATE = {
       {label:"Usability-Test mit Dieters Team", status:"done"},
       {label:"Gemeinsame Auswertung", status:"done"},
       {label:"Nacharbeit aus Usability-Test-Befunden", status:"done"},
-      {label:"Pilotentscheidung (fortsetzen, anpassen oder stoppen)", status:"aktuell"}
+      {label:"Pilotentscheidung (fortsetzen, anpassen oder stoppen)", status:"aktuell"},
+      {label:"Track C / MVP – Sprint 1: DB-Schema & Backup-Infrastruktur (kein Dieter-Test nötig)", status:"geplant"},
+      {label:"Track C / MVP – Sprint 2: Auth, Login-UI, Migration, Kontopflege (wartet auf nächsten Dieter-Termin)", status:"geplant"},
+      {label:"Track C / MVP – Sprint 3: Rollenmodell/Stammdatenpflege, PDF-Export", status:"geplant"},
+      {label:"Track C / MVP – Sprint 4: Servicestatus, Hilfe/Handbuch/Entwicklungstagebuch, MVP-Abschluss", status:"geplant"}
     ],
     devlog: [
       {d:"20.08.2026", t:"Projektgrundlagen zusammengetragen, offene Fragen für das erste Gespräch mit Dieter vorbereitet."},
@@ -486,7 +492,9 @@ const STATE = {
       {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert."},
       {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt."},
       {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert."},
-      {d:"17.09.2026", t:"Vier Lovable-Feldergänzungen (L-2, L-3, L-4) und KI-Vorschlagsbutton (L-1) umgesetzt und getestet; alle vier Claude-Code-Aufträge (CC-1–CC-4) abgeschlossen. Abschlussprüfung durchgeführt: main kurzzeitig CI-rot (3 Prettier-Fehler), behoben, danach vollständig grün; L-1-Architektur empirisch verifiziert (API-Key serverseitig, vierfache Fallback-Absicherung, kein Autofill). Sechs verwaiste Branches gelöscht, BACKLOG.md M1-006-Eintrag korrigiert. Offen: L-7 (Inhalt), M1-007 (Pilotentscheidung), Rollenmodell-Frage (RBAC-relevant) – warten auf nächsten Dieter-Termin.", isNew: true}
+      {d:"17.09.2026", t:"Vier Lovable-Feldergänzungen (L-2, L-3, L-4) und KI-Vorschlagsbutton (L-1) umgesetzt und getestet; alle vier Claude-Code-Aufträge (CC-1–CC-4) abgeschlossen. Abschlussprüfung durchgeführt: main kurzzeitig CI-rot (3 Prettier-Fehler), behoben, danach vollständig grün; L-1-Architektur empirisch verifiziert (API-Key serverseitig, vierfache Fallback-Absicherung, kein Autofill). Sechs verwaiste Branches gelöscht, BACKLOG.md M1-006-Eintrag korrigiert. Offen: L-7 (Inhalt), M1-007 (Pilotentscheidung), Rollenmodell-Frage (RBAC-relevant) – warten auf nächsten Dieter-Termin."},
+      {d:"17.09.2026", t:"Architekturkonzept Track C signiert committet (docs/2026-09-17_Architekturkonzept_Track-C.md, leados-design-foundation) – Entwurf für Mehrmandantenfähigkeit, erweitertes Rollenmodell, Anmeldung, wartet auf Dieters Antworten zu acht offenen Punkten.", isNew: true},
+      {d:"17.09.2026", t:"Planungssession: MVP-Ziel festgelegt (eine Firma, zwei Rollen – Unternehmer, Mitarbeiter), Servicebereich (Begrüßung, Kontopflege, Stammdatenpflege, Backup, Servicestatus, PDF-Export, Hilfe/Handbuch/Entwicklungstagebuch) als Teil des MVP bestätigt, neues Datenmodell-Feld ist_plattform_admin für Servicestatus-Zugriff (Bernd, Dieter), Sprint-Abnahmeprinzip mit Dieter-Testgates nach jedem Sprint, Sprintlänge 2 Wochen. Architekturkonzept entsprechend aktualisiert, vollständiger Backlog mit Vier-Sprint-Sequenz (Epics A-E) in docs/2026-09-17_Backlog_Sprintplan_MVP.md neu angelegt (beides leados-design-foundation, signierte Commits).", isNew: true}
     ],
     aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
   }
