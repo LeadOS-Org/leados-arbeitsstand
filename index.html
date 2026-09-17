@@ -101,33 +101,36 @@ section{margin-top:52px;}
 section > h2{font-size:1.5rem; margin-bottom:6px;}
 section > .lede{color:var(--muted); font-size:.98rem; max-width:62ch; margin-bottom:22px;}
 
-/* milestone rail */
-.rail-scroll{overflow-x:auto; margin:0 -24px; padding:4px 24px 14px;}
-.rail{display:flex; gap:0; min-width:min-content;}
-.node{
-  position:relative; flex:0 0 168px; padding-top:28px;
+/* status cards */
+.status-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:18px;}
+.status-card{
+  background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--pending);
+  border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);
 }
-.node:not(:last-child)::after{
-  content:""; position:absolute; top:9px; left:calc(50% + 11px); width:calc(100% - 22px);
-  height:2px; background:var(--line);
+.status-card.done{border-left-color:var(--good);}
+.status-card.active{border-left-color:var(--progress);}
+.status-card .sc-head{display:flex; align-items:center; gap:9px; margin-bottom:8px;}
+.status-card .sc-icon{
+  width:20px; height:20px; border-radius:50%; flex:0 0 auto; color:var(--surface);
+  background:var(--pending); font-size:11px; line-height:20px; text-align:center; font-weight:700;
 }
-.node.done:not(:last-child)::after{background:var(--good);}
-.node .marker{
-  position:absolute; top:0; left:calc(50% - 9px); width:18px; height:18px; border-radius:50%;
-  border:2.5px solid var(--pending); background:var(--surface); z-index:1;
+.status-card.done .sc-icon{background:var(--good);}
+.status-card.active .sc-icon{background:var(--progress);}
+.status-card .sc-label{font-size:14px; font-weight:600; color:var(--ink);}
+.status-card:not(.done):not(.active) .sc-label{color:var(--muted);}
+.status-card .sc-desc{font-size:12.5px; color:var(--muted); line-height:1.45; margin:0 0 8px;}
+.status-card .sc-when{font-size:11px; color:var(--muted); font-family:"IBM Plex Mono",monospace;}
+
+/* status progress strip */
+.status-progress{display:flex; align-items:center; margin:2px 4px 0;}
+.status-progress .sp-dot{
+  width:10px; height:10px; border-radius:50%; flex:0 0 auto;
+  background:var(--pending-soft); border:2px solid var(--pending);
 }
-.node.done .marker{border-color:var(--good); background:var(--good);}
-.node.active .marker{border-color:var(--progress); background:var(--progress-soft);}
-.node .num{
-  position:absolute; top:0; left:calc(50% - 9px); width:18px; height:18px; z-index:2;
-  font-size:10px; line-height:18px; text-align:center; color:var(--surface); font-family:"IBM Plex Mono",monospace; font-weight:500;
-}
-.node.active .num, .node.pending .num{color:transparent;}
-.node .label{font-size:13.5px; font-weight:600; text-align:center; margin-top:10px; padding:0 4px;}
-.node .desc{font-size:12px; color:var(--muted); text-align:center; margin-top:4px; padding:0 6px; line-height:1.4;}
-.node .when{font-size:11px; color:var(--muted); text-align:center; margin-top:4px; font-family:"IBM Plex Mono",monospace;}
-.node.done .label{color:var(--ink);}
-.node.pending .label{color:var(--muted);}
+.status-progress .sp-dot.done{background:var(--good); border-color:var(--good);}
+.status-progress .sp-dot.active{background:var(--progress-soft); border-color:var(--progress);}
+.status-progress .sp-line{flex:1 1 auto; height:2px; background:var(--line); margin:0 3px;}
+.status-progress .sp-line.done{background:var(--good);}
 
 /* question cards */
 .qcard{
@@ -507,16 +510,26 @@ function esc(s){
   return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
 
-function renderMilestones(state){
-  return state.milestones.map((m,i) => {
-    const n = i+1;
-    return '<div class="node '+m.status+'">'
-      + '<div class="marker"></div><div class="num">'+n+'</div>'
-      + '<div class="label">'+esc(m.label)+'</div>'
-      + '<div class="desc">'+esc(m.desc)+'</div>'
-      + '<div class="when">'+esc(m.when)+'</div>'
+const STATUS_ICON = {done:"&#10003;", active:"&#9679;"};
+
+function renderStatusCards(state){
+  return '<div class="status-cards">' + state.milestones.map(m => {
+    const icon = STATUS_ICON[m.status] || "&#9675;";
+    return '<div class="status-card '+esc(m.status)+'">'
+      + '<div class="sc-head"><span class="sc-icon">'+icon+'</span><span class="sc-label">'+esc(m.label)+'</span></div>'
+      + '<p class="sc-desc">'+esc(m.desc)+'</p>'
+      + '<span class="sc-when">'+esc(m.when)+'</span>'
       + '</div>';
-  }).join("");
+  }).join("") + '</div>';
+}
+
+function renderStatusProgress(state){
+  const n = state.milestones.length;
+  return '<div class="status-progress">' + state.milestones.map((m,i) => {
+    const dot = '<span class="sp-dot '+esc(m.status)+'"></span>';
+    if (i === n-1) return dot;
+    return dot + '<span class="sp-line '+(m.status==="done"?"done":"")+'"></span>';
+  }).join("") + '</div>';
 }
 
 function renderQuestionAnswered(q){
@@ -723,7 +736,8 @@ function renderBody(state){
     + '</header>'
 
     + '<section id="rail-section"><h2>Wo wir stehen</h2>'
-    + '<div class="rail-scroll"><div class="rail">'+renderMilestones(state)+'</div></div>'
+    + renderStatusCards(state)
+    + renderStatusProgress(state)
     + '</section>'
 
     + '<section id="questions-section"><h2>Was jetzt gebraucht wird</h2>'
