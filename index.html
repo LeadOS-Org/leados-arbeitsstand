@@ -357,7 +357,8 @@ const STATE = {
     {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests/Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main)."},
     {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert."},
     {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt."},
-    {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert.", isNew: true}
+    {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert."},
+    {d:"17.09.2026", t:"Vier Lovable-Feldergänzungen (L-2, L-3, L-4) und KI-Vorschlagsbutton (L-1) umgesetzt und getestet; alle vier Claude-Code-Aufträge (CC-1–CC-4) abgeschlossen. Abschlussprüfung durchgeführt: main kurzzeitig CI-rot (3 Prettier-Fehler), behoben, danach vollständig grün; L-1-Architektur empirisch verifiziert (API-Key serverseitig, vierfache Fallback-Absicherung, kein Autofill). Sechs verwaiste Branches gelöscht, BACKLOG.md M1-006-Eintrag korrigiert. Offen: L-7 (Inhalt), M1-007 (Pilotentscheidung), Rollenmodell-Frage (RBAC-relevant) – warten auf nächsten Dieter-Termin.", isNew: true}
   ],
   reports: {
     memos: [
@@ -395,7 +396,7 @@ const STATE = {
       "Dieters formelle Bestätigung zu M1-007 (Pilotfreigabe) steht aus.",
       "Antwort auf die SystemCheck-Klärungsmail (Website- vs. Projektformulierung) steht aus.",
       "Von Dieter zugesagtes SystemCheck-Glossar-Beispiel steht weiterhin aus.",
-      "Fachliche Bestätigung des SystemCheck-Fragenentwurfs für die gemeinsame Sitzung (Auftrag 8) durch Dieter ausstehend.",
+      "L-7 (SystemCheck-Button gemeinsame Sitzung): Fragenentwurf wartet auf Dieters Bestätigung.",
       "Gesammelte Fragenliste für den nächsten gemeinsamen Termin (Rollentrennung Inhaber/Geschäftsführer, verknüpfte Artefakte SystemCheck-OekoCheck/PowerCode/Genea-Methode/Systemgesetzebene, Verhältnis HTML-Mockup zu Lovable-Prototyp, Abgleich Z-AVKK.md).",
       "Require-status-checks für TDF/ADF jetzt möglich (CI-Läufe liegen seit 03.09.2026 vor), Konfiguration in der Branch-Protection aber noch nicht nachgetragen.",
       "RBAC-Konzept (Post-Pilot): Einschränkung der Selbstregistrierung (Domain-Beschränkung, manuelle Freigabe, Rollenbegrenzung?) — Frage an Dieter.",
@@ -404,6 +405,7 @@ const STATE = {
       "RBAC-Konzept (Post-Pilot): Löschrechte für FK und/oder MA (bislang nur Admin entschieden) — Frage an Dieter.",
       "RBAC-Konzept (Post-Pilot): Ob ein Audit-Log für die gemeinsam bearbeiteten Aufgaben-Daten (System B) eingeführt werden soll — Frage an Dieter.",
       "RBAC-Konzept (Post-Pilot): Ob eine Führungskraft selbst Rollen ändern darf (z. B. MA → FK), zusätzlich zu Admin — Frage an Dieter.",
+      "Rollenmodell-Frage (Unternehmer/Führungskraft/Inhaber, relevant für RBAC-Konzept) für nächsten Dieter-Termin vorgemerkt.",
       "Umsetzungsplan (Post-Pilot): Reihenfolge-Bestätigung, insbesondere ob Sprint 2 (Datenmodell) und Sprint 3 (RLS-Zugriffsschutz) im selben Deploy-Fenster laufen müssen — Frage an Dieter."
     ],
     documents: [
@@ -483,7 +485,8 @@ const STATE = {
       {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests oder Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main)."},
       {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert."},
       {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt."},
-      {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert.", isNew: true}
+      {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert."},
+      {d:"17.09.2026", t:"Vier Lovable-Feldergänzungen (L-2, L-3, L-4) und KI-Vorschlagsbutton (L-1) umgesetzt und getestet; alle vier Claude-Code-Aufträge (CC-1–CC-4) abgeschlossen. Abschlussprüfung durchgeführt: main kurzzeitig CI-rot (3 Prettier-Fehler), behoben, danach vollständig grün; L-1-Architektur empirisch verifiziert (API-Key serverseitig, vierfache Fallback-Absicherung, kein Autofill). Sechs verwaiste Branches gelöscht, BACKLOG.md M1-006-Eintrag korrigiert. Offen: L-7 (Inhalt), M1-007 (Pilotentscheidung), Rollenmodell-Frage (RBAC-relevant) – warten auf nächsten Dieter-Termin.", isNew: true}
     ],
     aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
   }
