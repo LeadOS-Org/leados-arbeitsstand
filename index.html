@@ -356,7 +356,8 @@ const STATE = {
     {d:"13.09.2026", t:"SystemCheck-Feldlabels an die Website-Formulierung angepasst, ohne auf Dieters Bestätigung zu warten."},
     {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests/Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main)."},
     {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert."},
-    {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt.", isNew: true}
+    {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt."},
+    {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert.", isNew: true}
   ],
   reports: {
     memos: [
@@ -394,6 +395,7 @@ const STATE = {
       "Dieters formelle Bestätigung zu M1-007 (Pilotfreigabe) steht aus.",
       "Antwort auf die SystemCheck-Klärungsmail (Website- vs. Projektformulierung) steht aus.",
       "Von Dieter zugesagtes SystemCheck-Glossar-Beispiel steht weiterhin aus.",
+      "Fachliche Bestätigung des SystemCheck-Fragenentwurfs für die gemeinsame Sitzung (Auftrag 8) durch Dieter ausstehend.",
       "Gesammelte Fragenliste für den nächsten gemeinsamen Termin (Rollentrennung Inhaber/Geschäftsführer, verknüpfte Artefakte SystemCheck-OekoCheck/PowerCode/Genea-Methode/Systemgesetzebene, Verhältnis HTML-Mockup zu Lovable-Prototyp, Abgleich Z-AVKK.md).",
       "Require-status-checks für TDF/ADF jetzt möglich (CI-Läufe liegen seit 03.09.2026 vor), Konfiguration in der Branch-Protection aber noch nicht nachgetragen.",
       "RBAC-Konzept (Post-Pilot): Einschränkung der Selbstregistrierung (Domain-Beschränkung, manuelle Freigabe, Rollenbegrenzung?) — Frage an Dieter.",
@@ -480,7 +482,8 @@ const STATE = {
       {d:"13.09.2026", t:"SystemCheck-Feldlabels an die Website-Formulierung angepasst, ohne auf Dieters Bestätigung zu warten (siehe Sprintentscheidung).", isNew: true},
       {d:"13.09.2026", t:"Git-Hygiene-Check durchgeführt: keine offenen Pull Requests oder Issues in leados-design-foundation; Commit-Signierung in TDF/ADF nach Schlüsselrotation erfolgreich verifiziert (Branch-Protection verhindert wie vorgesehen Direct-Push auf main)."},
       {d:"13.09.2026", t:"RBAC-Konzept v0.1 für die Post-Pilot-Phase erarbeitet (einheitliches 3-Rollen-Modell Admin/Führungskraft/Mitarbeiter, Multi-Tenancy, Supabase-Auth-Details, DSGVO-Anforderungen) — mehrere Punkte an Dieter delegiert."},
-      {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt.", isNew: true}
+      {d:"13.09.2026", t:"Sechs-Sprint-Umsetzungsplan erarbeitet, der vollständige Datenpersistenz (Fünf-Schritte-Ablauf) und das RBAC-Konzept in eine verzahnte Reihenfolge bringt."},
+      {d:"15.09.2026", t:"Terminologie auf „Unternehmer“ vereinheitlicht (ersetzt „Führungskraft“/„Inhaber“); d009 revidiert (KI-generierte Vorschläge im SystemCheck jetzt erlaubt, einfacher zustandsloser LLM-Aufruf); Muss-Check-Verhalten überarbeitet (Hinweis statt Reset, ersetzt Befund 4 aus M1-006); D-009-Kurzbezeichnungen an aktuellen UI-Wortlaut angeglichen; fünf weitere UI-Änderungswünsche konzipiert; alle zehn resultierenden Aufträge für Claude Code und Lovable konsolidiert und versioniert.", isNew: true}
     ],
     aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
   }
