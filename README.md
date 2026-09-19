@@ -1,29 +1,26 @@
 # LeadOS Arbeitsstand
 
-Statusseite des Pilotprojekts **„Digitales Führungswerkzeug für die Aufgabenübergabe zwischen Inhaber und Mitarbeiter“** des Hanseatischen Instituts LeadOS.
+Öffentlich erreichbare Status- und Arbeitsstand-Seite des Pilotprojekts **„Digitales Führungswerkzeug für die Aufgabenübergabe zwischen Inhaber und Mitarbeiter“** des Hanseatischen Instituts LeadOS. Die Seite wird über GitHub Pages ausgeliefert und besteht aus einer einzigen Datei, `index.html`.
 
-Die Seite zeigt den aktuellen Projektstand (Etappen von den Grundlagen bis zur Pilotentscheidung), die offenen Fragen an das Team und die dokumentierten Ergebnisse, etwa des Usability-Tests. Sie verweist auf den klickbaren Prototyp.
+**Live-Seite:** <https://leados-org.github.io/leados-arbeitsstand/>
 
-## Inhalt
+## Aufbau der Seite
 
-| Datei | Zweck |
-| --- | --- |
-| `index.html` | Die komplette Seite in einer Datei (HTML, CSS und Skript). Es gibt keinen Build-Schritt. Schriften werden von Google Fonts geladen. |
-| `LICENSE` | Lizenz des Repositorys. |
+Die Seite zeigt in dieser Reihenfolge: **Wo wir stehen** (Etappen von den Grundlagen bis zur Pilotentscheidung), **Was jetzt gebraucht wird** (offene Fragen an das Team), **Nächste Schritte**, **Offene Punkte**, **Verlauf** (Entwicklungsverlauf und Entscheidungen) sowie die Bereiche **Aktuelle Berichte** und **Alle Berichte & Dokumente**.
 
-## Ansehen
+## Berichte
 
-Die Seite wird über GitHub Pages veröffentlicht: <https://leados-org.github.io/leados-arbeitsstand/>
+Die Berichte werden nicht in dieser Seite gepflegt. Die Seite liest sie zur Laufzeit per `fetch()` aus dem öffentlichen Repository [`LeadOS-Org/leados-reports`](https://github.com/LeadOS-Org/leados-reports) (Index `index.json` und einzelne JSON-Berichte).
 
-Lokal genügt es, `index.html` im Browser zu öffnen.
+## Änderungen
 
-## Pflege
-
-1. `index.html` bearbeiten (Etappen, Stand-Zeile, offene Fragen, Ergebnisse).
-2. Den Stand mit Datum und Uhrzeit oben auf der Seite aktualisieren.
-3. Änderung committen und auf `main` pushen. GitHub Pages aktualisiert die Seite danach.
+- Änderungen erfolgen direkt in `index.html`. Es gibt keinen Build-Schritt; lokal genügt es, die Datei im Browser zu öffnen.
+- Schriften werden von Google Fonts geladen.
+- Nach dem Commit und Push auf `main` aktualisiert GitHub Pages die Seite.
+- Commits bitte **signiert**.
 
 ## Verwandte Projekte
 
 - Prototyp: <https://leados-design-foundation.lovable.app>
-- Repository des Prototyps: [`LeadOS-Org/leados-design-foundation`](https://github.com/LeadOS-Org/leados-design-foundation)
+- Produktcode des Prototyps (privat): [`LeadOS-Org/leados-design-foundation`](https://github.com/LeadOS-Org/leados-design-foundation)
+- Berichte: [`LeadOS-Org/leados-reports`](https://github.com/LeadOS-Org/leados-reports)
