@@ -388,7 +388,8 @@ const STATE = {
       {id:"d012", title:"D-009-Revision: KI-Vorschläge im SystemCheck erlaubt", status:"Angenommen", d:"15.09.2026", text:"SystemCheck (Schritt 2) erhält an zwei Stellen einen KI-Vorschlagsbutton (zustandsloser LLM-Aufruf, Auswahl statt Autofill) – ergänzt D-009. PDF-Export, dauerhafte Speicherung und ein Assistent bleiben weiterhin ausdrücklich ausgeschlossen."},
       {id:"d013", title:"Muss-Check-Verhalten: Hinweis statt Reset", status:"Angenommen", d:"15.09.2026", text:"Ersetzt das bisherige Reset-Verhalten aus Befund 4 (Usability-Test M1-006): Inline-Hinweis am fehlenden Feld plus Sprungmöglichkeit statt komplettem Neustart des Ablaufs. Kein Datenverlust bei fehlender Angabe mehr."},
       {id:"d014", title:"MVP-Zieldefinition", status:"Angenommen", d:"17.09.2026", text:"MVP startet mit einer Firma und zwei Rollen (Unternehmer, Mitarbeiter). Servicebereich (Begrüßung, Kontopflege, Stammdatenpflege, Backup, Servicestatus, PDF-Export, Hilfe/Handbuch) ist Teil des MVP. Sprintlänge 2 Wochen, Dieter testet und gibt nach jedem Sprint frei, bevor der nächste als abgeschlossen gilt."},
-      {id:"d015", title:"Rollenmodell-Arbeitshypothese", status:"Vorgeschlagen", d:"17.09.2026", text:"Aus Dieters Rückmeldung abgeleitet: Unternehmer wird zur operativen Spitze, Inhaber zum reinen Eigentums-Attribut ohne eigene Zugriffsrechte (statt eigener Hierarchiestufe). Noch NICHT bestätigt – vier Detailfragen dazu liegen Dieter vor (siehe Auftragssammlung)."}
+      {id:"d015", title:"Rollenmodell-Arbeitshypothese", status:"Vorgeschlagen", d:"17.09.2026", text:"Aus Dieters Rückmeldung abgeleitet: Unternehmer wird zur operativen Spitze, Inhaber zum reinen Eigentums-Attribut ohne eigene Zugriffsrechte (statt eigener Hierarchiestufe). Noch NICHT bestätigt – vier Detailfragen dazu liegen Dieter vor (siehe Auftragssammlung)."},
+      {id:"d016", title:"Sprint 1.5 — Z-AVKK-Liste lokal (Epic G)", status:"Angenommen", d:"18.09.2026", text:"Die Z-AVKK-Liste wird vorgezogen und unabhängig von Auth und Persistenz (Sprint 2) als eigener Sprint 1.5 umgesetzt – lokal im Browser gespeichert, spätere Migration in die Datenbank mit Sprint 3. Ein Ziel kann mehrere Aufgaben haben; der Unternehmer legt weitere Aufgaben manuell an (kein KI-Vorschlag). Auf-/Ab-Buttons statt Drag & Drop, Kapazitätsrechnung und KI-Prüfung der Gesamtliste sind Teil des Umfangs, Export als CSV/Excel und als PDF/Druck."}
     ],
     protocol: [
       {d:"20.–21.08.2026", title:"Grundlagen & Sprint-00-Gespräch", text:"Projektunterlagen gesichtet, offene Fragen vorbereitet. Am 21.08. gemeinsames Gespräch mit Dieter: Zielgruppe, Kernproblem, die fünf Arbeitsschritte, Pilotumfang, Rollen und Testrahmen besprochen und freigegeben."},
@@ -420,6 +421,7 @@ const STATE = {
       "RBAC-Konzept (Post-Pilot): Ob eine Führungskraft selbst Rollen ändern darf (z. B. MA → FK), zusätzlich zu Admin — Frage an Dieter.",
       "Vier Detailfragen zur Rollenmodell-Arbeitshypothese offen (Grundstruktur, geschäftsführender Gesellschafter, Investoren-Einblick, Führungskraft-Stufe) – siehe Architekturkonzept Track C und Auftragssammlung.",
       "Umsetzungsplan (Post-Pilot): Reihenfolge-Bestätigung, insbesondere ob Sprint 2 (Datenmodell) und Sprint 3 (RLS-Zugriffsschutz) im selben Deploy-Fenster laufen müssen — Frage an Dieter.",
+      "Vier Detailfragen zum Rollenmodell weiterhin offen — im letzten Gespräch bewusst zurückgestellt (betreffen nicht den aktuellen Sprint).",
       "Nächster Dieter-Termin ist Blocker für Sprint 2 des MVP-Backlogs: Anmeldemethode (Auth-Provider-Wahl), Bestätigung der Rollenmodell-Arbeitshypothese, M1-007-Bestätigung, L-7-Inhalt."
     ],
     documents: [
@@ -444,6 +446,7 @@ const STATE = {
       {label:"MVP-Planung (Architekturkonzept, Backlog/Sprintplan)", status:"done"},
       {label:"Nächster Dieter-Termin (M1-007, Rollenmodell, L-7)", status:"aktuell"},
       {label:"Track C / MVP – Sprint 1: DB-Schema & Backup-Infrastruktur (kein Dieter-Test nötig)", status:"geplant"},
+      {label:"Sprint 1.5 (Z-AVKK-Liste lokal) – in Vorbereitung, zwei Lovable-Prompts übergabebereit", status:"geplant"},
       {label:"Track C / MVP – Sprint 2: Auth, Login-UI, Migration, Kontopflege (wartet auf nächsten Dieter-Termin)", status:"geplant"},
       {label:"Track C / MVP – Sprint 3: Rollenmodell/Stammdatenpflege, PDF-Export", status:"geplant"},
       {label:"Track C / MVP – Sprint 4: Servicestatus, Hilfe/Handbuch/Entwicklungstagebuch, MVP-Abschluss", status:"geplant"}
@@ -511,7 +514,8 @@ const STATE = {
       {d:"17.09.2026", t:"Architekturkonzept Track C signiert committet (docs/2026-09-17_Architekturkonzept_Track-C.md, leados-design-foundation) – Entwurf für Mehrmandantenfähigkeit, erweitertes Rollenmodell, Anmeldung, wartet auf Dieters Antworten zu acht offenen Punkten.", isNew: true},
       {d:"17.09.2026", t:"Planungssession: MVP-Ziel festgelegt (eine Firma, zwei Rollen – Unternehmer, Mitarbeiter), Servicebereich (Begrüßung, Kontopflege, Stammdatenpflege, Backup, Servicestatus, PDF-Export, Hilfe/Handbuch/Entwicklungstagebuch) als Teil des MVP bestätigt, neues Datenmodell-Feld ist_plattform_admin für Servicestatus-Zugriff (Bernd, Dieter), Sprint-Abnahmeprinzip mit Dieter-Testgates nach jedem Sprint, Sprintlänge 2 Wochen. Architekturkonzept entsprechend aktualisiert, vollständiger Backlog mit Vier-Sprint-Sequenz (Epics A-E) in docs/2026-09-17_Backlog_Sprintplan_MVP.md neu angelegt (beides leados-design-foundation, signierte Commits)."},
       {d:"17.09.2026", t:"Statusgrafik auf dieser Seite umgesetzt: Meilenstein-Leiste durch farbige Status-Karten plus Fortschritts-Punktleiste ersetzt, liest weiterhin dieselben Meilenstein-Daten, keine neue Abhängigkeit."},
-      {d:"17.09.2026", t:"Rollenmodell-Arbeitshypothese aus Dieters Rückmeldung ins Architekturkonzept übernommen (Unternehmer wird operative Spitze, Inhaber wird Attribut ist_inhaber/anteil_prozent statt eigener Rolle), RBAC-Matrix und Datenmodell entsprechend angepasst. Auftragssammlung vollständig auf den aktuellen Stand gebracht. Fehlende Rollenmodell-Grafik entdeckt, tote Bildreferenz zunächst entfernt, dann durch eine neu erstellte, korrekte SVG-Grafik ersetzt. Vier Detailfragen zur Arbeitshypothese noch offen.", isNew: true}
+      {d:"17.09.2026", t:"Rollenmodell-Arbeitshypothese aus Dieters Rückmeldung ins Architekturkonzept übernommen (Unternehmer wird operative Spitze, Inhaber wird Attribut ist_inhaber/anteil_prozent statt eigener Rolle), RBAC-Matrix und Datenmodell entsprechend angepasst. Auftragssammlung vollständig auf den aktuellen Stand gebracht. Fehlende Rollenmodell-Grafik entdeckt, tote Bildreferenz zunächst entfernt, dann durch eine neu erstellte, korrekte SVG-Grafik ersetzt. Vier Detailfragen zur Arbeitshypothese noch offen."},
+      {d:"18.09.2026", t:"Gespräch mit Dieter: Rollenmodell-Rückmeldung erhalten (Bestätigung steht aus), Ziel-Aufgabe-Struktur (ein Ziel kann mehrere Aufgaben haben) geklärt, Z-AVKK-Liste vollständig spezifiziert, Sprint 1.5 neu eingeplant."}
     ],
     aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
   }
