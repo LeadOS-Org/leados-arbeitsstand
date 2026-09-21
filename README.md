@@ -24,6 +24,14 @@ Stand und Phasen stehen direkt in `index.html`. Nach einer Änderung auch den Ze
 - [leados-reports](https://github.com/LeadOS-Org/leados-reports)
 - [leados-design-foundation](https://github.com/LeadOS-Org/leados-design-foundation) (Prototyp)
 
+## Referenzierte Standards
+
+LeadOS referenziert die Standardfamilie unter
+[`bmarnau-standards`](https://github.com/bmarnau-standards) (ADG, TDF,
+AQGS, security-standard, dsgvo-compliance, ai-act-compliance) als
+ergänzende, projektübergreifende Grundlage. Näheres siehe ADR-0006 im
+Repository `leados-design-foundation` (`docs/ADR/`).
+
 ## Lizenz
 
 MIT, siehe [LICENSE](LICENSE).
