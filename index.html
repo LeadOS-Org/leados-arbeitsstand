@@ -268,8 +268,8 @@ footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); colo
 /* ---------- state ---------- */
 /*STATE_START*/
 const STATE = {
-  updated: "18.09.2026, 05:11 Uhr",
-  phaseLabel: "Aktuell: MVP-Planung und Rollenmodell-Arbeitshypothese erarbeitet, wartet auf nächsten Dieter-Termin (M1-007, Rollenmodell, L-7)",
+  updated: "21.09.2026",
+  phaseLabel: "Aktuell: Sprint 1.5 (Z-AVKK-Liste) größtenteils umgesetzt, Pilotentscheidung steht noch aus",
   appUrl: "https://leados-design-foundation.lovable.app",
   appLoginRequired: false,
   milestones: [
@@ -422,7 +422,9 @@ const STATE = {
       "Vier Detailfragen zur Rollenmodell-Arbeitshypothese offen (Grundstruktur, geschäftsführender Gesellschafter, Investoren-Einblick, Führungskraft-Stufe) – siehe Architekturkonzept Track C und Auftragssammlung.",
       "Umsetzungsplan (Post-Pilot): Reihenfolge-Bestätigung, insbesondere ob Sprint 2 (Datenmodell) und Sprint 3 (RLS-Zugriffsschutz) im selben Deploy-Fenster laufen müssen — Frage an Dieter.",
       "Vier Detailfragen zum Rollenmodell weiterhin offen — im letzten Gespräch bewusst zurückgestellt (betreffen nicht den aktuellen Sprint).",
-      "Nächster Dieter-Termin ist Blocker für Sprint 2 des MVP-Backlogs: Anmeldemethode (Auth-Provider-Wahl), Bestätigung der Rollenmodell-Arbeitshypothese, M1-007-Bestätigung, L-7-Inhalt."
+      "Nächster Dieter-Termin ist Blocker für Sprint 2 des MVP-Backlogs: Anmeldemethode (Auth-Provider-Wahl), Bestätigung der Rollenmodell-Arbeitshypothese, M1-007-Bestätigung, L-7-Inhalt.",
+      "Navigation Z-AVKK-Liste ↔ Fünf-Schritte-Ablauf fehlt noch — Vorschläge liegen vor, Diskussion mit Dieter ausstehend.",
+      "Schritt 5 (Überblick/Neustart) muss im Licht der dauerhaften Z-AVKK-Liste neu eingeordnet werden — offene Frage an Dieter."
     ],
     documents: [
       {id:"mgmt-pdf", title:"Management-Übersicht LeadOS", desc:"4 Seiten – Aufbau des Projekts, Plan bis zum fertigen Piloten (MVP)", filename:"LeadOS_Managementunterlage_v1.0.pdf"},
@@ -515,7 +517,8 @@ const STATE = {
       {d:"17.09.2026", t:"Planungssession: MVP-Ziel festgelegt (eine Firma, zwei Rollen – Unternehmer, Mitarbeiter), Servicebereich (Begrüßung, Kontopflege, Stammdatenpflege, Backup, Servicestatus, PDF-Export, Hilfe/Handbuch/Entwicklungstagebuch) als Teil des MVP bestätigt, neues Datenmodell-Feld ist_plattform_admin für Servicestatus-Zugriff (Bernd, Dieter), Sprint-Abnahmeprinzip mit Dieter-Testgates nach jedem Sprint, Sprintlänge 2 Wochen. Architekturkonzept entsprechend aktualisiert, vollständiger Backlog mit Vier-Sprint-Sequenz (Epics A-E) in docs/2026-09-17_Backlog_Sprintplan_MVP.md neu angelegt (beides leados-design-foundation, signierte Commits)."},
       {d:"17.09.2026", t:"Statusgrafik auf dieser Seite umgesetzt: Meilenstein-Leiste durch farbige Status-Karten plus Fortschritts-Punktleiste ersetzt, liest weiterhin dieselben Meilenstein-Daten, keine neue Abhängigkeit."},
       {d:"17.09.2026", t:"Rollenmodell-Arbeitshypothese aus Dieters Rückmeldung ins Architekturkonzept übernommen (Unternehmer wird operative Spitze, Inhaber wird Attribut ist_inhaber/anteil_prozent statt eigener Rolle), RBAC-Matrix und Datenmodell entsprechend angepasst. Auftragssammlung vollständig auf den aktuellen Stand gebracht. Fehlende Rollenmodell-Grafik entdeckt, tote Bildreferenz zunächst entfernt, dann durch eine neu erstellte, korrekte SVG-Grafik ersetzt. Vier Detailfragen zur Arbeitshypothese noch offen."},
-      {d:"18.09.2026", t:"Gespräch mit Dieter: Rollenmodell-Rückmeldung erhalten (Bestätigung steht aus), Ziel-Aufgabe-Struktur (ein Ziel kann mehrere Aufgaben haben) geklärt, Z-AVKK-Liste vollständig spezifiziert, Sprint 1.5 neu eingeplant."}
+      {d:"18.09.2026", t:"Gespräch mit Dieter: Rollenmodell-Rückmeldung erhalten (Bestätigung steht aus), Ziel-Aufgabe-Struktur (ein Ziel kann mehrere Aufgaben haben) geklärt, Z-AVKK-Liste vollständig spezifiziert, Sprint 1.5 neu eingeplant."},
+      {d:"21.09.2026", t:"Sprint 1.5 (Epic G) vollständig abgeschlossen: G1–G7, G10 umgesetzt und verifiziert (Zwei-Ebenen-Struktur, Button „weitere Aufgabe“, Z-AVKK-Liste mit allen zwölf Feldern, KI-Prüfung als Arbeitsversion, Kapazitätsrechnung, Erledigt-Kennzeichen, Bestätigt-FK/MA), dazu Layout- und Farbverfeinerungen. Live-Verifikation auf leados-design-foundation.lovable.app bestätigt: Terminologie „Unternehmer“, G2-Button und Z-AVKK-Liste funktionieren vollständig. Neuer Diskussionspunkt für Dieter: Navigation zwischen Z-AVKK-Liste und Fünf-Schritte-Ablauf fehlt noch (bewusst zurückgestellt), Vorschläge liegen vor. Im Anschluss AQGS-Hygiene-Diagnose durchgeführt: CI-Rot behoben, Branch-Schutz eingerichtet, E2E-Tests für G3/G5 ergänzt, Standards-Familie (D-011/ADR-0006) dokumentiert. Keine offenen technischen Blocker."}
     ],
     aufwandGesamt: "rund 48 Stunden (inkl. 7,5 Std. von Codex am 29.08.)"
   }
