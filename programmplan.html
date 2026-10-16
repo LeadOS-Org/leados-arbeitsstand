@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programmplan Pilot-MVP</title>
+<style>
+:root{--bg:#f5f7f8;--surface:#ffffff;--fg:#14222b;--muted:#566873;--line:#d3dce1;--accent:#0e6e8c;--mu:#b94a12}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a21;--surface:#16242d;--fg:#e4ecf0;--muted:#93a6b2;--line:#2a3d49;--accent:#4fb3d1;--mu:#f0894f;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.55;padding:28px 16px 56px}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1{font-size:1.9rem;line-height:1.15;margin:0;font-weight:600;text-wrap:balance}
+h2{font-size:1.15rem;margin:0 0 10px;font-weight:600}
+p{margin:0} p+p{margin-top:10px}
+.sub{color:var(--muted);margin-top:6px}
+a{color:var(--accent)}
+.txt{max-width:75ch}
+dl.facts{display:flex;flex-wrap:wrap;gap:6px 28px;margin:16px 0 0}
+dl.facts div{display:flex;gap:8px;align-items:baseline}
+dl.facts dt{color:var(--muted);font-size:.85rem}
+dl.facts dd{margin:0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92rem}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow-x:auto}
+.box svg{display:block;min-width:900px;width:100%;height:auto}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+th,td{text-align:left;padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+thead th{border-top:0;font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.n,th.n{text-align:right;white-space:nowrap}
+td.d{white-space:nowrap;font-family:ui-monospace,Menlo,Consolas,monospace}
+tr.hi td{font-weight:600}
+tr.hi td:first-child{box-shadow:inset 3px 0 0 var(--mu)}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;max-width:75ch}
+.foot{font-size:.85rem;color:var(--muted);max-width:75ch}
+ul{margin:8px 0 0;padding-left:1.2em} li+li{margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="sub"><a href="index.html">Zur Startseite des Arbeitsstands</a></p>
+  <h1>Programmplan Pilot-MVP</h1>
+  <p class="sub">LeadOS bis Weihnachten 2026 · Letzte Aktualisierung: 16.10.2026 · Termine sind Annahmen, keine Zusagen</p>
+  <dl class="facts">
+    <div><dt>Ziel</dt><dd>pilotreif (GG-1) am Fr 18.12.2026</dd></div>
+    <div><dt>Puffer</dt><dd>21.–23.12.2026</dd></div>
+    <div><dt>Arbeitstage</dt><dd>46 ab 16.10.</dd></div>
+    <div><dt>Lovable-Läufe</dt><dd>24 Kernläufe, 1 Reserve</dd></div>
+  </dl>
+</header>
+
+<section class="txt" aria-label="Erklärung">
+  <h2>Worum es geht</h2>
+  <p>LeadOS soll bis Weihnachten 2026 eine funktionierende, dokumentierte und gut strukturierte Anwendung für den Pilotbetrieb sein: Eine Pilotfirma führt den Z-AVKK-Ablauf mit echten Daten durch, Firmen sind strikt getrennt, Änderungen sind nachvollziehbar und der Datenschutz ist technisch wirksam.</p>
+  <p><strong>Pilotreif (GG-1)</strong> heißt: Der Nachweisbericht liegt vor, die Projektleitung gibt frei und die fachliche Leitung bestätigt den Inhalt. Die Qualitätsschranke gilt unverändert; sie wird nicht für den Termin gesenkt.</p>
+</section>
+
+<section aria-label="Zeitstrahl">
+  <h2>Zeitstrahl</h2>
+  <div class="box">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 614" width="1080" height="614" role="img" aria-labelledby="pp-t pp-d"><title id="pp-t">Programmplan Pilot-MVP: LeadOS bis Weihnachten 2026</title><desc id="pp-d">Zeitstrahl vom 15.10. bis 23.12.2026: Bau in sieben Sprints SP-1 bis SP-7 mit Puffer, Dokumentation D-1 bis D-6, Kontrollpunkte KP-1 bis KP-5, Meilenstein M-U am 01.12. und pilotreif GG-1 am 18.12.2026.</desc><style>
+:root{--bg:#ffffff;--bg2:#f2f5f7;--fg:#14222b;--mut:#566873;--line:#d3dce1;--plan:#dde6eb;--acc:#0e6e8c;--accfg:#ffffff;--mu:#b94a12;--ok:#2b7a4b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16242d;--bg2:#0f1a21;--fg:#e4ecf0;--mut:#93a6b2;--line:#2a3d49;--plan:#233844;--acc:#4fb3d1;--accfg:#0b1a21;--mu:#f0894f;--ok:#62c08a}}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:12px;fill:var(--fg)}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px}
+.s{fill:var(--mut);font-size:11px}
+.b{font-weight:600}
+.gt{font-size:10.5px;letter-spacing:.08em;fill:var(--mut)}
+.bg{fill:var(--bg)}.frame{fill:none;stroke:var(--line)}
+.hd,.grp{fill:var(--bg2)}
+.ln{stroke:var(--line)}.wk{stroke:var(--line);opacity:.7}
+.bar{fill:var(--plan);stroke:var(--line)}
+.bar.act{fill:var(--acc);stroke:var(--acc)}
+.bar.mu{stroke:var(--mu);stroke-width:1.5}
+.bar.pf{fill:var(--bg2);stroke:var(--mut);stroke-dasharray:4 3}
+.bt{font-size:11.5px}.bt.act{fill:var(--accfg);font-weight:600}
+.ms{fill:var(--acc)}.ms.mu{fill:var(--mu)}.ms.ok{fill:var(--ok)}
+.mt{font-size:11px;fill:var(--mut)}.mt.b{fill:var(--fg);font-weight:600}
+.today{stroke:var(--mu);stroke-width:1.5;stroke-dasharray:3 3}
+</style><rect class="bg" x="0" y="0" width="1080" height="614"/><rect class="frame" x="0.5" y="0.5" width="1079" height="613" rx="6"/><rect class="hd" x="0" y="0" width="1080" height="30"/><text class="lbl s" x="12" y="19">Kalenderwoche</text><line class="today" x1="214.4" y1="30" x2="214.4" y2="574"/><text class="mono s" x="249.1" y="19">KW 43</text><text class="mono s" x="335.1" y="19">KW 44</text><text class="mono s" x="421.1" y="19">KW 45</text><text class="mono s" x="507.1" y="19">KW 46</text><text class="mono s" x="593.1" y="19">KW 47</text><text class="mono s" x="679.1" y="19">KW 48</text><text class="mono s" x="765.1" y="19">KW 49</text><text class="mono s" x="851.1" y="19">KW 50</text><text class="mono s" x="937.1" y="19">KW 51</text><text class="mono s" x="1023.1" y="19">KW 52</text><rect class="grp" x="0" y="30" width="1080" height="22"/><text class="gt" x="12" y="45">BAU (LOVABLE-LÄUFE)</text><line class="ln" x1="0" y1="52" x2="1080" y2="52"/><line class="wk" x1="245.1" y1="52" x2="245.1" y2="82"/><line class="wk" x1="331.1" y1="52" x2="331.1" y2="82"/><line class="wk" x1="417.1" y1="52" x2="417.1" y2="82"/><line class="wk" x1="503.1" y1="52" x2="503.1" y2="82"/><line class="wk" x1="589.1" y1="52" x2="589.1" y2="82"/><line class="wk" x1="675.1" y1="52" x2="675.1" y2="82"/><line class="wk" x1="761.1" y1="52" x2="761.1" y2="82"/><line class="wk" x1="847.1" y1="52" x2="847.1" y2="82"/><line class="wk" x1="933.1" y1="52" x2="933.1" y2="82"/><line class="wk" x1="1019.1" y1="52" x2="1019.1" y2="82"/><text class="lbl" x="12" y="65">Vorbereitung</text><text class="lbl s" x="12" y="77">Abnahme A2, Plan Rev. 4</text><rect class="bar act" x="208.3" y="57" width="98.3" height="20" rx="3"><title>Abnahme A2 · Plan Rev. 4</title></rect><text class="bt" x="312.6" y="71">Abnahme A2 · Plan Rev. 4</text><line class="ln" x1="0" y1="82" x2="1080" y2="82"/><line class="wk" x1="245.1" y1="82" x2="245.1" y2="112"/><line class="wk" x1="331.1" y1="82" x2="331.1" y2="112"/><line class="wk" x1="417.1" y1="82" x2="417.1" y2="112"/><line class="wk" x1="503.1" y1="82" x2="503.1" y2="112"/><line class="wk" x1="589.1" y1="82" x2="589.1" y2="112"/><line class="wk" x1="675.1" y1="82" x2="675.1" y2="112"/><line class="wk" x1="761.1" y1="82" x2="761.1" y2="112"/><line class="wk" x1="847.1" y1="82" x2="847.1" y2="112"/><line class="wk" x1="933.1" y1="82" x2="933.1" y2="112"/><line class="wk" x1="1019.1" y1="82" x2="1019.1" y2="112"/><text class="lbl" x="12" y="95">SP-1 Einladen, Annehmen</text><text class="lbl s" x="12" y="107">3 Läufe, in Arbeit</text><rect class="bar act" x="257.4" y="87" width="135.1" height="20" rx="3"><title>SP-1 · 3 Läufe</title></rect><text class="bt act" x="264.4" y="101">SP-1 · 3 Läufe</text><line class="ln" x1="0" y1="112" x2="1080" y2="112"/><line class="wk" x1="245.1" y1="112" x2="245.1" y2="142"/><line class="wk" x1="331.1" y1="112" x2="331.1" y2="142"/><line class="wk" x1="417.1" y1="112" x2="417.1" y2="142"/><line class="wk" x1="503.1" y1="112" x2="503.1" y2="142"/><line class="wk" x1="589.1" y1="112" x2="589.1" y2="142"/><line class="wk" x1="675.1" y1="112" x2="675.1" y2="142"/><line class="wk" x1="761.1" y1="112" x2="761.1" y2="142"/><line class="wk" x1="847.1" y1="112" x2="847.1" y2="142"/><line class="wk" x1="933.1" y1="112" x2="933.1" y2="142"/><line class="wk" x1="1019.1" y1="112" x2="1019.1" y2="142"/><text class="lbl" x="12" y="125">SP-2 Zugriffsregeln</text><text class="lbl s" x="12" y="137">4 Läufe</text><rect class="bar" x="417.1" y="117" width="122.9" height="20" rx="3"><title>SP-2 · 4 Läufe</title></rect><text class="bt" x="424.1" y="131">SP-2 · 4 Läufe</text><line class="ln" x1="0" y1="142" x2="1080" y2="142"/><line class="wk" x1="245.1" y1="142" x2="245.1" y2="172"/><line class="wk" x1="331.1" y1="142" x2="331.1" y2="172"/><line class="wk" x1="417.1" y1="142" x2="417.1" y2="172"/><line class="wk" x1="503.1" y1="142" x2="503.1" y2="172"/><line class="wk" x1="589.1" y1="142" x2="589.1" y2="172"/><line class="wk" x1="675.1" y1="142" x2="675.1" y2="172"/><line class="wk" x1="761.1" y1="142" x2="761.1" y2="172"/><line class="wk" x1="847.1" y1="142" x2="847.1" y2="172"/><line class="wk" x1="933.1" y1="142" x2="933.1" y2="172"/><line class="wk" x1="1019.1" y1="142" x2="1019.1" y2="172"/><text class="lbl" x="12" y="155">SP-3 Ablauf speichern</text><text class="lbl s" x="12" y="167">4 Läufe</text><rect class="bar" x="540.0" y="147" width="110.6" height="20" rx="3"><title>SP-3 · 4 Läufe</title></rect><text class="bt" x="547.0" y="161">SP-3 · 4 Läufe</text><line class="ln" x1="0" y1="172" x2="1080" y2="172"/><line class="wk" x1="245.1" y1="172" x2="245.1" y2="202"/><line class="wk" x1="331.1" y1="172" x2="331.1" y2="202"/><line class="wk" x1="417.1" y1="172" x2="417.1" y2="202"/><line class="wk" x1="503.1" y1="172" x2="503.1" y2="202"/><line class="wk" x1="589.1" y1="172" x2="589.1" y2="202"/><line class="wk" x1="675.1" y1="172" x2="675.1" y2="202"/><line class="wk" x1="761.1" y1="172" x2="761.1" y2="202"/><line class="wk" x1="847.1" y1="172" x2="847.1" y2="202"/><line class="wk" x1="933.1" y1="172" x2="933.1" y2="202"/><line class="wk" x1="1019.1" y1="172" x2="1019.1" y2="202"/><text class="lbl" x="12" y="185">SP-4 U-Liste</text><text class="lbl s" x="12" y="197">4 Läufe</text><rect class="bar mu" x="675.1" y="177" width="110.6" height="20" rx="3"><title>SP-4 · 4 Läufe</title></rect><text class="bt" x="682.1" y="191">SP-4 · 4 Läufe</text><line class="ln" x1="0" y1="202" x2="1080" y2="202"/><line class="wk" x1="245.1" y1="202" x2="245.1" y2="232"/><line class="wk" x1="331.1" y1="202" x2="331.1" y2="232"/><line class="wk" x1="417.1" y1="202" x2="417.1" y2="232"/><line class="wk" x1="503.1" y1="202" x2="503.1" y2="232"/><line class="wk" x1="589.1" y1="202" x2="589.1" y2="232"/><line class="wk" x1="675.1" y1="202" x2="675.1" y2="232"/><line class="wk" x1="761.1" y1="202" x2="761.1" y2="232"/><line class="wk" x1="847.1" y1="202" x2="847.1" y2="232"/><line class="wk" x1="933.1" y1="202" x2="933.1" y2="232"/><line class="wk" x1="1019.1" y1="202" x2="1019.1" y2="232"/><text class="lbl" x="12" y="215">SP-5 Änderungsprotokoll</text><text class="lbl s" x="12" y="227">2 Läufe</text><rect class="bar" x="785.7" y="207" width="36.9" height="20" rx="3"><title>SP-5 · 2 Läufe</title></rect><text class="bt" x="828.6" y="221">SP-5 · 2 Läufe</text><line class="ln" x1="0" y1="232" x2="1080" y2="232"/><line class="wk" x1="245.1" y1="232" x2="245.1" y2="262"/><line class="wk" x1="331.1" y1="232" x2="331.1" y2="262"/><line class="wk" x1="417.1" y1="232" x2="417.1" y2="262"/><line class="wk" x1="503.1" y1="232" x2="503.1" y2="262"/><line class="wk" x1="589.1" y1="232" x2="589.1" y2="262"/><line class="wk" x1="675.1" y1="232" x2="675.1" y2="262"/><line class="wk" x1="761.1" y1="232" x2="761.1" y2="262"/><line class="wk" x1="847.1" y1="232" x2="847.1" y2="262"/><line class="wk" x1="933.1" y1="232" x2="933.1" y2="262"/><line class="wk" x1="1019.1" y1="232" x2="1019.1" y2="262"/><text class="lbl" x="12" y="245">SP-6 Datenschutz</text><text class="lbl s" x="12" y="257">4 Läufe</text><rect class="bar" x="847.1" y="237" width="61.4" height="20" rx="3"><title>SP-6 · 4 Läufe</title></rect><text class="bt" x="914.6" y="251">SP-6 · 4 Läufe</text><line class="ln" x1="0" y1="262" x2="1080" y2="262"/><line class="wk" x1="245.1" y1="262" x2="245.1" y2="292"/><line class="wk" x1="331.1" y1="262" x2="331.1" y2="292"/><line class="wk" x1="417.1" y1="262" x2="417.1" y2="292"/><line class="wk" x1="503.1" y1="262" x2="503.1" y2="292"/><line class="wk" x1="589.1" y1="262" x2="589.1" y2="292"/><line class="wk" x1="675.1" y1="262" x2="675.1" y2="292"/><line class="wk" x1="761.1" y1="262" x2="761.1" y2="292"/><line class="wk" x1="847.1" y1="262" x2="847.1" y2="292"/><line class="wk" x1="933.1" y1="262" x2="933.1" y2="292"/><line class="wk" x1="1019.1" y1="262" x2="1019.1" y2="292"/><text class="lbl" x="12" y="275">SP-7 Gesamtprüfung</text><text class="lbl s" x="12" y="287">3 Läufe, Nachweisbericht</text><rect class="bar mu" x="933.1" y="267" width="61.4" height="20" rx="3"><title>SP-7 · 3 Läufe</title></rect><text class="bt" text-anchor="end" x="927.1" y="281">SP-7 · 3 Läufe</text><line class="ln" x1="0" y1="292" x2="1080" y2="292"/><line class="wk" x1="245.1" y1="292" x2="245.1" y2="322"/><line class="wk" x1="331.1" y1="292" x2="331.1" y2="322"/><line class="wk" x1="417.1" y1="292" x2="417.1" y2="322"/><line class="wk" x1="503.1" y1="292" x2="503.1" y2="322"/><line class="wk" x1="589.1" y1="292" x2="589.1" y2="322"/><line class="wk" x1="675.1" y1="292" x2="675.1" y2="322"/><line class="wk" x1="761.1" y1="292" x2="761.1" y2="322"/><line class="wk" x1="847.1" y1="292" x2="847.1" y2="322"/><line class="wk" x1="933.1" y1="292" x2="933.1" y2="322"/><line class="wk" x1="1019.1" y1="292" x2="1019.1" y2="322"/><text class="lbl" x="12" y="305">Puffer</text><text class="lbl s" x="12" y="317">Verzug, Nachbesserung</text><rect class="bar pf" x="1019.1" y="297" width="36.9" height="20" rx="3"><title>Puffer</title></rect><text class="bt" text-anchor="end" x="1013.1" y="311">Puffer</text><rect class="grp" x="0" y="322" width="1080" height="22"/><text class="gt" x="12" y="337">DOKUMENTATION (CLAUDE CODE UND CLAUDE)</text><line class="ln" x1="0" y1="344" x2="1080" y2="344"/><line class="wk" x1="245.1" y1="344" x2="245.1" y2="374"/><line class="wk" x1="331.1" y1="344" x2="331.1" y2="374"/><line class="wk" x1="417.1" y1="344" x2="417.1" y2="374"/><line class="wk" x1="503.1" y1="344" x2="503.1" y2="374"/><line class="wk" x1="589.1" y1="344" x2="589.1" y2="374"/><line class="wk" x1="675.1" y1="344" x2="675.1" y2="374"/><line class="wk" x1="761.1" y1="344" x2="761.1" y2="374"/><line class="wk" x1="847.1" y1="344" x2="847.1" y2="374"/><line class="wk" x1="933.1" y1="344" x2="933.1" y2="374"/><line class="wk" x1="1019.1" y1="344" x2="1019.1" y2="374"/><text class="lbl" x="12" y="357">D-1 / D-2</text><text class="lbl s" x="12" y="369">Architektur, Technik</text><rect class="bar" x="417.1" y="349" width="319.4" height="20" rx="3"><title>D-1 Architektur · D-2 Technische Beschreibung</title></rect><text class="bt" x="424.1" y="363">D-1 Architektur · D-2 Technische Beschreibung</text><line class="ln" x1="0" y1="374" x2="1080" y2="374"/><line class="wk" x1="245.1" y1="374" x2="245.1" y2="404"/><line class="wk" x1="331.1" y1="374" x2="331.1" y2="404"/><line class="wk" x1="417.1" y1="374" x2="417.1" y2="404"/><line class="wk" x1="503.1" y1="374" x2="503.1" y2="404"/><line class="wk" x1="589.1" y1="374" x2="589.1" y2="404"/><line class="wk" x1="675.1" y1="374" x2="675.1" y2="404"/><line class="wk" x1="761.1" y1="374" x2="761.1" y2="404"/><line class="wk" x1="847.1" y1="374" x2="847.1" y2="404"/><line class="wk" x1="933.1" y1="374" x2="933.1" y2="404"/><line class="wk" x1="1019.1" y1="374" x2="1019.1" y2="404"/><text class="lbl" x="12" y="387">D-3</text><text class="lbl s" x="12" y="399">Betriebshandbuch</text><rect class="bar" x="675.1" y="379" width="233.4" height="20" rx="3"><title>D-3 Betrieb und Wiederherstellung</title></rect><text class="bt" x="682.1" y="393">D-3 Betrieb und Wiederherstellung</text><line class="ln" x1="0" y1="404" x2="1080" y2="404"/><line class="wk" x1="245.1" y1="404" x2="245.1" y2="434"/><line class="wk" x1="331.1" y1="404" x2="331.1" y2="434"/><line class="wk" x1="417.1" y1="404" x2="417.1" y2="434"/><line class="wk" x1="503.1" y1="404" x2="503.1" y2="434"/><line class="wk" x1="589.1" y1="404" x2="589.1" y2="434"/><line class="wk" x1="675.1" y1="404" x2="675.1" y2="434"/><line class="wk" x1="761.1" y1="404" x2="761.1" y2="434"/><line class="wk" x1="847.1" y1="404" x2="847.1" y2="434"/><line class="wk" x1="933.1" y1="404" x2="933.1" y2="434"/><line class="wk" x1="1019.1" y1="404" x2="1019.1" y2="434"/><text class="lbl" x="12" y="417">D-4</text><text class="lbl s" x="12" y="429">Leitfaden Pilotfirma</text><rect class="bar" x="761.1" y="409" width="233.4" height="20" rx="3"><title>D-4 Benutzerleitfaden</title></rect><text class="bt" x="768.1" y="423">D-4 Benutzerleitfaden</text><line class="ln" x1="0" y1="434" x2="1080" y2="434"/><line class="wk" x1="245.1" y1="434" x2="245.1" y2="464"/><line class="wk" x1="331.1" y1="434" x2="331.1" y2="464"/><line class="wk" x1="417.1" y1="434" x2="417.1" y2="464"/><line class="wk" x1="503.1" y1="434" x2="503.1" y2="464"/><line class="wk" x1="589.1" y1="434" x2="589.1" y2="464"/><line class="wk" x1="675.1" y1="434" x2="675.1" y2="464"/><line class="wk" x1="761.1" y1="434" x2="761.1" y2="464"/><line class="wk" x1="847.1" y1="434" x2="847.1" y2="464"/><line class="wk" x1="933.1" y1="434" x2="933.1" y2="464"/><line class="wk" x1="1019.1" y1="434" x2="1019.1" y2="464"/><text class="lbl" x="12" y="447">D-6</text><text class="lbl s" x="12" y="459">Strukturprüfung Code</text><rect class="bar" x="785.7" y="439" width="270.3" height="20" rx="3"><title>D-6 Strukturprüfung · Bericht 09.12.</title></rect><text class="bt" x="792.7" y="453">D-6 Strukturprüfung · Bericht 09.12.</text><line class="ln" x1="0" y1="464" x2="1080" y2="464"/><line class="wk" x1="245.1" y1="464" x2="245.1" y2="494"/><line class="wk" x1="331.1" y1="464" x2="331.1" y2="494"/><line class="wk" x1="417.1" y1="464" x2="417.1" y2="494"/><line class="wk" x1="503.1" y1="464" x2="503.1" y2="494"/><line class="wk" x1="589.1" y1="464" x2="589.1" y2="494"/><line class="wk" x1="675.1" y1="464" x2="675.1" y2="494"/><line class="wk" x1="761.1" y1="464" x2="761.1" y2="494"/><line class="wk" x1="847.1" y1="464" x2="847.1" y2="494"/><line class="wk" x1="933.1" y1="464" x2="933.1" y2="494"/><line class="wk" x1="1019.1" y1="464" x2="1019.1" y2="494"/><text class="lbl" x="12" y="477">D-5</text><text class="lbl s" x="12" y="489">Entwicklungsleitfaden</text><rect class="bar" x="847.1" y="469" width="208.9" height="20" rx="3"><title>D-5 Entwicklungsleitfaden</title></rect><text class="bt" x="854.1" y="483">D-5 Entwicklungsleitfaden</text><rect class="grp" x="0" y="494" width="1080" height="22"/><text class="gt" x="12" y="509">MEILENSTEINE UND KONTROLLPUNKTE</text><line class="ln" x1="0" y1="516" x2="1080" y2="516"/><line class="wk" x1="245.1" y1="516" x2="245.1" y2="574"/><line class="wk" x1="331.1" y1="516" x2="331.1" y2="574"/><line class="wk" x1="417.1" y1="516" x2="417.1" y2="574"/><line class="wk" x1="503.1" y1="516" x2="503.1" y2="574"/><line class="wk" x1="589.1" y1="516" x2="589.1" y2="574"/><line class="wk" x1="675.1" y1="516" x2="675.1" y2="574"/><line class="wk" x1="761.1" y1="516" x2="761.1" y2="574"/><line class="wk" x1="847.1" y1="516" x2="847.1" y2="574"/><line class="wk" x1="933.1" y1="516" x2="933.1" y2="574"/><line class="wk" x1="1019.1" y1="516" x2="1019.1" y2="574"/><text class="lbl" x="12" y="549.0">Kontrolle</text><rect class="ms" x="380.4" y="524" width="12" height="12" rx="2" transform="rotate(45 386.4 530)"/><text class="mt b" text-anchor="middle" x="386.4" y="552">KP-1</text><text class="mt" text-anchor="middle" x="386.4" y="565">30.10.</text><rect class="ms" x="527.9" y="524" width="12" height="12" rx="2" transform="rotate(45 533.9 530)"/><text class="mt b" text-anchor="middle" x="533.9" y="552">KP-2</text><text class="mt" text-anchor="middle" x="533.9" y="565">11.11.</text><rect class="ms" x="638.4" y="524" width="12" height="12" rx="2" transform="rotate(45 644.4 530)"/><text class="mt b" text-anchor="middle" x="644.4" y="552">KP-3</text><text class="mt" text-anchor="middle" x="644.4" y="565">20.11.</text><rect class="ms mu" x="773.6" y="524" width="12" height="12" rx="2" transform="rotate(45 779.6 530)"/><text class="mt b" text-anchor="middle" x="779.6" y="552">M-U</text><text class="mt" text-anchor="middle" x="779.6" y="565">01.12.</text><rect class="ms" x="896.4" y="524" width="12" height="12" rx="2" transform="rotate(45 902.4 530)"/><text class="mt b" text-anchor="middle" x="902.4" y="552">KP-5</text><text class="mt" text-anchor="middle" x="902.4" y="565">11.12.</text><rect class="ms mu" x="982.4" y="524" width="12" height="12" rx="2" transform="rotate(45 988.4 530)"/><text class="mt b" text-anchor="middle" x="988.4" y="552">GG-1</text><text class="mt" text-anchor="middle" x="988.4" y="565">18.12.</text><rect class="ms ok" x="1043.9" y="524" width="12" height="12" rx="2" transform="rotate(45 1049.9 530)"/><text class="mt b" text-anchor="middle" x="1049.9" y="552">Stand</text><text class="mt" text-anchor="middle" x="1049.9" y="565">23.12.</text><rect class="bar act" x="12" y="586" width="16" height="11" rx="2"/><text class="lbl s" x="34" y="596">in Arbeit</text><rect class="bar " x="113.6" y="586" width="16" height="11" rx="2"/><text class="lbl s" x="135.6" y="596">geplant</text><rect class="bar pf" x="202.4" y="586" width="16" height="11" rx="2"/><text class="lbl s" x="224.4" y="596">Puffer</text><rect class="ms mu" x="285.8" y="586" width="10" height="10" rx="2" transform="rotate(45 290.8 591)"/><text class="lbl s" x="306.8" y="596">Meilenstein</text><rect class="ms" x="400.20000000000005" y="586" width="10" height="10" rx="2" transform="rotate(45 405.20000000000005 591)"/><text class="lbl s" x="421.20000000000005" y="596">Kontrollpunkt</text><line class="today" x1="530.4000000000001" y1="584" x2="530.4000000000001" y2="598"/><text class="lbl s" x="540.4000000000001" y="596">Stand 16.10.2026</text></svg>
+  </div>
+</section>
+
+<section class="txt" aria-label="So lesen Sie den Plan">
+  <h2>So lesen Sie den Plan</h2>
+  <ul>
+    <li><strong>Bau:</strong> Die Anwendung entsteht in Bausteinen (Läufen). Jeder Lauf wird geprüft und erst nach Abnahme gezählt. Sprints (SP-1 bis SP-7) bündeln die Läufe: Einladen und Annehmen, Zugriffsregeln, Ablauf speichern, U-Liste, Änderungsprotokoll, Datenschutz, Gesamtprüfung.</li>
+    <li><strong>Dokumentation:</strong> Architektur, Technik, Betrieb, Leitfäden und eine Strukturprüfung des Codes entstehen parallel zum Bau, ohne zusätzliche Läufe.</li>
+    <li><strong>Kontrollpunkte:</strong> An festen Terminen wird geprüft, ob der Plan hält (Tabelle unten). M-U ist der Meilenstein, an dem die U-Liste vorgeführt wird.</li>
+    <li><strong>Puffer:</strong> Die letzten drei Arbeitstage vor Weihnachten sind für Verzug und Nachbesserung reserviert.</li>
+  </ul>
+</section>
+
+<section aria-label="Kontrollpunkte">
+  <h2>Kontrollpunkte</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Datum</th><th>Punkt</th><th>Kriterium</th><th class="n">Läufe kumuliert</th></tr></thead>
+      <tbody>
+        <tr><td class="d">Fr 30.10.</td><td>KP-1</td><td>SP-1 abgenommen: Einladen und Annehmen, erster Unternehmer hat ein Konto</td><td class="n">3</td></tr>
+        <tr><td class="d">Mi 11.11.</td><td>KP-2</td><td>SP-2 abgenommen: Isolationstest mit zwei Testfirmen grün</td><td class="n">7</td></tr>
+        <tr><td class="d">Fr 20.11.</td><td>KP-3</td><td>SP-3 abgenommen: Ablauf wird gespeichert; Hälfte der Läufe erreicht</td><td class="n">11</td></tr>
+        <tr class="hi"><td class="d">Di 01.12.</td><td>M-U</td><td>U-Liste mit Filter, Sortierung und Farbe, Vorführung mit erfundenen Daten</td><td class="n">15</td></tr>
+        <tr><td class="d">Fr 04.12.</td><td>SP-5</td><td>Änderungsprotokoll abgenommen</td><td class="n">17</td></tr>
+        <tr><td class="d">Fr 11.12.</td><td>KP-5</td><td>SP-6 abgenommen: Einwilligung, Auskunft, Löschfrist, Archiv; Wiederherstellung dokumentiert</td><td class="n">21</td></tr>
+        <tr class="hi"><td class="d">Fr 18.12.</td><td>GG-1</td><td>Pilotreif: Nachweisbericht, Freigabe der Projektleitung, fachliche Bestätigung</td><td class="n">24</td></tr>
+        <tr><td class="d">Mi 23.12.</td><td>Stand</td><td>Puffer aufgebraucht, Dokumentation D-1 bis D-6 abgeschlossen</td><td class="n">24+</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-label="Dokumentationspaket">
+  <h2>Dokumentationspaket</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>ID</th><th>Dokument</th><th>Fertig bis</th></tr></thead>
+      <tbody>
+        <tr><td>D-1</td><td>Architekturbeschreibung: Komponenten, Datenflüsse, Rollen</td><td class="d">Fr 27.11.</td></tr>
+        <tr><td>D-2</td><td>Technische Beschreibung: Schnittstellen, Datenmodell, Zugriffsregeln, Migrationsstand</td><td class="d">Fr 27.11.</td></tr>
+        <tr><td>D-3</td><td>Betriebshandbuch: Wiederherstellung, Einstellungen, Störungen, Fehlerprotokoll</td><td class="d">Fr 11.12.</td></tr>
+        <tr><td>D-4</td><td>Benutzerleitfaden für die Pilotfirma</td><td class="d">Fr 18.12.</td></tr>
+        <tr><td>D-5</td><td>Entwicklungsleitfaden: Arbeitsweise, Regeln, Entscheidungsverzeichnis</td><td class="d">Mi 23.12.</td></tr>
+        <tr><td>D-6</td><td>Strukturprüfung des Codes und des Repositories, Befundliste</td><td class="d">Bericht Mi 09.12., Nachbesserung bis 23.12.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="note" aria-label="Wenn der Plan nicht hält">
+  <h2>Wenn der Plan nicht hält</h2>
+  <p>Sind am 20.11. weniger als 9 der 11 geplanten Läufe abgenommen oder ist M-U nicht bis 04.12. erreicht, sprechen wir über den Umfang, nicht über mehr Tempo.</p>
+  <p>Rückfallstufe: Weihnachtsstand mit U-Liste, Datenschutz-Mechanik und Dokumentation; GG-1 und Pilotstart mit echten Daten im Januar 2027. Die Qualitätsschranke bleibt, nur die Freigabe verschiebt sich.</p>
+</section>
+
+<section aria-label="Fortschreibung">
+  <h2>Fortschreibung</h2>
+  <p class="txt">Bei jedem neuen Projektschritt wird dieser Plan aktualisiert und mit Datum vermerkt.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Datum</th><th>Anlass</th></tr></thead>
+      <tbody>
+        <tr><td class="d">16.10.2026</td><td>Weihnachtsziel bestätigt (GG-1 am 18.12.2026); Baustein A2 abgenommen; Plan veröffentlicht</td></tr>
+        <tr><td class="d">15.10.2026</td><td>Erstfassung als Entwurf (Terminplan mit Weihnachtsziel, Plan v0.4 Revision 3)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<p class="foot">Stand 16.10.2026: Die Bausteine S1b-1 (Einladungen und Regeln verwalten) und A2 (Anmeldeseite, 404-Seite, Fehlererfassung) sind abgenommen. Die Einladungs-E-Mail (A5) liegt hinter GG-1 oder im Puffer. Der Vollausbau (Mehrfaktor-Anmeldung, mehrere Firmen) beginnt frühestens im Januar 2027. Planungsbasis: 1,4 Arbeitstage je Lauf; bis zu 8 Nachbesserungsläufe über Plan würden den Puffer sprengen. Termine Dritter (zum Beispiel Abstimmungen der fachlichen Leitung und der Datenschutzprüfung) werden im internen Terminplan geführt und gehören nicht zu dieser Seite. Quelle: Plan v0.4, Revision 3, und Terminplan-Entwurf vom 15.10.2026, am 16.10.2026 bestätigt.</p>
+</div>
+</body>
+</html>
