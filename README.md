@@ -1,6 +1,6 @@
 # LeadOS Arbeitsstand
 
-Statische Statusseite zum Pilotprojekt **LeadOS** (Hanseatisches Institut): ein digitales Führungswerkzeug für die Aufgabenübergabe zwischen Inhaber und Mitarbeiter.
+Statische Statusseite zum Pilotprojekt **LeadOS** (Hanseatisches Institut): ein digitales Führungswerkzeug für die Aufgabenübergabe zwischen Unternehmer und Mitarbeiter.
 
 Die Seite zeigt den aktuellen Projektstand (Phasenleiste "Wo wir stehen") und verlinkt den klickbaren Prototyp: <https://leados-design-foundation.lovable.app>
 
