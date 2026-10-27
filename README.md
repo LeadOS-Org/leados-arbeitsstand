@@ -2,7 +2,7 @@
 
 Statische Statusseite zum Pilotprojekt **LeadOS** (Hanseatisches Institut): ein digitales Führungswerkzeug für die Aufgabenübergabe zwischen Unternehmer und Mitarbeiter.
 
-Die Seite zeigt den aktuellen Projektstand (Phasenleiste "Wo wir stehen") und verlinkt den klickbaren Prototyp: <https://leados-design-foundation.lovable.app>
+Die Seite zeigt den aktuellen Projektstand (Phasenleiste "Wo wir stehen") und verweist auf den klickbaren Prototyp: die veröffentlichte App (Adresse bei Bernd erhältlich).
 
 ## Inhalt
 
@@ -35,3 +35,7 @@ Repository `leados-design-foundation` (`docs/ADR/`).
 ## Lizenz
 
 MIT, siehe [LICENSE](LICENSE).
+
+## Vermerk
+
+Adresse am 27.10.2026 durch Rollenbegriff ersetzt (E-27).
